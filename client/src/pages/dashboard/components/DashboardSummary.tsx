@@ -27,7 +27,7 @@ export function DashboardSummary() {
           icon={<TrendingUp className="w-8 h-8 text-green-600" />}
         />
         <StatCard
-          title="Winning Percentage"
+          title="Win Percentage"
           value={winRate}
           change="+4% Since last 50 trades"
           label="Overall"
@@ -57,13 +57,29 @@ type StatCardProps = {
 };
 
 function StatCard({ title, value, change, label, icon }: StatCardProps) {
+  const isReturnCard = title.toLowerCase().includes("returns");
+  const isPositive = change.includes("+");
+
+  const bgClass = isReturnCard
+    ? isPositive
+      ? "bg-gradient-to-br from-green-50 to-white"
+      : "bg-gradient-to-br from-red-50 to-white"
+    : "bg-gradient-to-br from-indigo-50 to-white";
   return (
-    <Card className="px-5 py-4 rounded-xl shadow-sm border border-gray-200">
+    <Card
+      className={`px-5 py-4 rounded-xl shadow-sm border border-gray-200 ${bgClass}`}
+    >
       <div className="flex items-start justify-between">
         <div>
           <div className="text-md">{title}</div>
           <div className="mt-4 text-2xl font-bold text-gray-900">{value}</div>
-          <div className="text-sm text-green-600 mt-4">{change}</div>
+          <div
+            className={`text-sm mt-4 ${
+              isPositive ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {change}
+          </div>
         </div>
         <div className="flex flex-col items-center gap-1 space-y-4">
           <Badge variant="outline" className="bg-gray-100 text-xs px-2 py-0.5">

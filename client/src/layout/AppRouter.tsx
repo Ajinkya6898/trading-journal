@@ -1,7 +1,7 @@
-import { TradingJournalTable } from "@/pages/TradeJournal";
 import { createBrowserRouter } from "react-router-dom";
 import AppLayout from "./Applayout";
-import Dashboard from "@/pages/Dashboard";
+import Dashboard from "@/pages/dashboard/Dashboard";
+import TradeJournal from "@/pages/trade-journal/TradeJournal";
 
 const router = createBrowserRouter([
   {
@@ -10,7 +10,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/journal",
-        element: <TradingJournalTable />,
+        element: <TradeJournal />,
       },
       {
         path: "/dashboard",

@@ -4,43 +4,40 @@ import { cn } from "@/lib/utils";
 const portfolioData = [
   {
     title: "Stocks",
-    color: "text-purple-600",
-    ring: "ring-purple-200",
+    ringColor: "#4f46e5",
     investment: 565694,
     currentValue: 695276.75,
     profit: 129582.75,
     profitPercent: 22.91,
-    progress: 100,
-  },
-  {
-    title: "ETFs",
-    color: "text-sky-500",
-    ring: "ring-sky-100",
-    investment: 0,
-    currentValue: 0,
-    profit: 0,
-    profitPercent: 0,
-    progress: 0,
+    progress: 70,
   },
   {
     title: "Mutual Funds",
-    color: "text-orange-500",
-    ring: "ring-orange-100",
+    ringColor: "#f97316",
     investment: 0,
     currentValue: 0,
     profit: 0,
     profitPercent: 0,
-    progress: 0,
+    progress: 70,
   },
   {
-    title: "Crypto",
-    color: "text-orange-500",
-    ring: "ring-orange-100",
+    title: "ETFs",
+    ringColor: "#455a64",
     investment: 0,
     currentValue: 0,
     profit: 0,
     profitPercent: 0,
-    progress: 0,
+    progress: 30,
+  },
+
+  {
+    title: "Crypto",
+    ringColor: "#1de9b6",
+    investment: 0,
+    currentValue: 0,
+    profit: 0,
+    profitPercent: 10,
+    progress: 5,
   },
 ];
 
@@ -51,26 +48,21 @@ export default function PortfolioDistribution() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {portfolioData.map((item) => (
           <Card key={item.title} className="shadow-md h-full">
-            <CardContent className="flex items-center justify-between h-full">
+            <CardContent className="flex items-center justify-between h-full py-2">
               <div className="space-y-2 text-sm">
-                <h3
-                  className={cn(
-                    "text-md font-medium border-l-2 pl-2",
-                    item.color
-                  )}
-                >
+                <h3 className="text-lg font-bold border-l-4 border-[#6366f1] pl-2">
                   {item.title}
                 </h3>
-                <p className="pt-1">
-                  <span className="text-muted-foreground">Investment:</span> ₹
+                <p>
+                  <span>Investment:</span> ₹
                   {item.investment.toLocaleString("en-IN")}
                 </p>
-                <p className="pt-1">
-                  <span className="text-muted-foreground">Current Value:</span>{" "}
-                  ₹{item.currentValue.toLocaleString("en-IN")}
+                <p>
+                  <span>Current Value:</span> ₹
+                  {item.currentValue.toLocaleString("en-IN")}
                 </p>
-                <p className="pt-1">
-                  <span className="text-muted-foreground">Profit:</span>{" "}
+                <p>
+                  <span>Profit:</span>{" "}
                   <span
                     className={cn(
                       item.profit >= 0 ? "text-green-600" : "text-red-600"
@@ -79,8 +71,8 @@ export default function PortfolioDistribution() {
                     ₹{item.profit.toLocaleString("en-IN")}
                   </span>
                 </p>
-                <p className="pt-1">
-                  <span className="text-muted-foreground">Profit %:</span>{" "}
+                <p>
+                  <span>Profit %:</span>{" "}
                   <span
                     className={cn(
                       item.profitPercent >= 0
@@ -92,16 +84,23 @@ export default function PortfolioDistribution() {
                   </span>
                 </p>
               </div>
-              <div className="flex flex-col items-center ml-4">
-                <div
-                  className={cn(
-                    "w-16 h-16 rounded-full border-4 flex items-center justify-center text-xs font-semibold mb-2",
-                    item.ring
-                  )}
-                >
-                  {item.progress.toFixed(2)}%
+
+              {/* Ring Progress */}
+              <div className="flex flex-col items-center gap-1">
+                <div className="relative w-24 h-24">
+                  <div
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: `conic-gradient(${
+                        item.progress > 0 ? item.ringColor : "#e5e7eb"
+                      } ${item.progress}%, #e5e7eb ${item.progress}% 100%)`,
+                    }}
+                  />
+                  <div className="absolute inset-[15px] rounded-full bg-white flex items-center justify-center text-xs font-semibold">
+                    <p className="text-base">{item.progress.toFixed(0)}%</p>
+                  </div>
                 </div>
-                <p className="text-xs text-muted-foreground">of Total</p>
+                <p className="text-xs mt-1">of Total</p>
               </div>
             </CardContent>
           </Card>

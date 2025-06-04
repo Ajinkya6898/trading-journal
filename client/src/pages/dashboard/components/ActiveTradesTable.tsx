@@ -285,7 +285,7 @@ export function ActiveTradesTable() {
   return (
     <div className="w-full">
       <div className="flex items-center pb-4">
-        <h2 className="text-xl font-semibold ">Active Trades #</h2>
+        <h2 className="text-xl font-semibold">Active Trades #</h2>
         <Input
           placeholder="Filter stocks..."
           value={(table.getColumn("symbol")?.getFilterValue() as string) ?? ""}
