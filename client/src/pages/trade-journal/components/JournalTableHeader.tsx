@@ -3,17 +3,17 @@ import { CalendarDays, Check, X } from "lucide-react";
 import { useState } from "react";
 
 export function JournalTableHeader() {
-  const [onlyPositive, setOnlyPositive] = useState(false);
-  const [onlyNegative, setOnlyNegative] = useState(false);
+  const [winners, setWinners] = useState(false);
+  const [lossers, setLossers] = useState(false);
 
   const togglePositive = () => {
-    setOnlyPositive(!onlyPositive);
-    if (onlyNegative) setOnlyNegative(false);
+    setWinners(!winners);
+    if (lossers) setLossers(false);
   };
 
   const toggleNegative = () => {
-    setOnlyNegative(!onlyNegative);
-    if (onlyPositive) setOnlyPositive(false);
+    setLossers(!lossers);
+    if (winners) setWinners(false);
   };
 
   return (
@@ -21,29 +21,27 @@ export function JournalTableHeader() {
       <h2 className="text-xl font-semibold tracking-tight">Trade Journal</h2>
 
       <div className="flex items-center space-x-3">
-        <Button size="sm" variant="outline">
+        <Button variant="outline">
           <CalendarDays className="w-4 h-4 mr-2" />
           Date Range
         </Button>
 
         <Button
-          size="sm"
-          variant={onlyPositive ? "default" : "outline"}
+          variant={winners ? "default" : "outline"}
           onClick={togglePositive}
           className="flex items-center space-x-1"
         >
           <Check className="w-4 h-4" />
-          <span>Only Positive</span>
+          <span>Winners</span>
         </Button>
 
         <Button
-          size="sm"
-          variant={onlyNegative ? "default" : "outline"}
+          variant={lossers ? "default" : "outline"}
           onClick={toggleNegative}
           className="flex items-center space-x-1"
         >
           <X className="w-4 h-4" />
-          <span>Only Negative</span>
+          <span>Lossers</span>
         </Button>
       </div>
     </div>

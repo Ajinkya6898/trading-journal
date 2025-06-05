@@ -1,0 +1,1 @@
+on dashboard add a pie chart for company capitalization like mid,small, large cap

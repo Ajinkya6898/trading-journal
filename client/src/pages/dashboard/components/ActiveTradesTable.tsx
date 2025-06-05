@@ -320,13 +320,13 @@ export function ActiveTradesTable() {
       </div>
 
       {/* ---------- table ---------- */}
-      <div className="rounded-md border mt-2">
+      <div className="rounded-md border mt-2 px-4 py-2">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (
               <TableRow key={hg.id}>
                 {hg.headers.map((h) => (
-                  <TableHead key={h.id}>
+                  <TableHead className="px-2" key={h.id}>
                     {h.isPlaceholder
                       ? null
                       : flexRender(h.column.columnDef.header, h.getContext())}
