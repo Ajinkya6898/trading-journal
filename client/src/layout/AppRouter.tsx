@@ -3,8 +3,9 @@ import AppLayout from "./Applayout";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import TradeJournal from "@/pages/trade-journal/TradeJournal";
 import RiskBasedPositionSize from "@/pages/risk-based-ps/RiskBasedPositionSize";
-import { LoginForm } from "@/pages/authentication/Login";
+import { LoginForm } from "@/pages/authentication/LogInForm";
 import { SignUpForm } from "@/pages/authentication/SignUpForm";
+import AddTradeForm from "@/pages/add-trade/AddTradeForm";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/position-size/risk-based",
         element: <RiskBasedPositionSize />,
+      },
+      {
+        path: "/add-entry",
+        element: <AddTradeForm />,
       },
     ],
   },

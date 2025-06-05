@@ -12,6 +12,7 @@ import {
   Calculator,
   Divide,
   Percent,
+  PlusCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SidebarItem from "./SidebarItem";
@@ -19,6 +20,7 @@ import SidebarItem from "./SidebarItem";
 const menu = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { label: "Journal", icon: NotebookPen, href: "/journal" },
+  { label: "Add New Entry", icon: PlusCircle, href: "/add-entry" },
   { label: "Active Trades", icon: TrendingUp, href: "/active-trades" },
   { label: "Reports", icon: BarChart, href: "/reports" },
   {

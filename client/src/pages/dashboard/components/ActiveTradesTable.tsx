@@ -292,7 +292,7 @@ export function ActiveTradesTable() {
           onChange={(e) =>
             table.getColumn("symbol")?.setFilterValue(e.target.value)
           }
-          className="max-w-sm ml-[auto]"
+          className="max-w-sm h-10 ml-[auto]"
         />
 
         <DropdownMenu>
@@ -320,7 +320,7 @@ export function ActiveTradesTable() {
       </div>
 
       {/* ---------- table ---------- */}
-      <div className="rounded-md border mt-2 px-4 py-2">
+      <div className="rounded-md border mt-2">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (

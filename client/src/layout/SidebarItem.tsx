@@ -30,7 +30,7 @@ export default function SidebarItem({
         <button
           onClick={() => setOpen(!open)}
           className={cn(
-            "flex items-center px-4 py-2 w-full text-left text-sm font-medium hover:bg-muted transition",
+            "flex items-center px-4 py-3 w-full text-left text-sm font-medium hover:bg-muted transition",
             collapsed ? "justify-center" : "justify-between"
           )}
         >
@@ -49,7 +49,7 @@ export default function SidebarItem({
                 key={child.href}
                 className={({ isActive }) =>
                   cn(
-                    "flex items-center px-4 py-2 text-sm font-medium transition-colors hover:bg-muted rounded-md",
+                    "flex items-center px-4 py-2 text-base font-medium transition-colors hover:bg-muted rounded-md",
                     isActive && "bg-gray-200 text-primary",
                     collapsed ? "justify-center" : "justify-start gap-3"
                   )
@@ -70,7 +70,7 @@ export default function SidebarItem({
       to={href!}
       className={({ isActive }) =>
         cn(
-          "flex items-center px-4 py-2 text-sm font-medium transition-colors hover:bg-muted rounded-md",
+          "flex items-center px-4 py-2 text-base font-medium transition-colors hover:bg-muted rounded-md",
           isActive && "bg-gray-200 text-primary",
           collapsed ? "justify-center" : "justify-start gap-3"
         )
