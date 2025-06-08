@@ -1,0 +1,13 @@
+<ChartCard
+        title="Asset Class Performance"
+        description="Profit/Loss per asset class"
+        chart={
+          <Bar
+            data={assetClassData}
+            options={{
+              responsive: true,
+              plugins: { legend: { display: false } },
+            }}
+          />
+        }
+      />
