@@ -1,6 +1,9 @@
 import { Chip, Typography, Link as MuiLink } from "@mui/material";
 import ReusableTable from "../../ui-components/ReusableTable";
 import { useNavigate } from "react-router-dom";
+import useStockStore from "../../store/useStockStore";
+import { useEffect } from "react";
+import Loader from "../../ui-components/Loader";
 
 type Trade = {
   id: string;
@@ -59,6 +62,13 @@ const mockData: Trade[] = [
 
 const TradingJournalTable = () => {
   const navigate = useNavigate();
+  const { trades, fetchTrades, loading, error } = useStockStore();
+
+  useEffect(() => {
+    fetchTrades();
+  }, []);
+
+  if (loading) return <Loader />;
 
   const columns = [
     { id: "entryDate", label: "Entry Date" },
@@ -93,15 +103,12 @@ const TradingJournalTable = () => {
             fontWeight: 600,
             color: value >= 0 ? "success.main" : "error.main",
             backgroundColor: value >= 0 ? "success.lighter" : "error.lighter",
-            px: 1,
-            py: 0.5,
             borderRadius: "4px",
             display: "inline-block",
             width: 80,
-            textAlign: "right",
           }}
         >
-          ₹{value.toLocaleString()}
+          ₹ {value.toLocaleString()}
         </Typography>
       ),
     },
@@ -120,10 +127,11 @@ const TradingJournalTable = () => {
             borderRadius: "4px",
             display: "inline-block",
             width: 100,
-            textAlign: "right",
+            textAlign: "left",
+            p: 0,
           }}
         >
-          ₹{value.toLocaleString()}
+          ₹ {value.toLocaleString()}
         </Typography>
       ),
     },
@@ -161,14 +169,14 @@ const TradingJournalTable = () => {
     {
       id: "rsAtWork",
       label: "Rs At Work",
-      render: (value: number) => `₹${value.toLocaleString()}`,
+      render: (value: number) => `₹ ${value.toLocaleString()}`,
     },
   ];
 
   return (
     <ReusableTable<Trade>
       columns={columns}
-      data={mockData}
+      data={trades}
       rowKey="id"
       tableHeader="My Trading Journal"
       showCheckbox={false}

@@ -11,3 +11,6 @@
           />
         }
       />
+
+pay in and pay out page to know how much money I put in the stock market
+add timeframe element in the stock entry panel

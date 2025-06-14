@@ -3,6 +3,7 @@ import { TextField, Box, Button, Stack } from "@mui/material";
 import { DatePicker } from "../../ui-components/Datepicker";
 import Panel from "../../ui-components/Panel";
 import FieldLayout from "../../ui-components/FieldLayout";
+import useStockStore from "../../store/useStockStore";
 
 const StockEntryForm = () => {
   const [formValues, setFormValues] = useState({
@@ -18,6 +19,7 @@ const StockEntryForm = () => {
     tradeImage: null as File | null,
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const { addTrade } = useStockStore();
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
@@ -62,10 +64,41 @@ const StockEntryForm = () => {
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form is valid. Submit:", formValues);
+      try {
+        await addTrade({
+          entryDate: formValues.entryDate,
+          exitDate: formValues.exitDate,
+          symbol: formValues.symbol,
+          quantity: Number(formValues.quantity),
+          boughtPrice: Number(formValues.boughtPrice),
+          soldPrice: Number(formValues.soldPrice),
+          pnl: Number(formValues.pnl),
+          commission: Number(formValues.commission),
+          notes: formValues.notes,
+          tradeImage: formValues.tradeImage, // file can be null
+        });
+
+        console.log("Trade added successfully");
+
+        // Clear form after successful submission
+        setFormValues({
+          entryDate: new Date(),
+          exitDate: new Date(),
+          symbol: "",
+          quantity: "",
+          boughtPrice: "",
+          soldPrice: "",
+          pnl: "",
+          commission: "",
+          notes: "",
+          tradeImage: null,
+        });
+      } catch (error) {
+        console.error("Error adding trade:", error);
+      }
     } else {
       console.warn("Form has errors");
     }

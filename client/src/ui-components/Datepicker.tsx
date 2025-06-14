@@ -46,7 +46,9 @@ export function DatePicker({
         value={value}
         onChange={props.onChange}
         disabled={disabled}
-        disableFuture={disableFutureDate ? true : false}
+        disableFuture={disableFutureDate}
+        views={["year", "month", "day"]}
+        format="dd/MM/yyyy"
         slotProps={{
           textField: {
             error: !!error,
@@ -54,9 +56,7 @@ export function DatePicker({
             helperText: helperText,
             variant: "outlined",
             InputProps: {
-              sx: {
-                pr: 3,
-              },
+              sx: { pr: 3 },
             },
           },
         }}
