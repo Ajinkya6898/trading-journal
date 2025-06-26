@@ -16,14 +16,14 @@ type ModalType = "success" | "error" | "warning";
 interface ModalState {
   isOpen: boolean;
   type: ModalType | "";
-  message: string;
+  message: React.ReactNode;
   onConfirm?: () => void;
   onCancel?: () => void;
 }
 
 interface ModalDispatchProps {
   type: ModalType;
-  message: string;
+  message: React.ReactNode;
   onConfirm?: () => void;
   onCancel?: () => void;
 }
@@ -88,11 +88,12 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({
         sx={{
           width: "600px",
           margin: "auto",
+          padding: 0,
         }}
         PaperProps={{
           sx: {
             borderRadius: 3,
-            p: 2,
+            pb: 2,
           },
         }}
       >
@@ -136,14 +137,18 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({
           </Typography>
         </DialogContent>
 
-        <DialogActions sx={{ justifyContent: "flex-end", mt: 2, px: 2 }}>
+        <DialogActions sx={{ justifyContent: "flex-end", px: 2 }}>
           {modal.type === "warning" ? (
             <>
               <Button onClick={modal.onCancel} variant="outlined">
                 Cancel
               </Button>
 
-              <Button onClick={modal.onConfirm} sx={{ ml: 2 }}>
+              <Button
+                variant="contained"
+                onClick={modal.onConfirm}
+                sx={{ ml: 2 }}
+              >
                 Continue
               </Button>
             </>

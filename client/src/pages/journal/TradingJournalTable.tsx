@@ -23,46 +23,9 @@ type Trade = {
   rsAtWork: number;
 };
 
-const mockData: Trade[] = [
-  {
-    id: "1",
-    entryDate: "2025-06-01",
-    exitDate: "2025-06-05",
-    daysHeld: 4,
-    stockName: "TCS",
-    qty: 100,
-    entryPrice: 3200,
-    exitPrice: 3350,
-    pnl: 15000,
-    commission: 100,
-    realisedPnl: 14900,
-    win: true,
-    winPercent: 75,
-    pnlPercent: 4.6,
-    rsAtWork: 30000,
-  },
-  {
-    id: "2",
-    entryDate: "2025-05-20",
-    exitDate: "2025-05-25",
-    daysHeld: 5,
-    stockName: "INFY",
-    qty: 50,
-    entryPrice: 1400,
-    exitPrice: 1300,
-    pnl: -5000,
-    commission: 100,
-    realisedPnl: -5100,
-    win: false,
-    winPercent: 0,
-    pnlPercent: -3.5,
-    rsAtWork: 15000,
-  },
-];
-
 const TradingJournalTable = () => {
   const navigate = useNavigate();
-  const { trades, fetchTrades, loading, error } = useStockStore();
+  const { trades, fetchTrades, loading } = useStockStore();
 
   useEffect(() => {
     fetchTrades();
@@ -71,8 +34,16 @@ const TradingJournalTable = () => {
   if (loading) return <Loader />;
 
   const columns = [
-    { id: "entryDate", label: "Entry Date" },
-    { id: "exitDate", label: "Exit Date" },
+    {
+      id: "entryDate",
+      label: "Entry Date",
+      render: (value: string) => new Date(value).toLocaleDateString(),
+    },
+    {
+      id: "exitDate",
+      label: "Exit Date",
+      render: (value: string) => new Date(value).toLocaleDateString(),
+    },
     { id: "daysHeld", label: "Days Held" },
     {
       id: "stockName",

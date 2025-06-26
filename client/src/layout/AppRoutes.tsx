@@ -10,6 +10,8 @@ import VerifyEmailOtpForm from "../pages/auth/VerifyEmailOtpForm";
 import ResetPasswordForm from "../pages/auth/ResetPasswordForm";
 import EqualMoneyPositionSize from "../pages/ps-calculator/EqualMoneyPositionSize";
 import TradingJournalTable from "../pages/journal/TradingJournalTable";
+import FiiDiiDashboard from "../pages/fiidii-activity/FiiDiiDashboard";
+import ProfileProgress from "../pages/user-profile/profileProgress";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
       {
         path: "/add-entry",
         element: <AddEntry />,
+      },
+      {
+        path: "/activity",
+        element: <FiiDiiDashboard />,
+      },
+      {
+        path: "/complete-profile",
+        element: <ProfileProgress />,
       },
     ],
   },

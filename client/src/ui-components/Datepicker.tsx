@@ -41,7 +41,12 @@ export function DatePicker({
   ...props
 }: DatePickerProps) {
   return (
-    <FieldLayout label={label} helperText={error} inputSize={3}>
+    <FieldLayout
+      label={label}
+      helperText={error}
+      labelSize={labelSize}
+      inputSize={3}
+    >
       <MUIDatepicker
         value={value}
         onChange={props.onChange}

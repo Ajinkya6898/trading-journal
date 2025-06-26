@@ -1,0 +1,19 @@
+const mongoose = require("mongoose");
+
+const mutualFundTransactionSchema = new mongoose.Schema(
+  {
+    fundName: { type: String, required: true },
+    transactionDate: { type: Date, required: true },
+    units: { type: Number, required: true },
+    nav: { type: Number, required: true },
+    amount: { type: Number, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+module.exports = mongoose.model(
+  "MutualFundTransaction",
+  mutualFundTransactionSchema
+);

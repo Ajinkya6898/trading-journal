@@ -5,6 +5,8 @@ const authRoutes = require("./controllers/userController");
 const cors = require("cors");
 const path = require("path");
 const tradeRoutes = require("./routes/StocksRoutes");
+const mutualFundRoutes = require("./routes/mutualFundRoutes");
+const positionRoutes = require("./routes/positionRoutes");
 
 const app = express();
 app.use(express.json());
@@ -15,6 +17,8 @@ app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/stock", tradeRoutes);
+app.use("/api/mutual-funds", mutualFundRoutes);
+app.use("/api/positions", positionRoutes);
 
 mongoose
   .connect("mongodb://localhost:27017/trading-journal")

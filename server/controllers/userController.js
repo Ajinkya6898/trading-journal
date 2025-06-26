@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../model/userSchema");
 
 // Secret key for JWT
-const JWT_SECRET = "your_secret_key_here"; // Replace with env var in production
+const JWT_SECRET = "your_secret_key_here";
 
 // Register Route
 router.post("/register", async (req, res) => {
@@ -17,7 +17,7 @@ router.post("/register", async (req, res) => {
 
     const user = await User.create({ email, password });
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "24h" });
 
     res.status(201).json({
       id: user._id,
@@ -29,7 +29,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login Route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -39,7 +38,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "24h" });
 
     res.json({
       id: user._id,

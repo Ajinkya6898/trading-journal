@@ -1,33 +1,63 @@
-import { useState } from "react";
-import { TextField, Box, Button, Stack } from "@mui/material";
+import { TextField, Box, Button, Stack, Typography } from "@mui/material";
 import Panel from "../../ui-components/Panel";
 import FieldLayout from "../../ui-components/FieldLayout";
+import { usePositionStore } from "../../store/positionStore";
+import { useModal } from "../../ui-components/ModalProvider";
 
 const EqualMoneyPositionSizeForm = () => {
-  const [stockName, setStockName] = useState("");
-  const [totalAmount, setTotalAmount] = useState("");
-  const [investAmount, setInvestAmount] = useState("");
-  const [positionSize, setPositionSize] = useState("");
+  const { current, setField, calculatePositionSize, clearCurrent, saveEntry } =
+    usePositionStore();
 
-  const handleInvestAmountChange = (value: string) => {
-    setInvestAmount(value);
-  };
+  const { modalDispatch } = useModal();
 
-  const handleCalculate = () => {
-    const total = parseFloat(totalAmount);
+  const handleCalculate = async () => {
+    const { stockName, totalAmount, investAmount, stockPrice } =
+      usePositionStore.getState().current;
 
-    if (!stockName || !total) return;
+    const missingFields: string[] = [];
 
-    let posSize = 0;
+    if (!stockName) missingFields.push("Stock Name");
+    if (!totalAmount) missingFields.push("Total Amount");
+    if (!investAmount) missingFields.push("Amount to Invest");
+    if (!stockPrice) missingFields.push("Stock Price");
 
-    setPositionSize(posSize.toFixed(2));
-  };
+    if (missingFields.length > 0) {
+      modalDispatch({
+        type: "error",
+        message: (
+          <div style={{ textAlign: "left" }}>
+            <Typography variant="body1">
+              Cannot proceed — the following required fields are missing:
+            </Typography>
+            <ul style={{ margin: 0, marginTop: "16px" }}>
+              {missingFields.map((field) => (
+                <li key={field}>
+                  <Typography variant="body2" component="span">
+                    {field}
+                  </Typography>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ),
+      });
+      return;
+    }
 
-  const handleClear = () => {
-    setStockName("");
-    setTotalAmount("");
-    setInvestAmount("");
-    setPositionSize("");
+    calculatePositionSize();
+
+    try {
+      await saveEntry();
+      modalDispatch({
+        type: "success",
+        message: "Position size calculated and saved successfully!",
+      });
+    } catch (err) {
+      modalDispatch({
+        type: "error",
+        message: "Failed to save entry. Please try again.",
+      });
+    }
   };
 
   return (
@@ -49,8 +79,8 @@ const EqualMoneyPositionSizeForm = () => {
             fullWidth
             placeholder="Enter Stock Name"
             variant="outlined"
-            value={stockName}
-            onChange={(e) => setStockName(e.target.value)}
+            value={current.stockName}
+            onChange={(e) => setField("stockName", e.target.value)}
           />
         </FieldLayout>
 
@@ -59,8 +89,8 @@ const EqualMoneyPositionSizeForm = () => {
             fullWidth
             placeholder="Enter total capital available"
             variant="outlined"
-            value={totalAmount}
-            onChange={(e) => setTotalAmount(e.target.value)}
+            value={current.totalAmount}
+            onChange={(e) => setField("totalAmount", e.target.value)}
           />
         </FieldLayout>
 
@@ -69,18 +99,18 @@ const EqualMoneyPositionSizeForm = () => {
             fullWidth
             placeholder="Enter amount you want to invest"
             variant="outlined"
-            value={investAmount}
-            onChange={(e) => handleInvestAmountChange(e.target.value)}
+            value={current.investAmount}
+            onChange={(e) => setField("investAmount", e.target.value)}
           />
         </FieldLayout>
 
-        <FieldLayout label="Calculated Position Size">
+        <FieldLayout label="Stock Price">
           <TextField
             fullWidth
-            value={positionSize}
+            placeholder="Enter current stock price"
             variant="outlined"
-            InputProps={{ readOnly: true }}
-            placeholder="Position size will be calculated here"
+            value={current.stockPrice}
+            onChange={(e) => setField("stockPrice", e.target.value)}
           />
         </FieldLayout>
 
@@ -100,7 +130,7 @@ const EqualMoneyPositionSizeForm = () => {
               color="error"
               size="large"
               fullWidth
-              onClick={handleClear}
+              onClick={clearCurrent}
             >
               Clear
             </Button>

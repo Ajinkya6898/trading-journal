@@ -17,7 +17,6 @@ interface BasePanelProps {
   label: string;
   elementId: string;
   description?: string;
-  alias?: string;
 }
 
 const PanelElement = styled.div`

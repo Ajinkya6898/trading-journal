@@ -14,7 +14,7 @@ import {
 type Column<T> = {
   id: keyof T;
   label: string;
-  render?: (value: any, row: T) => React.ReactNode;
+  render?: (value: any, row: T, rowIndex: number) => React.ReactNode;
 };
 
 type ReusableTableProps<T> = {
@@ -40,7 +40,7 @@ function ReusableTable<T extends { [key: string]: any }>({
 }: ReusableTableProps<T>) {
   return (
     <>
-      <Typography variant="h6" color="textSecondary">
+      <Typography variant="h6" mb={2} color="textSecondary">
         {tableHeader}
       </Typography>
       <TableContainer component={Paper} elevation={2}>
@@ -86,7 +86,9 @@ function ReusableTable<T extends { [key: string]: any }>({
                   )}
                   {columns.map((col) => (
                     <TableCell key={String(col.id)}>
-                      {col.render ? col.render(row[col.id], row) : row[col.id]}
+                      {col.render
+                        ? col.render(row[col.id], row, rowIndex)
+                        : row[col.id]}
                     </TableCell>
                   ))}
                 </TableRow>
