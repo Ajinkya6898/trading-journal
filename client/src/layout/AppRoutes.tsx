@@ -11,7 +11,8 @@ import ResetPasswordForm from "../pages/auth/ResetPasswordForm";
 import EqualMoneyPositionSize from "../pages/ps-calculator/EqualMoneyPositionSize";
 import TradingJournalTable from "../pages/journal/TradingJournalTable";
 import FiiDiiDashboard from "../pages/fiidii-activity/FiiDiiDashboard";
-import ProfileProgress from "../pages/user-profile/profileProgress";
+import ProfileProgress from "../pages/user-profile/ProfileProgress";
+import FundTransaction from "../pages/fund-transactions/FundTransaction";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "/complete-profile",
         element: <ProfileProgress />,
+      },
+      {
+        path: "/fund-transactions",
+        element: <FundTransaction />,
       },
     ],
   },

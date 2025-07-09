@@ -1,6 +1,7 @@
 import { DatePicker as MUIDatepicker } from "@mui/x-date-pickers";
 import Icon from "./Icon";
 import FieldLayout from "./FieldLayout";
+
 export interface DatePickerProps {
   value?: any;
   disabled?: boolean;
@@ -12,8 +13,10 @@ export interface DatePickerProps {
   onChange: (value: any) => void;
   disableFutureDate?: boolean;
   elementId?: string;
-  variant?: string;
+  variant?: "regular" | "small";
   error?: string;
+  fullWidth?: boolean;
+  noLayout?: boolean;
 }
 
 function DatePickerIcon() {
@@ -38,40 +41,64 @@ export function DatePicker({
   labelSize,
   inputSize,
   error,
+  fullWidth = false,
+  noLayout = false,
   ...props
 }: DatePickerProps) {
+  const textFieldProps = {
+    error: !!error,
+    fullWidth,
+    helperText,
+    variant: "outlined",
+    size: variant === "small" ? "small" : "medium",
+    InputProps: {
+      sx: {
+        pr: 3,
+        fontSize: variant === "small" ? "0.85rem" : "1rem",
+        height: variant === "small" ? 40 : 48,
+        paddingY: variant === "small" ? 1 : 1.5,
+      },
+    },
+    inputProps: {
+      style: {
+        padding: variant === "small" ? "8px 10px" : "12px",
+        fontSize: variant === "small" ? "0.85rem" : "1rem",
+      },
+    },
+  };
+
+  const picker = (
+    <MUIDatepicker
+      value={value}
+      onChange={props.onChange}
+      disabled={disabled}
+      disableFuture={disableFutureDate}
+      views={["year", "month", "day"]}
+      format="dd/MM/yyyy"
+      slotProps={{ textField: textFieldProps }}
+      slots={{
+        openPickerIcon: DatePickerIcon,
+        switchViewIcon: DatePickerIcon,
+        rightArrowIcon: RightArrowIcon,
+        leftArrowIcon: LeftArrowIcon,
+      }}
+    />
+  );
+
+  if (noLayout) {
+    return picker;
+  }
+
   return (
     <FieldLayout
       label={label}
       helperText={error}
       labelSize={labelSize}
-      inputSize={3}
+      inputSize={inputSize ?? 3}
     >
-      <MUIDatepicker
-        value={value}
-        onChange={props.onChange}
-        disabled={disabled}
-        disableFuture={disableFutureDate}
-        views={["year", "month", "day"]}
-        format="dd/MM/yyyy"
-        slotProps={{
-          textField: {
-            error: !!error,
-            fullWidth: true,
-            helperText: helperText,
-            variant: "outlined",
-            InputProps: {
-              sx: { pr: 3 },
-            },
-          },
-        }}
-        slots={{
-          openPickerIcon: DatePickerIcon,
-          switchViewIcon: DatePickerIcon,
-          rightArrowIcon: RightArrowIcon,
-          leftArrowIcon: LeftArrowIcon,
-        }}
-      />
+      {picker}
     </FieldLayout>
   );
 }
+
+export default DatePicker;

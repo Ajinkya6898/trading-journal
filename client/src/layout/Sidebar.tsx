@@ -19,6 +19,7 @@ import {
   Settings2,
   ChevronDown,
   ChevronRight,
+  IndianRupee,
 } from "lucide-react";
 import { useState } from "react";
 import AppLogo from "./AppLogo";
@@ -44,6 +45,11 @@ const menu = [
         icon: Scale,
       },
     ],
+  },
+  {
+    label: "Fund Transactions",
+    icon: IndianRupee,
+    href: "/fund-transactions",
   },
   { label: "Settings", icon: Settings2, href: "/settings" },
 ];

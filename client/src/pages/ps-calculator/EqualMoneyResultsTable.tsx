@@ -99,7 +99,7 @@ const EqualMoneyResultsTable = () => {
   ];
 
   return (
-    <div style={{ marginTop: "2rem" }}>
+    <>
       <ReusableTable
         data={entries}
         columns={columns}
@@ -107,7 +107,7 @@ const EqualMoneyResultsTable = () => {
         showCheckbox={true}
         tableHeader="Calculated Positions"
       />
-    </div>
+    </>
   );
 };
 

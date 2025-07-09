@@ -11,7 +11,7 @@ interface TypeGrayColor {
   lightest?: string;
 }
 
-// Properly extend the MUI theme types using module augmentation
+// Module augmentation to extend MUI theme typings
 declare module "@mui/material/styles" {
   interface Palette {
     brandPrimary: Palette["primary"];
@@ -55,6 +55,12 @@ const theme = createTheme({
       medium: "#F7EDEF",
       light: "#F7EFF0",
       lighter: "#FCF7F7",
+    },
+    success: {
+      main: "#008447",
+      dark: "#005C31",
+      medium: "#E6F3ED",
+      light: "#F2F8F7",
     },
     gray: {
       dark: "#77878F",

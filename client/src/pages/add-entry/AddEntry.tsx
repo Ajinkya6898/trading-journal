@@ -23,7 +23,7 @@ const AddEntry = () => {
           </>
         }
       />
-      <Box mt={4}>
+      <Box>
         <StockEntryForm />
         <MutualFundEntryForm />
         <ETFEntryForm />

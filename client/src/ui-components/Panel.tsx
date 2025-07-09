@@ -23,7 +23,7 @@ const PanelElement = styled.div`
   background-color: #fff;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 10px;
-  margin: 0 0 20px 0;
+  margin: 0;
   width: 100%;
   display: flex;
   flex-flow: row;
