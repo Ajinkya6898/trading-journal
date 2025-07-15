@@ -51,6 +51,11 @@ const menu = [
     icon: IndianRupee,
     href: "/fund-transactions",
   },
+  {
+    label: "Target Calculator",
+    icon: IndianRupee,
+    href: "/target",
+  },
   { label: "Settings", icon: Settings2, href: "/settings" },
 ];
 

@@ -97,16 +97,22 @@ const useStockStore = create<StockStoreState>((set) => ({
   fetchTrades: async () => {
     try {
       set({ loading: true, error: null });
-      const response = await axios.get<BackendTrade[]>(
-        "http://localhost:8080/api/stock"
-      );
-      const mappedData = response.data.map(mapBackendToFrontend);
-      set({ trades: mappedData, loading: false });
+      const response = await axios.get("http://localhost:8080/api/stock");
+
+      const mappedTrades = response.data.trades.map(mapBackendToFrontend);
+      const summary = response.data.stocksSummary;
+
+      set({
+        trades: mappedTrades,
+        summary,
+        loading: false,
+      });
     } catch (err) {
       console.error(err);
       set({ error: "Failed to fetch trades", loading: false });
     }
   },
+
   addTrade: async (tradeData: any) => {
     try {
       set({ loading: true, error: null });

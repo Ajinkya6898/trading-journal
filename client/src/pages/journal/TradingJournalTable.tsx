@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import useStockStore from "../../store/useStockStore";
 import { useEffect } from "react";
 import Loader from "../../ui-components/Loader";
+import TradingSummaryCard from "./TradingSummaryCard";
+import SimpleCard from "./SimpleCard";
+import TradingPerformanceDashboard from "./TradingPerformanceDashboard";
 
 type Trade = {
   id: string;
@@ -25,11 +28,13 @@ type Trade = {
 
 const TradingJournalTable = () => {
   const navigate = useNavigate();
-  const { trades, fetchTrades, loading } = useStockStore();
+  const { trades, fetchTrades, loading, summary } = useStockStore();
 
   useEffect(() => {
     fetchTrades();
   }, []);
+
+  console.log("summary", summary);
 
   if (loading) return <Loader />;
 
@@ -145,13 +150,16 @@ const TradingJournalTable = () => {
   ];
 
   return (
-    <ReusableTable<Trade>
-      columns={columns}
-      data={trades}
-      rowKey="id"
-      tableHeader="My Trading Journal"
-      showCheckbox={false}
-    />
+    <>
+      <TradingPerformanceDashboard data={summary} />
+      <ReusableTable<Trade>
+        columns={columns}
+        data={trades}
+        rowKey="id"
+        tableHeader="My Trading Journal"
+        showCheckbox={false}
+      />
+    </>
   );
 };
 

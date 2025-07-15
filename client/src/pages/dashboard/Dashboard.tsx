@@ -6,6 +6,7 @@ import ActiveTrades from "./ActiveTrades";
 import AssetReturnsFunnel from "./AssetReturnsFunnel";
 import TradesAndInvestments from "./TradesAndInvestments";
 import PerformanceOverview from "./PerformanceOverview";
+import TopGainersLosers from "./TopGainersLosers";
 
 const Dashboard = () => {
   return (
@@ -36,6 +37,7 @@ const Dashboard = () => {
           </Box>
         </Box>
         <PerformanceOverview />
+        <TopGainersLosers />
       </Box>
     </>
   );
