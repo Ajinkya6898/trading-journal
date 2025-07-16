@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import ReusableTable from "../../ui-components/ReusableTable";
-import { usePositionStore } from "../../store/positionStore";
+import { usePositionStore } from "../../store/usepositionStore";
 import { Button, Stack } from "@mui/material";
 import { useModal } from "../../ui-components/ModalProvider";
 

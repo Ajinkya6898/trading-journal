@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import axiosInstance from "./axiosInstance";
 
 type PositionEntry = {
   id: string;
@@ -81,7 +82,7 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
     })),
 
   saveEntry: async () => {
-    const BASE_URL = "http://localhost:8080/api/positions";
+    const BASE_URL = "/positions"; // since axiosInstance already has baseURL
     const { stockName, totalAmount, investAmount, stockPrice, positionSize } =
       get().current;
 
@@ -103,48 +104,29 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
     };
 
     try {
-      const response = await fetch(BASE_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`, // If using auth later
-        },
-        body: JSON.stringify(newEntry),
-      });
-
-      if (!response.ok) {
-        const err = await response.json();
-        console.error("Failed to save:", err);
-        return;
-      }
-
-      const saved = await response.json();
+      const response = await axiosInstance.post(BASE_URL, newEntry);
+      const saved = response.data;
 
       set((state) => ({
         entries: [saved, ...state.entries],
       }));
-    } catch (error) {
-      console.error("Network/server error:", error);
+    } catch (error: any) {
+      console.error("Failed to save position:", error.response?.data || error);
     }
   },
 
   loadEntries: async () => {
-    const BASE_URL = "http://localhost:8080/api/positions";
+    const BASE_URL = "/positions";
 
     try {
-      const response = await fetch(BASE_URL);
-      if (!response.ok) {
-        const err = await response.json();
-        console.error("Failed to load entries:", err);
-        return;
-      }
+      const response = await axiosInstance.get(BASE_URL);
+      const data: PositionEntry[] = response.data;
 
-      const data: PositionEntry[] = await response.json();
       set(() => ({
         entries: data,
       }));
-    } catch (error) {
-      console.error("Failed to load entries:", error);
+    } catch (error: any) {
+      console.error("Failed to load entries:", error.response?.data || error);
     }
   },
 }));

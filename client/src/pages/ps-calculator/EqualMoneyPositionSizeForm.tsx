@@ -1,7 +1,7 @@
 import { TextField, Box, Button, Stack, Typography } from "@mui/material";
 import Panel from "../../ui-components/Panel";
 import FieldLayout from "../../ui-components/FieldLayout";
-import { usePositionStore } from "../../store/positionStore";
+import { usePositionStore } from "../../store/usepositionStore";
 import { useModal } from "../../ui-components/ModalProvider";
 
 const EqualMoneyPositionSizeForm = () => {

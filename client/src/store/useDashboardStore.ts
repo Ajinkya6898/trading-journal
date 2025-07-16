@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 export type DashboardTrade = {
   _id: string;
@@ -30,7 +30,7 @@ const useDashboardStore = create<DashboardState>((set) => ({
   fetchDashboardTrades: async () => {
     try {
       set({ loading: true, error: null });
-      const response = await axios.get<DashboardTrade[]>(
+      const response = await axiosInstance.get<DashboardTrade[]>(
         "http://localhost:8080/api/dashboard"
       );
       set({ trades: response.data, loading: false });

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 export type FundTransaction = {
   _id: string;
@@ -41,7 +41,7 @@ export const useFundTransactionStore = create<FundTransactionStore>((set) => ({
         }
       }
 
-      const res = await axios.get(
+      const res = await axiosInstance.get(
         `http://localhost:8080/api/funds?${params.toString()}`
       );
       set({ transactions: res.data.transactions, loading: false });
@@ -53,7 +53,7 @@ export const useFundTransactionStore = create<FundTransactionStore>((set) => ({
   addTransaction: async (tx) => {
     try {
       set({ loading: true, error: null });
-      await axios.post("http://localhost:8080/api/funds", tx);
+      await axiosInstance.post("http://localhost:8080/api/funds", tx);
       await useFundTransactionStore.getState().fetchTransactions();
     } catch (err: any) {
       set({ loading: false, error: err.message || "Failed to add" });

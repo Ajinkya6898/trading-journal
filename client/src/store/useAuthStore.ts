@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 interface User {
   id: string;
@@ -27,7 +27,7 @@ export const useAuthStore = create<AuthState>((set: any) => ({
   login: async (email: string, password: string) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "http://localhost:8080/api/auth/login",
         { email, password }
       );
@@ -45,7 +45,7 @@ export const useAuthStore = create<AuthState>((set: any) => ({
   register: async (email: string, password: string) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "http://localhost:8080/api/auth/register",
         { email, password }
       );

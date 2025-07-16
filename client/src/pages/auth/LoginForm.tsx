@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../store/store";
+import { useAuthStore } from "../../store/useAuthStore";
 import { useModal } from "../../ui-components/ModalProvider";
 import Loader from "../../ui-components/Loader";
 import Icon from "../../ui-components/Icon";
