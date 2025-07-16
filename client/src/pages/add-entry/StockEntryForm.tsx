@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { TextField, Box, Button, Stack } from "@mui/material";
+import { useEffect, useState } from "react";
+import { TextField, Box, Button, Stack, MenuItem } from "@mui/material";
 import { DatePicker } from "../../ui-components/Datepicker";
 import Panel from "../../ui-components/Panel";
 import FieldLayout from "../../ui-components/FieldLayout";
@@ -11,6 +11,7 @@ const StockEntryForm = () => {
     exitDate: new Date(),
     symbol: "",
     quantity: "",
+    timeFrame: "",
     boughtPrice: "",
     soldPrice: "",
     pnl: "",
@@ -74,11 +75,12 @@ const StockEntryForm = () => {
           symbol: formValues.symbol,
           quantity: Number(formValues.quantity),
           boughtPrice: Number(formValues.boughtPrice),
+          timeFrame: formValues.timeFrame,
           soldPrice: Number(formValues.soldPrice),
           pnl: Number(formValues.pnl),
           commission: Number(formValues.commission),
           notes: formValues.notes,
-          tradeImage: formValues.tradeImage, // file can be null
+          tradeImage: formValues.tradeImage,
         });
 
         console.log("Trade added successfully");
@@ -89,6 +91,7 @@ const StockEntryForm = () => {
           exitDate: new Date(),
           symbol: "",
           quantity: "",
+          timeFrame: "Daily",
           boughtPrice: "",
           soldPrice: "",
           pnl: "",
@@ -103,6 +106,17 @@ const StockEntryForm = () => {
       console.warn("Form has errors");
     }
   };
+
+  useEffect(() => {
+    const { soldPrice, boughtPrice, quantity } = formValues;
+
+    if (soldPrice && boughtPrice && quantity) {
+      const calculatedPnl =
+        (Number(soldPrice) - Number(boughtPrice)) * Number(quantity);
+
+      handleChange("pnl", calculatedPnl);
+    }
+  }, [formValues.soldPrice, formValues.boughtPrice, formValues.quantity]);
 
   return (
     <Panel elementId="stock-entry" label="Stocks" forceOpen={true}>
@@ -119,13 +133,11 @@ const StockEntryForm = () => {
         <DatePicker
           label="Entry Date"
           value={formValues.entryDate}
-          variant="small"
           onChange={(newValue) => handleChange("entryDate", newValue)}
         />
         <DatePicker
           label="Exit Date"
           value={formValues.exitDate}
-          variant="small"
           onChange={(newValue) => handleChange("exitDate", newValue)}
           error={errors.exitDate}
         />
@@ -182,6 +194,26 @@ const StockEntryForm = () => {
             error={!!errors.boughtPrice}
           />
         </FieldLayout>
+        <FieldLayout
+          inputSize={2}
+          label="Time Frame"
+          helperText={errors.timeFrame}
+        >
+          <TextField
+            select
+            fullWidth
+            variant="outlined"
+            value={formValues.timeFrame}
+            onChange={(e) => handleChange("timeFrame", e.target.value)}
+            error={!!errors.timeFrame}
+          >
+            {["15min", "30min", "1hr", "Daily", "Weekly"].map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+        </FieldLayout>
         <FieldLayout label="Sold Price" helperText={errors.soldPrice}>
           <TextField
             fullWidth
@@ -193,17 +225,27 @@ const StockEntryForm = () => {
             error={!!errors.soldPrice}
           />
         </FieldLayout>
-        <FieldLayout label="P&L" inputSize={2} helperText={errors.pnl}>
+        <FieldLayout label="P&L" inputSize={2}>
           <TextField
             fullWidth
-            placeholder="Enter P&L"
+            placeholder="Auto-calculated"
             variant="outlined"
             type="number"
-            value={formValues.pnl}
-            onChange={(e) => handleChange("pnl", e.target.value)}
-            error={!!errors.pnl}
+            value={
+              formValues.quantity &&
+              formValues.boughtPrice &&
+              formValues.soldPrice
+                ? (
+                    (Number(formValues.soldPrice) -
+                      Number(formValues.boughtPrice)) *
+                    Number(formValues.quantity)
+                  ).toFixed(2)
+                : ""
+            }
+            disabled
           />
         </FieldLayout>
+
         <FieldLayout label="Commission" inputSize={2}>
           <TextField
             fullWidth
@@ -221,7 +263,8 @@ const StockEntryForm = () => {
             variant="outlined"
             type="number"
             value={
-              Number(formValues.pnl || 0) - Number(formValues.commission || 0)
+              Number(formValues.pnl || 0) -
+              Number(formValues.commission || 0).toFixed(2)
             }
             disabled
           />
@@ -280,6 +323,7 @@ const StockEntryForm = () => {
                   exitDate: new Date(),
                   symbol: "",
                   quantity: "",
+                  timeFrame: "Daily",
                   boughtPrice: "",
                   soldPrice: "",
                   pnl: "",

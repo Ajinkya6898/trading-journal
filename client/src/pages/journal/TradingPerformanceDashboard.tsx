@@ -25,19 +25,13 @@ const TradingPerformanceDashboard = ({ data }) => {
 
   return (
     <>
-      <div style={{ textAlign: "center", marginBottom: "40px" }}>
+      <div style={{ textAlign: "center" }}>
         <Typography variant="h1" color="#3f51b5">
           Trading Performance
         </Typography>
-        <p
-          style={{
-            fontSize: "16px",
-            color: "#666",
-            fontWeight: "400",
-          }}
-        >
+        <Typography variant="subtitle1">
           Real-time overview of your trading activity
-        </p>
+        </Typography>
       </div>
 
       <div
@@ -45,7 +39,6 @@ const TradingPerformanceDashboard = ({ data }) => {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
           gap: "24px",
-          marginBottom: "32px",
         }}
       >
         <StatCard
@@ -95,7 +88,6 @@ const TradingPerformanceDashboard = ({ data }) => {
               fontSize: "24px",
               fontWeight: "700",
               color: "#3b82f6",
-              marginBottom: "4px",
             }}
           >
             {winRate}%
@@ -112,7 +104,6 @@ const TradingPerformanceDashboard = ({ data }) => {
               fontSize: "24px",
               fontWeight: "700",
               color: "#1e293b",
-              marginBottom: "4px",
             }}
           >
             {summaryData?.numberOfTrades > 0
@@ -133,7 +124,6 @@ const TradingPerformanceDashboard = ({ data }) => {
               fontSize: "24px",
               fontWeight: "700",
               color: isProfit ? "#22c55e" : "#ef4444",
-              marginBottom: "4px",
             }}
           >
             {isProfit ? "+" : ""}

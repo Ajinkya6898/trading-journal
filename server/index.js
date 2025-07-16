@@ -8,6 +8,7 @@ const tradeRoutes = require("./routes/StocksRoutes");
 const mutualFundRoutes = require("./routes/mutualFundRoutes");
 const positionRoutes = require("./routes/positionRoutes");
 const fundTransactionRoutes = require("./routes/fundTransactionRoutes");
+const dashboardStats = require("./routes/dashboardRoutes");
 
 const app = express();
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use("/api/stock", tradeRoutes);
 app.use("/api/mutual-funds", mutualFundRoutes);
 app.use("/api/positions", positionRoutes);
 app.use("/api/funds", fundTransactionRoutes);
+app.use("/api/dashboard", dashboardStats);
 
 mongoose
   .connect("mongodb://localhost:27017/trading-journal")

@@ -8,6 +8,7 @@ const createTradeEntry = async (req, res) => {
       symbol,
       quantity,
       boughtPrice,
+      timeFrame,
       soldPrice,
       pnl,
       commission,
@@ -22,6 +23,7 @@ const createTradeEntry = async (req, res) => {
       symbol,
       quantity: Number(quantity),
       boughtPrice: Number(boughtPrice),
+      timeFrame,
       soldPrice: Number(soldPrice),
       pnl: Number(pnl),
       commission: Number(commission),
@@ -39,7 +41,34 @@ const createTradeEntry = async (req, res) => {
 
 const getAllTradeEntries = async (req, res) => {
   try {
-    const trades = await StockEntry.find().sort({ entryDate: -1 });
+    const { startDate, endDate, winLossType, tradeType } = req.query;
+
+    const filter = {};
+
+    // 1. Date Range Filter
+    if (startDate || endDate) {
+      filter.entryDate = {};
+      if (startDate) {
+        filter.entryDate.$gte = new Date(startDate);
+      }
+      if (endDate) {
+        filter.entryDate.$lte = new Date(endDate);
+      }
+    }
+
+    // 2. Win/Loss Filter
+    if (winLossType === "Only Winners") {
+      filter.pnl = { $gt: 0 };
+    } else if (winLossType === "Only Losers") {
+      filter.pnl = { $lt: 0 };
+    }
+
+    // 3. Trade Type Filter
+    if (tradeType && tradeType !== "All") {
+      filter.tradeType = tradeType;
+    }
+
+    const trades = await StockEntry.find(filter).sort({ entryDate: -1 });
 
     // Calculate summary
     const numberOfTrades = trades.length;

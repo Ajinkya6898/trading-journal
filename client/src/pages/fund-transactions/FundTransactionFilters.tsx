@@ -32,7 +32,9 @@ const FundTransactionFilters = ({
   onEndDateChange,
 }: FundTransactionFiltersProps) => {
   return (
-    <BackgroundContainer extraStyles={{ display: "flex", padding: "20px" }}>
+    <BackgroundContainer
+      extraStyles={{ display: "flex", padding: "20px", gap: 16 }}
+    >
       <TextField
         select
         value={broker}

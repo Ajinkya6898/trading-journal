@@ -6,6 +6,7 @@ const StockEntrySchema = new mongoose.Schema({
   symbol: { type: String, required: true },
   quantity: { type: Number, required: true },
   boughtPrice: { type: Number, required: true },
+  timeFrame: { type: String },
   soldPrice: { type: Number, required: true },
   pnl: { type: Number, required: true },
   commission: { type: Number, required: true },

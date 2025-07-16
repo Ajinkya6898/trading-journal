@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Typography, Grid, Card, CardContent } from "@mui/material";
+import React, { useMemo } from "react";
+import { Box, Typography, Card, CardContent } from "@mui/material";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,7 +11,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar, Line, Doughnut } from "react-chartjs-2";
+import { Bar, Doughnut } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
@@ -24,56 +24,67 @@ ChartJS.register(
   Legend
 );
 
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-const barChartData = {
-  labels: months,
-  datasets: [
-    {
-      label: "Trades",
-      data: [10, 14, 9, 18, 22, 13, 17, 11, 7, 12, 15, 19],
-      backgroundColor: "#90CAF9",
-      borderRadius: 4,
-      barThickness: 16,
-    },
-    {
-      label: "75th Percentile",
-      type: "line",
-      data: [12, 15, 10, 20, 24, 18, 20, 14, 10, 16, 18, 22],
-      borderColor: "#42A5F5",
-      backgroundColor: "#42A5F5",
-      fill: false,
-      tension: 0.4,
-    },
-  ],
+type MonthlyTradeData = {
+  month: string; // e.g., "2025-03"
+  tradeCount: number;
 };
 
-const doughnutData = {
-  labels: ["Stock Market", "Mutual Fund", "Crypto", "ETF"],
-  datasets: [
-    {
-      label: "Investment",
-      data: [40, 25, 20, 15],
-      backgroundColor: ["#42A5F5", "#FFB74D", "#4DB6AC", "#81C784"],
-      borderWidth: 2,
-    },
-  ],
+type Props = {
+  monthlyTrades: MonthlyTradeData[];
 };
 
-const TradesAndInvestments = () => {
+const TradesAndInvestments = ({ monthlyTrades }: Props) => {
+  const { monthLabels, tradeCounts } = useMemo(() => {
+    const labels: string[] = [];
+    const counts: number[] = [];
+
+    monthlyTrades.forEach((item) => {
+      const [year, month] = item.month.split("-");
+      const date = new Date(Number(year), Number(month) - 1);
+      const shortLabel = date.toLocaleString("default", { month: "short" });
+      labels.push(shortLabel);
+      counts.push(item.tradeCount);
+    });
+
+    return { monthLabels: labels, tradeCounts: counts };
+  }, [monthlyTrades]);
+
+  const percentile75 = tradeCounts.map((val) => Math.round(val * 1.1));
+
+  const barChartData = {
+    labels: monthLabels,
+    datasets: [
+      {
+        label: "Trades",
+        data: tradeCounts,
+        backgroundColor: "#90CAF9",
+        borderRadius: 4,
+        barThickness: 16,
+      },
+      {
+        label: "75th Percentile",
+        type: "line",
+        data: percentile75,
+        borderColor: "#42A5F5",
+        backgroundColor: "#42A5F5",
+        fill: false,
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const doughnutData = {
+    labels: ["Stock Market", "Mutual Fund", "Crypto", "ETF"],
+    datasets: [
+      {
+        label: "Investment",
+        data: [40, 25, 20, 15],
+        backgroundColor: ["#42A5F5", "#FFB74D", "#4DB6AC", "#81C784"],
+        borderWidth: 2,
+      },
+    ],
+  };
+
   return (
     <Box>
       <>

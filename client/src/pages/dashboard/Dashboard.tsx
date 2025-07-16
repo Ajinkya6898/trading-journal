@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Box, Stack } from "@mui/material";
 import PageHeader from "../../ui-components/PageHeader";
 import DashboardStats from "./DashboardStats";
@@ -7,8 +8,17 @@ import AssetReturnsFunnel from "./AssetReturnsFunnel";
 import TradesAndInvestments from "./TradesAndInvestments";
 import PerformanceOverview from "./PerformanceOverview";
 import TopGainersLosers from "./TopGainersLosers";
+import useDashboardStore from "../../store/useDashboardStore";
 
 const Dashboard = () => {
+  const { trades, loading, error, fetchDashboardTrades } = useDashboardStore();
+
+  useEffect(() => {
+    fetchDashboardTrades();
+  }, []);
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div style={{ color: "red" }}>{error}</div>;
+
   return (
     <>
       <PageHeader
@@ -30,7 +40,7 @@ const Dashboard = () => {
         <ActiveTrades />
         <Box display="flex" gap={2}>
           <Box flex={1}>
-            <TradesAndInvestments />
+            <TradesAndInvestments monthlyTrades={trades} />
           </Box>
           <Box flex={1}>
             <AssetReturnsFunnel />

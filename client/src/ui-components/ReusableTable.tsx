@@ -40,7 +40,7 @@ function ReusableTable<T extends { [key: string]: any }>({
 }: ReusableTableProps<T>) {
   return (
     <>
-      <Typography variant="h6" mb={2} color="textSecondary">
+      <Typography variant="h6" color="textSecondary">
         {tableHeader}
       </Typography>
       <TableContainer component={Paper} elevation={2}>
@@ -56,6 +56,7 @@ function ReusableTable<T extends { [key: string]: any }>({
                     fontSize: "0.875rem",
                     color: "#374151",
                     textTransform: "capitalize",
+                    textAlign: "center",
                   }}
                 >
                   {col.label}
@@ -85,7 +86,10 @@ function ReusableTable<T extends { [key: string]: any }>({
                     </TableCell>
                   )}
                   {columns.map((col) => (
-                    <TableCell key={String(col.id)}>
+                    <TableCell
+                      sx={{ textAlign: "center" }}
+                      key={String(col.id)}
+                    >
                       {col.render
                         ? col.render(row[col.id], row, rowIndex)
                         : row[col.id]}

@@ -24,7 +24,7 @@ const AppLayout = () => {
             style={{ display: "flex", flexDirection: "column", gap: "24px" }}
           >
             <AppHeader />
-            <Box px={4} gap={2}>
+            <Box px={4} display="flex" flexDirection="column" gap={3}>
               <Outlet />
             </Box>
           </main>

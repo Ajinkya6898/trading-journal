@@ -27,6 +27,7 @@ const PanelElement = styled.div`
   width: 100%;
   display: flex;
   flex-flow: row;
+  margin-bottom: 20px;
 `;
 
 const PanelDetails = styled.div`

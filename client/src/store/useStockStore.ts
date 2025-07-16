@@ -9,6 +9,7 @@ interface BackendTrade {
   symbol: string;
   quantity: number;
   boughtPrice: number;
+  timeFrame: string;
   soldPrice: number;
   pnl: number;
   commission: number;
@@ -25,6 +26,7 @@ export interface Trade {
   stockName: string;
   qty: number;
   entryPrice: number;
+  timeFrame: string;
   exitPrice: number;
   pnl: number;
   commission: number;
@@ -46,6 +48,7 @@ interface StockStoreState {
     symbol: string;
     quantity: number;
     boughtPrice: number;
+    timeFrame: string;
     soldPrice: number;
     pnl: number;
     commission: number;
@@ -78,6 +81,7 @@ const mapBackendToFrontend = (trade: BackendTrade): Trade => {
     stockName: trade.symbol,
     qty: trade.quantity,
     entryPrice: trade.boughtPrice,
+    timeFrame: trade.timeFrame,
     exitPrice: trade.soldPrice,
     pnl: trade.pnl,
     commission: trade.commission,
@@ -123,6 +127,7 @@ const useStockStore = create<StockStoreState>((set) => ({
       formData.append("symbol", tradeData.symbol);
       formData.append("quantity", tradeData.quantity.toString());
       formData.append("boughtPrice", tradeData.boughtPrice.toString());
+      formData.append("timeFrame", tradeData.timeFrame);
       formData.append("soldPrice", tradeData.soldPrice.toString());
       formData.append("pnl", tradeData.pnl.toString());
       formData.append("commission", tradeData.commission.toString());
@@ -137,7 +142,6 @@ const useStockStore = create<StockStoreState>((set) => ({
         },
       });
 
-      // Optionally refresh after adding
       await useStockStore.getState().fetchTrades();
 
       set({ loading: false });

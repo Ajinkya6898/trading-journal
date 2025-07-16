@@ -2,11 +2,10 @@ import { Chip, Typography, Link as MuiLink } from "@mui/material";
 import ReusableTable from "../../ui-components/ReusableTable";
 import { useNavigate } from "react-router-dom";
 import useStockStore from "../../store/useStockStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Loader from "../../ui-components/Loader";
-import TradingSummaryCard from "./TradingSummaryCard";
-import SimpleCard from "./SimpleCard";
 import TradingPerformanceDashboard from "./TradingPerformanceDashboard";
+import TradeJournalFilters from "./TradeJournalFilters";
 
 type Trade = {
   id: string;
@@ -27,6 +26,15 @@ type Trade = {
 };
 
 const TradingJournalTable = () => {
+  const [winLossType, setWinLossType] = useState<
+    "All" | "Only Winners" | "Only Losers"
+  >("All");
+  const [tradeType, setTradeType] = useState<
+    "Intraday" | "Swing" | "Positional" | "Investment"
+  >("Intraday");
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+
   const navigate = useNavigate();
   const { trades, fetchTrades, loading, summary } = useStockStore();
 
@@ -69,6 +77,13 @@ const TradingJournalTable = () => {
     },
     { id: "qty", label: "Qty" },
     { id: "entryPrice", label: "Entry" },
+    {
+      id: "timeFrame",
+      label: "Time Frame",
+      render: (value: boolean) => (
+        <Chip label={value} color={"primary"} variant="outlined" size="small" />
+      ),
+    },
     { id: "exitPrice", label: "Exit" },
     {
       id: "pnl",
@@ -81,7 +96,6 @@ const TradingJournalTable = () => {
             backgroundColor: value >= 0 ? "success.lighter" : "error.lighter",
             borderRadius: "4px",
             display: "inline-block",
-            width: 80,
           }}
         >
           ₹ {value.toLocaleString()}
@@ -102,7 +116,6 @@ const TradingJournalTable = () => {
             py: 0.5,
             borderRadius: "4px",
             display: "inline-block",
-            width: 100,
             textAlign: "left",
             p: 0,
           }}
@@ -123,11 +136,7 @@ const TradingJournalTable = () => {
         />
       ),
     },
-    {
-      id: "winPercent",
-      label: "%Win",
-      render: (value: number) => `${value}%`,
-    },
+
     {
       id: "pnlPercent",
       label: "%PnL",
@@ -152,6 +161,17 @@ const TradingJournalTable = () => {
   return (
     <>
       <TradingPerformanceDashboard data={summary} />
+      <TradeJournalFilters
+        winLossType={winLossType}
+        onWinLossTypeChange={setWinLossType}
+        tradeType={tradeType}
+        onTradeTypeChange={setTradeType}
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={setStartDate}
+        onEndDateChange={setEndDate}
+      />
+
       <ReusableTable<Trade>
         columns={columns}
         data={trades}
