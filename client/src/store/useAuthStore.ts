@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import axiosInstance from "./axiosInstance";
+const history = createBrowserHistory();
+import { createBrowserHistory } from "history";
 
 interface User {
   id: string;
@@ -50,6 +52,9 @@ export const useAuthStore = create<AuthState>((set: any) => ({
         { email, password }
       );
       set({ user: response.data, token: response.data.token, loading: false });
+      if (response.data.isNewUser) {
+        history.push("/complete-profile");
+      }
       localStorage.setItem("token", response.data.token);
     } catch (err: any) {
       set({

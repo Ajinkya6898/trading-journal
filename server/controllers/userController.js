@@ -7,6 +7,7 @@ const JWT_SECRET = "your_secret_key_here";
 
 router.post("/register", async (req, res) => {
   const { email, password } = req.body;
+
   try {
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -18,9 +19,8 @@ router.post("/register", async (req, res) => {
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "24h" });
 
     res.status(201).json({
-      id: user._id,
-      email: user.email,
       token,
+      isNewUser: true,
     });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
