@@ -1,11 +1,9 @@
-const express = require("express");
-const router = express.Router();
 const jwt = require("jsonwebtoken");
 const User = require("../model/userSchema");
-
 const JWT_SECRET = "your_secret_key_here";
 
-router.post("/register", async (req, res) => {
+// @desc    Register a new user
+const registerUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -25,9 +23,10 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
-});
+};
 
-router.post("/login", async (req, res) => {
+// @desc    Login user
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -46,6 +45,80 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
-});
+};
 
-module.exports = router;
+// @desc    Update profile
+const updateUserProfile = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  const {
+    fullName,
+    dob,
+    phone,
+    gender,
+    country,
+    profession,
+    experience,
+    address,
+    primaryPlatform,
+    accountType,
+    yearsTrading,
+    tradingStyle,
+    receiveTips,
+    darkMode,
+    emailUpdatesL,
+    investmentGoals,
+    communicationPrefs,
+  } = req.body;
+
+  if (!fullName || !dob || !phone || !gender || !country || !profession) {
+    return res
+      .status(400)
+      .json({ message: "Personal information is required." });
+  }
+
+  user.fullName = fullName;
+  user.dob = dob;
+  user.phone = phone;
+  user.gender = gender;
+  user.country = country;
+  user.profession = profession;
+
+  if (address) user.address = address;
+  if (primaryPlatform) user.primaryPlatform = primaryPlatform;
+  if (accountType) user.accountType = accountType;
+  if (yearsTrading != null) user.yearsTrading = yearsTrading;
+  if (tradingStyle) user.tradingStyle = tradingStyle;
+  if (receiveTips != null) user.receiveTips = receiveTips;
+  if (darkMode != null) user.darkMode = darkMode;
+  if (emailUpdatesL != null) user.emailUpdatesL = emailUpdatesL;
+  if (investmentGoals) user.investmentGoals = investmentGoals;
+  if (communicationPrefs) user.communicationPrefs = communicationPrefs;
+
+  user.profileCompleted = true;
+
+  await user.save();
+
+  res.status(200).json({ message: "Profile updated successfully." });
+};
+
+const getMyProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+  updateUserProfile,
+  getMyProfile,
+};

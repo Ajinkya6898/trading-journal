@@ -10,16 +10,16 @@ import { useState } from "react";
 import Panel from "../../ui-components/Panel";
 import FieldLayout from "../../ui-components/FieldLayout";
 import { useModal } from "../../ui-components/ModalProvider";
+import { useNavigate } from "react-router-dom";
 
 const countries = ["India", "USA", "UK", "Australia", "Other"];
 
 type Props = {
   onNext: () => void;
   onBack: () => void;
-  onSkip?: () => void;
 };
 
-const StepAddressDetails = ({ onNext, onBack, onSkip }: Props) => {
+const StepAddressDetails = ({ onNext, onBack }: Props) => {
   const [form, setForm] = useState({
     addressLine: "",
     city: "",
@@ -27,6 +27,11 @@ const StepAddressDetails = ({ onNext, onBack, onSkip }: Props) => {
     zip: "",
     country: "",
   });
+  const navigate = useNavigate();
+
+  function onSkip() {
+    navigate("/dashboard");
+  }
 
   const { modalDispatch } = useModal();
 

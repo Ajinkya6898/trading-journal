@@ -5,24 +5,23 @@ import {
   MenuItem,
   IconButton,
   Divider,
-  ListItemIcon,
   Typography,
-  Switch,
   Box,
+  ListItemIcon,
 } from "@mui/material";
-import {
-  Settings,
-  Logout,
-  HelpOutline,
-  Brightness4,
-  AccessibilityNew,
-  Tune,
-} from "@mui/icons-material";
+import { User, LogOut, Heart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 
 export default function UserMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [darkMode, setDarkMode] = useState(false);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+  const { logout } = useAuthStore();
+
+  const userInfo = JSON.parse(localStorage.getItem("userInformation") || "{}");
+  const fullName = userInfo?.fullName || "Guest";
+  const initial = fullName ? fullName.charAt(0).toUpperCase() : "T";
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -32,14 +31,22 @@ export default function UserMenu() {
     setAnchorEl(null);
   };
 
+  const handleProfileClick = () => {
+    handleMenuClose();
+    navigate("/my-profile");
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <Box>
       <IconButton onClick={handleMenuOpen} size="small" sx={{ ml: 1 }}>
-        <Avatar
-          src="/avatar.png"
-          alt="profile"
-          sx={{ width: 32, height: 32, border: "2px solid white" }}
-        />
+        <Avatar sx={{ width: 36, height: 36, border: "2px solid white" }}>
+          {initial}
+        </Avatar>
       </IconButton>
 
       <Menu
@@ -72,61 +79,34 @@ export default function UserMenu() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <Box px={2} py={1}>
-          <Typography variant="subtitle1">Guest</Typography>
-          <Typography variant="body2" color="orange">
-            Merchant Captain 🧡
-          </Typography>
-        </Box>
-        <Divider />
-        <MenuItem>
-          <ListItemIcon>
-            <AccessibilityNew fontSize="small" />
-          </ListItemIcon>
-          Accessibility
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Tune fontSize="small" />
-          </ListItemIcon>
-          Preferences
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Brightness4 fontSize="small" />
-          </ListItemIcon>
-          <Box
+          <Typography
+            variant="body1"
+            color="primary"
+            fontStyle="italic"
             display="flex"
             alignItems="center"
-            justifyContent="space-between"
-            width="100%"
+            gap={1}
+            my={1}
           >
-            Dark mode
-            <Switch
-              checked={darkMode}
-              onChange={(e) => setDarkMode(e.target.checked)}
-              size="small"
-            />
-          </Box>
-        </MenuItem>
+            <Heart size={14} style={{ color: "crimson" }} />
+            Trading. Journaling. Winning.
+          </Typography>
+        </Box>
+
         <Divider />
-        <MenuItem>
+
+        <MenuItem onClick={handleProfileClick}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <User size={18} />
           </ListItemIcon>
-          Account Settings
+          My Profile
         </MenuItem>
-        <MenuItem>
+
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
-            <HelpOutline fontSize="small" />
+            <LogOut size={18} />
           </ListItemIcon>
-          Help Center
-        </MenuItem>
-        <Divider />
-        <MenuItem>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Sign In
+          Logout
         </MenuItem>
       </Menu>
     </Box>

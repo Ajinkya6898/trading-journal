@@ -11,6 +11,7 @@ import Panel from "../../ui-components/Panel";
 import { DatePicker } from "../../ui-components/Datepicker";
 import FieldLayout from "../../ui-components/FieldLayout";
 import { useModal } from "../../ui-components/ModalProvider";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const genders = ["Male", "Female", "Other"];
 const countries = ["India", "USA", "UK", "Australia", "Other"];
@@ -27,20 +28,20 @@ const StepPersonalDetails = ({ onNext }: Props) => {
     country: "",
     experience: "",
     profession: "",
+    phone: "",
   });
 
+  const updateProfile = useAuthStore((state) => state.updateProfile);
   const { modalDispatch } = useModal();
 
-  const handleChange = (field: string, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     const missingFields: string[] = [];
 
     if (!form.fullName) missingFields.push("Full Name");
     if (!form.dob) missingFields.push("Date of Birth");
     if (!form.country) missingFields.push("Country");
+    if (!form.phone) missingFields.push("Phone");
 
     if (missingFields.length > 0) {
       modalDispatch({
@@ -65,8 +66,23 @@ const StepPersonalDetails = ({ onNext }: Props) => {
       return;
     }
 
-    console.log("Form submitted:", form);
-    onNext();
+    try {
+      await updateProfile(form);
+      modalDispatch({
+        type: "success",
+        message: "Profile updated successfully",
+      });
+      onNext();
+    } catch (error: any) {
+      modalDispatch({
+        type: "error",
+        message: error.message || "Failed to update profile",
+      });
+    }
+  };
+
+  const handleChange = (field: string, value: any) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleReset = () => {
@@ -77,13 +93,14 @@ const StepPersonalDetails = ({ onNext }: Props) => {
       country: "",
       experience: "",
       profession: "",
+      phone: "",
     });
   };
 
   return (
     <Panel label="Basic Information" elementId="basic-info" forceOpen={true}>
       <Box mt={2}>
-        <Stack spacing={3}>
+        <Stack spacing={2}>
           <Typography variant="h6" fontWeight={600}>
             Tell us about yourself
           </Typography>
@@ -97,11 +114,10 @@ const StepPersonalDetails = ({ onNext }: Props) => {
               onChange={(e) => handleChange("fullName", e.target.value)}
             />
           </FieldLayout>
-          <FieldLayout labelSize={4}></FieldLayout>
+
           <DatePicker
             label="Date of Birth"
             value={form.dob}
-            variant="small"
             onChange={(newValue) => handleChange("dob", newValue)}
             labelSize={4}
           />
@@ -135,6 +151,16 @@ const StepPersonalDetails = ({ onNext }: Props) => {
                 </MenuItem>
               ))}
             </TextField>
+          </FieldLayout>
+
+          <FieldLayout label="Phone" labelSize={4} inputSize={4}>
+            <TextField
+              placeholder="Enter phone number"
+              fullWidth
+              required
+              value={form.phone}
+              onChange={(e) => handleChange("phone", e.target.value)}
+            />
           </FieldLayout>
 
           <FieldLayout label="Profession" labelSize={4} inputSize={4}>

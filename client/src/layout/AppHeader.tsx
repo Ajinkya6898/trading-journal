@@ -7,12 +7,13 @@ import {
 } from "@mui/material";
 import { SearchIcon } from "lucide-react";
 import { Lightbulb, Bell } from "lucide-react";
-import UserMenu from "./A";
+import UserMenu from "./UserMenu";
 import { NavLink } from "react-router-dom";
 
 const AppHeader = () => {
   const theme = useTheme();
-  const loggedin = false;
+  const loggedin = localStorage.getItem("loggedIn") === "true";
+
   const bgIconStyle = {
     background: theme.palette.gray.lighter,
     padding: "6px",

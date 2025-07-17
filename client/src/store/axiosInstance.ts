@@ -26,7 +26,7 @@ axiosInstance.interceptors.response.use(
       const { logout } = useAuthStore.getState();
       logout();
       history.push("/login");
-      window.location.reload();
+      // window.location.reload();
     }
     return Promise.reject(error);
   }

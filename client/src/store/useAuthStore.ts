@@ -1,12 +1,45 @@
 import { create } from "zustand";
 import axiosInstance from "./axiosInstance";
-const history = createBrowserHistory();
 import { createBrowserHistory } from "history";
+
+const history = createBrowserHistory();
+
+interface UserProfile {
+  fullName: string;
+  dob: string;
+  phone: number;
+  gender: string;
+  country: string;
+  profession: string;
+  experience: number;
+
+  // Optional Sections
+  address?: {
+    addressLine?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+  };
+  primaryPlatform?: string;
+  accountType?: string;
+  yearsTrading?: number;
+  tradingStyle?: string;
+  receiveTips?: boolean;
+  darkMode?: boolean;
+  emailUpdatesL?: boolean;
+  investmentGoals?: string[];
+  communicationPrefs?: {
+    newsletter?: boolean;
+    alerts?: boolean;
+  };
+}
 
 interface User {
   id: string;
   email: string;
   token: string;
+  profile?: UserProfile;
 }
 
 interface AuthState {
@@ -14,48 +47,79 @@ interface AuthState {
   token: string | null;
   loading: boolean;
   error: string | null;
+  loggedIn: boolean;
 
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
+  setProfile: (profile: UserProfile) => void;
+  updateProfile: any;
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set: any) => ({
+export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   token: null,
   loading: false,
   error: null,
+  loggedIn: false,
 
-  login: async (email: string, password: string) => {
+  login: async (email, password) => {
     set({ loading: true, error: null });
     try {
-      const response = await axiosInstance.post(
+      const loginResponse = await axiosInstance.post(
         "http://localhost:8080/api/auth/login",
         { email, password }
       );
-      set({ user: response.data, token: response.data.token, loading: false });
-      localStorage.setItem("token", response.data.token);
+
+      const { token, ...rest } = loginResponse.data;
+
+      localStorage.setItem("token", token);
+
+      const profileResponse = await axiosInstance.get(
+        "http://localhost:8080/api/auth/my-profile",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const fullUser = profileResponse.data;
+
+      set({
+        user: fullUser,
+        token,
+        loggedIn: true,
+        loading: false,
+      });
+
+      localStorage.setItem("userInformation", JSON.stringify(fullUser));
+      localStorage.setItem("loggedIn", "true"); // optional persistence
     } catch (err: any) {
       set({
         error: err.response?.data?.message || "Login failed",
         loading: false,
+        loggedIn: false,
       });
       throw err;
     }
   },
 
-  register: async (email: string, password: string) => {
+  register: async (email, password) => {
     set({ loading: true, error: null });
     try {
       const response = await axiosInstance.post(
         "http://localhost:8080/api/auth/register",
         { email, password }
       );
-      set({ user: response.data, token: response.data.token, loading: false });
-      if (response.data.isNewUser) {
+
+      const { token, isNewUser, ...rest } = response.data;
+      set({ user: { ...rest, token }, token, loading: false });
+      localStorage.setItem("token", token);
+
+      if (isNewUser) {
         history.push("/complete-profile");
       }
-      localStorage.setItem("token", response.data.token);
     } catch (err: any) {
       set({
         error: err.response?.data?.message || "Register failed",
@@ -64,8 +128,40 @@ export const useAuthStore = create<AuthState>((set: any) => ({
     }
   },
 
+  setProfile: (profile) => {
+    set((state) => ({
+      user: state.user ? { ...state.user, profile } : null,
+    }));
+  },
+
+  updateProfile: async (data: Partial<any>) => {
+    const payload = {
+      ...data,
+      dob: data.dob ? new Date(data.dob).toISOString() : undefined,
+    };
+
+    try {
+      const res = await axiosInstance.put("/auth/profile", payload);
+      set((state) => ({
+        user: {
+          ...state.user!,
+          profile: {
+            ...state.user?.profile,
+            ...res.data,
+          },
+        },
+      }));
+    } catch (err: any) {
+      console.error("Update profile error:", err.response?.data || err.message);
+      throw new Error(err.response?.data?.message || "Profile update failed");
+    }
+  },
+
   logout: () => {
-    set({ user: null, token: null });
+    console.log("Logging out...");
+    set({ user: null, token: null, loggedIn: false });
     localStorage.removeItem("token");
+    localStorage.removeItem("userInformation");
+    localStorage.setItem("loggedIn", "false");
   },
 }));

@@ -35,7 +35,7 @@ const ProfileProgress = () => {
   };
 
   return (
-    <Box maxWidth="md" mx="auto" mt={4}>
+    <Box width="75%" mx="auto" mt={4}>
       <Typography variant="h5" fontWeight={600} mb={3}>
         Complete Your Profile
       </Typography>
