@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import axiosInstance from "./axiosInstance";
 
-// Backend response shape
 interface BackendTrade {
   _id: string;
   entryDate: string;
@@ -17,7 +16,6 @@ interface BackendTrade {
   tradeImage: string;
 }
 
-// Frontend Trade type (already you are using)
 export interface Trade {
   id: string;
   entryDate: string;

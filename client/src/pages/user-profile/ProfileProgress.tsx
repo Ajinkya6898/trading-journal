@@ -1,7 +1,6 @@
 import { Box, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import { useState } from "react";
 
-// Step Components (create these separately)
 import StepPersonalDetails from "./StepPersonalDetails";
 import StepAddressDetails from "./StepAddressDetails";
 import StepTradingInfo from "./StepTradingInfo";

@@ -9,7 +9,6 @@ import { SearchIcon } from "lucide-react";
 import { Lightbulb, Bell } from "lucide-react";
 import UserMenu from "./A";
 import { NavLink } from "react-router-dom";
-import Icon from "../ui-components/Icon";
 
 const AppHeader = () => {
   const theme = useTheme();
