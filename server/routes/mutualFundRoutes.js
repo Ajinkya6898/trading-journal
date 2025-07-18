@@ -4,8 +4,9 @@ const {
   getMutualFundEntries,
 } = require("../controllers/mutualFundController");
 const router = express.Router();
+const protect = require("../middleware/authMiddleware");
 
-router.post("/", addMutualFundEntry);
-router.get("/", getMutualFundEntries);
+router.post("/", protect, addMutualFundEntry);
+router.get("/", protect, getMutualFundEntries);
 
 module.exports = router;

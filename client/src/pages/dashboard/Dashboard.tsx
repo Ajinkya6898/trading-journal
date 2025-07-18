@@ -9,6 +9,7 @@ import TradesAndInvestments from "./TradesAndInvestments";
 import PerformanceOverview from "./PerformanceOverview";
 import TopGainersLosers from "./TopGainersLosers";
 import useDashboardStore from "../../store/useDashboardStore";
+import Loader from "../../ui-components/Loader";
 
 const Dashboard = () => {
   const { trades, loading, error, fetchDashboardTrades } = useDashboardStore();
@@ -16,7 +17,12 @@ const Dashboard = () => {
   useEffect(() => {
     fetchDashboardTrades();
   }, []);
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <>
+        <Loader />
+      </>
+    );
   if (error) return <div style={{ color: "red" }}>{error}</div>;
 
   return (
@@ -36,6 +42,7 @@ const Dashboard = () => {
         }
       />
       <DashboardStats />
+
       <Box display="flex" mt={2} flexDirection="column" gap={2}>
         <ActiveTrades />
         <Box display="flex" gap={2}>

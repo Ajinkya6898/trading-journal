@@ -4,8 +4,9 @@ const {
   addTransaction,
   getAllTransactions,
 } = require("../controllers/fundTransactionController");
+const protect = require("../middleware/authMiddleware");
 
-router.post("/", addTransaction);
-router.get("/", getAllTransactions);
+router.post("/", protect, addTransaction);
+router.get("/", protect, getAllTransactions);
 
 module.exports = router;

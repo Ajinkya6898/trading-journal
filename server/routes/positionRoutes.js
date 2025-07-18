@@ -6,13 +6,14 @@ const {
   deletePosition,
   updatePosition,
 } = require("../controllers/positionController");
+const protect = require("../middleware/authMiddleware");
 
-router.post("/", createPosition);
+router.post("/", protect, createPosition);
 
-router.get("/", getUserPositions);
+router.get("/", protect, getUserPositions);
 
-router.delete("/:id", deletePosition);
+router.delete("/:id", protect, deletePosition);
 
-router.put("/:id", updatePosition);
+router.put("/:id", protect, updatePosition);
 
 module.exports = router;

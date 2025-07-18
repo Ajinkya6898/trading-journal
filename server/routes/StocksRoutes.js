@@ -5,8 +5,9 @@ const {
   createTradeEntry,
   getAllTradeEntries,
 } = require("../controllers/StockController");
+const protect = require("../middleware/authMiddleware");
 
-router.post("/", upload.single("tradeImage"), createTradeEntry);
-router.get("/", getAllTradeEntries);
+router.post("/", protect, upload.single("tradeImage"), createTradeEntry);
+router.get("/", protect, getAllTradeEntries);
 
 module.exports = router;
