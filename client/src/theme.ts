@@ -52,14 +52,14 @@ const theme = createTheme({
     error: {
       main: "#CF192A",
       dark: "#A3111F",
-      medium: "#F7EDEF",
+      medium: "#ef4444",
       light: "#F7EFF0",
       lighter: "#FCF7F7",
     },
     success: {
       main: "#008447",
       dark: "#005C31",
-      medium: "#E6F3ED",
+      medium: "#22c55e",
       light: "#F2F8F7",
     },
     gray: {

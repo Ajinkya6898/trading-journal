@@ -16,6 +16,7 @@ import { SearchIcon } from "lucide-react";
 import { Lightbulb, Bell } from "lucide-react";
 import UserMenu from "./UserMenu";
 import { NavLink } from "react-router-dom";
+import NotificationsMenu from "./NotificationsMenu";
 
 const AppHeader = () => {
   const theme = useTheme();
@@ -111,19 +112,7 @@ const AppHeader = () => {
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
             {/* Notification Bell */}
             <IconButton sx={iconButtonStyle}>
-              <Badge
-                badgeContent={3}
-                color="error"
-                sx={{
-                  "& .MuiBadge-badge": {
-                    fontSize: "0.7rem",
-                    height: 18,
-                    minWidth: 18,
-                  },
-                }}
-              >
-                <Bell size={20} />
-              </Badge>
+              <NotificationsMenu />
             </IconButton>
 
             {/* Tips/Lightbulb */}

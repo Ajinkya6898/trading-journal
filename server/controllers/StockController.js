@@ -18,6 +18,7 @@ const createTradeEntry = async (req, res) => {
     const tradeImage = req.file ? req.file.filename : null;
 
     const newEntry = new StockEntry({
+      userId: req.user._id,
       entryDate,
       exitDate,
       symbol,
@@ -43,7 +44,7 @@ const getAllTradeEntries = async (req, res) => {
   try {
     const { startDate, endDate, winLossType, tradeType } = req.query;
 
-    const filter = {};
+    const filter = { userId: req.user._id };
 
     // 1. Date Range Filter
     if (startDate || endDate) {
@@ -74,6 +75,12 @@ const getAllTradeEntries = async (req, res) => {
     const numberOfTrades = trades.length;
     const winningTrades = trades.filter((trade) => trade.pnl > 0).length;
     const losingTrades = trades.filter((trade) => trade.pnl < 0).length;
+    const winRate = numberOfTrades
+      ? Number(((winningTrades / numberOfTrades) * 100).toFixed(2))
+      : 0;
+    const lossRate = numberOfTrades
+      ? Number(((losingTrades / numberOfTrades) * 100).toFixed(2))
+      : 0;
     const totalReturn = trades.reduce(
       (sum, trade) => sum + (trade.pnl || 0),
       0
@@ -83,6 +90,8 @@ const getAllTradeEntries = async (req, res) => {
       numberOfTrades,
       winningTrades,
       losingTrades,
+      winRate,
+      lossRate,
       totalReturn,
     };
 

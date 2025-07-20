@@ -11,6 +11,7 @@ const positionRoutes = require("./routes/positionRoutes");
 const fundTransactionRoutes = require("./routes/fundTransactionRoutes");
 const dashboardStats = require("./routes/dashboardRoutes");
 const newsletterRoutes = require("./routes/newsletter");
+require("dotenv").config();
 
 const app = express();
 
@@ -31,7 +32,7 @@ app.use("/api/dashboard", dashboardStats);
 app.use("/api/newsletter", newsletterRoutes);
 
 mongoose
-  .connect("mongodb://localhost:27017/trading-journal")
+  .connect(process.env.atlus_URL)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 

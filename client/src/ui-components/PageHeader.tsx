@@ -79,8 +79,6 @@ const PageHeader = ({ title, actions, subtitle }: PageHeaderProps) => {
           <Typography
             variant="h5"
             sx={{
-              fontWeight: 700,
-              fontSize: "1.75rem",
               color: theme.palette.text.primary,
               letterSpacing: "-0.02em",
               lineHeight: 1.2,

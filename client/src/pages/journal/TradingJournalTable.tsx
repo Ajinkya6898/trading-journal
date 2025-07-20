@@ -1,4 +1,4 @@
-import { Chip, Typography, Link as MuiLink } from "@mui/material";
+import { Chip, Typography, Link as MuiLink, Box } from "@mui/material";
 import ReusableTable from "../../ui-components/ReusableTable";
 import { useNavigate } from "react-router-dom";
 import useStockStore from "../../store/useStockStore";
@@ -48,16 +48,50 @@ const TradingJournalTable = () => {
 
   const columns = [
     {
+      id: "srNo",
+      label: "#",
+      render: (value: any, row: Trade, index: number) => (
+        <Typography variant="body2">{index + 1}</Typography>
+      ),
+    },
+    {
       id: "entryDate",
       label: "Entry Date",
-      render: (value: string) => new Date(value).toLocaleDateString(),
+      render: (value: string) => (
+        <Typography variant="subtitle2" color="text.primary">
+          {new Date(value).toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })}
+        </Typography>
+      ),
     },
     {
       id: "exitDate",
       label: "Exit Date",
-      render: (value: string) => new Date(value).toLocaleDateString(),
+      render: (value: string) => (
+        <Typography variant="subtitle2" color="text.primary">
+          {new Date(value).toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })}
+        </Typography>
+      ),
     },
-    { id: "daysHeld", label: "Days Held" },
+    {
+      id: "daysHeld",
+      label: "Days",
+      render: (value: number) => (
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+          {/* <AccessTimeIcon sx={{ fontSize: 16, color: "text.secondary" }} /> */}
+          <Typography variant="subtitle2" color="text.primary">
+            {value}
+          </Typography>
+        </Box>
+      ),
+    },
     {
       id: "stockName",
       label: "Stock Name",
@@ -69,92 +103,159 @@ const TradingJournalTable = () => {
             e.stopPropagation();
             navigate(`/trades/${row.id}`);
           }}
-          sx={{ fontWeight: 600, cursor: "pointer" }}
+          sx={{
+            fontWeight: 500,
+            cursor: "pointer",
+            fontSize: "0.95rem",
+            "&:hover": {
+              backgroundColor: "primary.lighter",
+              py: 0.25,
+              borderRadius: 1,
+              transition: "all 0.2s ease-in-out",
+            },
+          }}
         >
           {value}
         </MuiLink>
       ),
     },
-    { id: "qty", label: "Qty" },
-    { id: "entryPrice", label: "Entry" },
     {
-      id: "timeFrame",
-      label: "Time Frame",
-      render: (value: boolean) => (
-        <Chip label={value} color={"primary"} variant="outlined" size="small" />
+      id: "qty",
+      label: "QTY",
+      render: (value: number) => (
+        <Typography
+          variant="subtitle2"
+          sx={{ fontWeight: 600, color: "text.primary" }}
+        >
+          {value.toLocaleString()}
+        </Typography>
       ),
     },
-    { id: "exitPrice", label: "Exit" },
+    {
+      id: "entryPrice",
+      label: "Entry",
+      render: (value: number) => (
+        <Box sx={{ textAlign: "right" }}>
+          <Typography
+            variant="subtitle2"
+            sx={{ fontWeight: 600, color: "text.primary" }}
+          >
+            {value.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </Typography>
+        </Box>
+      ),
+    },
+
+    {
+      id: "exitPrice",
+      label: "Exit",
+      render: (value: number) => (
+        <Box sx={{ textAlign: "right" }}>
+          <Typography
+            variant="subtitle2"
+            sx={{ fontWeight: 600, color: "text.primary" }}
+          >
+            {value.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </Typography>
+        </Box>
+      ),
+    },
     {
       id: "pnl",
-      label: "PnL",
+      label: "P&L",
       render: (value: number) => (
-        <Typography
+        <Box
           sx={{
-            fontWeight: 600,
-            color: value >= 0 ? "success.main" : "error.main",
-            backgroundColor: value >= 0 ? "success.lighter" : "error.lighter",
-            borderRadius: "4px",
-            display: "inline-block",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 0.5,
+            py: 0.5,
+            borderRadius: 2,
+            minWidth: 80,
+            justifyContent: "center",
           }}
         >
-          ₹ {value.toLocaleString()}
+          <Typography variant="subtitle2" color="text.primary">
+            {Math.abs(value).toLocaleString()}
+          </Typography>
+        </Box>
+      ),
+    },
+    {
+      id: "commission",
+      label: "Charges",
+      render: (value: number) => (
+        <Typography color="text.primary" variant="subtitle2">
+          {value.toLocaleString()}
         </Typography>
       ),
     },
-    { id: "commission", label: "Comm" },
     {
       id: "realisedPnl",
-      label: "Realised PnL",
+      label: "Realised P&L",
       render: (value: number) => (
         <Typography
+          variant="subtitle2"
           sx={{
-            fontWeight: 600,
-            color: value >= 0 ? "success.main" : "error.main",
-            backgroundColor: value >= 0 ? "success.lightest" : "error.lightest",
-            px: 1,
-            py: 0.5,
-            borderRadius: "4px",
-            display: "inline-block",
-            textAlign: "left",
-            p: 0,
+            fontWeight: 700,
+            color: value >= 0 ? "success.medium" : "error.medium",
+            fontSize: "0.9rem",
           }}
         >
-          ₹ {value.toLocaleString()}
+          ₹ {Math.abs(value).toLocaleString()}
         </Typography>
-      ),
-    },
-    {
-      id: "win",
-      label: "Label",
-      render: (value: boolean) => (
-        <Chip
-          label={value ? "WIN" : "LOSS"}
-          color={value ? "success" : "error"}
-          variant="outlined"
-          size="small"
-        />
       ),
     },
 
     {
       id: "pnlPercent",
-      label: "%PnL",
+      label: "% P&L",
       render: (value: number) => (
-        <Typography
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+          <Typography variant="subtitle2" color="text.primary">
+            {Math.abs(value).toFixed(2)}%
+          </Typography>
+        </Box>
+      ),
+    },
+    {
+      id: "timeFrame",
+      label: "TF",
+      render: (value: string) => (
+        <Chip
+          label={value}
+          color="primary"
+          variant="outlined"
+          size="small"
           sx={{
-            color: value >= 0 ? "success.dark" : "error.dark",
-            fontWeight: 500,
+            fontWeight: 600,
+            fontSize: "0.75rem",
+            height: 24,
+            px: 1,
+            py: 2,
+            "& .MuiChip-label": {
+              px: 0.5,
+            },
           }}
-        >
-          {value}%
-        </Typography>
+        />
       ),
     },
     {
       id: "rsAtWork",
       label: "Rs At Work",
-      render: (value: number) => `₹ ${value.toLocaleString()}`,
+      render: (value: number) => (
+        <Box sx={{ textAlign: "right" }}>
+          <Typography variant="subtitle2" color="text.primary">
+            ₹ {value.toLocaleString()}
+          </Typography>
+        </Box>
+      ),
     },
   ];
 

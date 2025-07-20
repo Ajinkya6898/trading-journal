@@ -6,12 +6,12 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
 
   // Section 1: Personal Info
-  fullName: { type: String, required: true },
-  dob: { type: Date, required: true },
-  phone: { type: String, required: true },
-  gender: { type: String, required: true },
-  country: { type: String, required: true },
-  profession: { type: String, required: true },
+  fullName: { type: String },
+  dob: { type: Date },
+  phone: { type: String },
+  gender: { type: String },
+  country: { type: String },
+  profession: { type: String },
 
   // Section 2: Address
   address: {

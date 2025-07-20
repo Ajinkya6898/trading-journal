@@ -22,7 +22,6 @@ import {
   Scale,
   Settings2,
   ChevronDown,
-  ChevronRight,
   IndianRupee,
 } from "lucide-react";
 import { useState } from "react";
@@ -115,6 +114,7 @@ const Sidebar = () => {
     minWidth: 28,
     color: active ? theme.palette.primary.main : theme.palette.text.secondary,
     transition: "all 0.2s ease-in-out",
+    mx: 0.5,
     "& svg": {
       filter: active
         ? `drop-shadow(0 1px 2px ${alpha(theme.palette.primary.main, 0.2)})`
@@ -182,15 +182,15 @@ const Sidebar = () => {
                   >
                     <ListItemIcon sx={getIconStyles(childActive)}>
                       <item.icon
-                        size={16}
-                        strokeWidth={childActive ? 2.5 : 1.5}
+                        size={18}
+                        strokeWidth={childActive ? 2 : 1.5}
                       />
                     </ListItemIcon>
                     <ListItemText
                       primary={item.label}
                       primaryTypographyProps={{
                         fontSize: 13,
-                        fontWeight: childActive ? 600 : 500,
+                        fontWeight: 500,
                         letterSpacing: "-0.01em",
                         lineHeight: 1.2,
                       }}
@@ -248,15 +248,15 @@ const Sidebar = () => {
                           >
                             <ListItemIcon sx={getIconStyles(active)}>
                               <child.icon
-                                size={14}
-                                strokeWidth={active ? 2.5 : 1.5}
+                                size={18}
+                                strokeWidth={active ? 2 : 1.5}
                               />
                             </ListItemIcon>
                             <ListItemText
                               primary={child.label}
                               primaryTypographyProps={{
                                 fontSize: 12,
-                                fontWeight: active ? 600 : 500,
+                                fontWeight: 500,
                                 letterSpacing: "-0.01em",
                                 lineHeight: 1.2,
                               }}
@@ -286,13 +286,13 @@ const Sidebar = () => {
                 }}
               >
                 <ListItemIcon sx={getIconStyles(active)}>
-                  <item.icon strokeWidth={active ? 2.5 : 1.5} size={16} />
+                  <item.icon strokeWidth={active ? 2 : 1.5} size={18} />
                 </ListItemIcon>
                 <ListItemText
                   primary={item.label}
                   primaryTypographyProps={{
                     fontSize: 13,
-                    fontWeight: active ? 600 : 500,
+                    fontWeight: 500,
                     letterSpacing: "-0.01em",
                     lineHeight: 1.2,
                   }}

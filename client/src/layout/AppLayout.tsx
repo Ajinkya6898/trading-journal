@@ -9,7 +9,7 @@ const AppLayout = () => {
   return (
     <>
       <Grid container>
-        <Grid borderRight={`1px solid ${theme.palette.gray.medium}`} size={2}>
+        <Grid size={2}>
           <div
             style={{
               position: "sticky",
@@ -25,7 +25,7 @@ const AppLayout = () => {
             style={{ display: "flex", flexDirection: "column", gap: "24px" }}
           >
             <AppHeader />
-            <Box px={4} display="flex" flexDirection="column" gap={3}>
+            <Box px={4} pb={4} display="flex" flexDirection="column" gap={3}>
               <Outlet />
             </Box>
           </main>

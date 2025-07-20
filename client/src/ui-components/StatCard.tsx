@@ -63,6 +63,8 @@ const StatCard = ({
               fontWeight: 600,
               borderRadius: "12px",
               mt: 1,
+              py: 2,
+              px: 0.5,
             }}
           />
         )}

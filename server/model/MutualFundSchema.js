@@ -7,6 +7,12 @@ const mutualFundTransactionSchema = new mongoose.Schema(
     units: { type: Number, required: true },
     nav: { type: Number, required: true },
     amount: { type: Number, required: true },
+
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true,

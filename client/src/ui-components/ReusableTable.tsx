@@ -13,6 +13,7 @@ import {
   Chip,
   useTheme,
   alpha,
+  CircularProgress,
 } from "@mui/material";
 
 type Column<T> = {
@@ -30,6 +31,7 @@ type ReusableTableProps<T> = {
   selectedRows?: Array<T[keyof T]>;
   onRowClick?: (row: T) => void;
   tableHeader?: string;
+  loading?: boolean; // New loading prop
 };
 
 function ReusableTable<T extends { [key: string]: any }>({
@@ -41,19 +43,19 @@ function ReusableTable<T extends { [key: string]: any }>({
   selectedRows = [],
   onRowClick,
   tableHeader,
+  loading = false, // Default to false
 }: ReusableTableProps<T>) {
   const theme = useTheme();
 
   return (
     <Box sx={{ width: "100%", mb: 3 }}>
-      {/* Enhanced Header Section */}
       {tableHeader && (
         <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 2 }}>
           <Typography
             variant="h5"
             sx={{
               fontWeight: 700,
-              background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+              background: `${theme.palette.gray.dark}`,
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -76,7 +78,6 @@ function ReusableTable<T extends { [key: string]: any }>({
         </Box>
       )}
 
-      {/* Enhanced Table Container */}
       <TableContainer
         component={Paper}
         elevation={0}
@@ -92,7 +93,6 @@ function ReusableTable<T extends { [key: string]: any }>({
         }}
       >
         <Table sx={{ minWidth: 650 }}>
-          {/* Enhanced Table Header */}
           <TableHead>
             <TableRow
               sx={{
@@ -109,10 +109,7 @@ function ReusableTable<T extends { [key: string]: any }>({
               {showCheckbox && (
                 <TableCell
                   padding="checkbox"
-                  sx={{
-                    borderBottom: "none",
-                    pl: 3,
-                  }}
+                  sx={{ borderBottom: "none", pl: 3 }}
                 >
                   <Box
                     sx={{
@@ -162,110 +159,140 @@ function ReusableTable<T extends { [key: string]: any }>({
             </TableRow>
           </TableHead>
 
-          {/* Enhanced Table Body */}
           <TableBody>
-            {data.map((row, rowIndex) => {
-              const key = row[rowKey];
-              const isSelected = selectedRows.includes(key);
-              const isEven = rowIndex % 2 === 0;
-
-              return (
-                <TableRow
-                  key={String(key ?? rowIndex)}
-                  hover
-                  onClick={() => onRowClick?.(row)}
-                  sx={{
-                    cursor: onRowClick ? "pointer" : "default",
-                    backgroundColor: isEven
-                      ? alpha(theme.palette.grey[50], 0.5)
-                      : "transparent",
-                    transition: "all 0.2s ease",
-                    position: "relative",
-                    ...(isSelected && {
-                      backgroundColor: alpha(theme.palette.primary.main, 0.08),
-                      transform: "scale(1.002)",
-                      boxShadow: `inset 4px 0 0 ${theme.palette.primary.main}`,
-                    }),
-                    "&:hover": {
-                      backgroundColor: alpha(theme.palette.primary.main, 0.04),
-                      transform: "translateY(-1px)",
-                      boxShadow: `0 4px 12px ${alpha(
-                        theme.palette.grey[400],
-                        0.15
-                      )}`,
-                    },
-                    "&:last-child td": {
-                      borderBottom: 0,
-                    },
-                  }}
+            {loading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length + (showCheckbox ? 1 : 0)}
+                  sx={{ textAlign: "center", py: 4 }}
                 >
-                  {showCheckbox && (
-                    <TableCell
-                      padding="checkbox"
-                      sx={{
-                        pl: 3,
-                        borderBottom: `1px solid ${alpha(
-                          theme.palette.grey[200],
-                          0.8
+                  <CircularProgress />
+                </TableCell>
+              </TableRow>
+            ) : data.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length + (showCheckbox ? 1 : 0)}
+                  sx={{ textAlign: "center", py: 4 }}
+                >
+                  <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
+                    No data available
+                  </Typography>
+                  <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                    There are no records to display
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            ) : (
+              data.map((row, rowIndex) => {
+                const key = row[rowKey];
+                const isSelected = selectedRows.includes(key);
+                const isEven = rowIndex % 2 === 0;
+
+                return (
+                  <TableRow
+                    key={String(key ?? rowIndex)}
+                    hover
+                    onClick={() => onRowClick?.(row)}
+                    sx={{
+                      cursor: onRowClick ? "pointer" : "default",
+                      backgroundColor: isEven
+                        ? alpha(theme.palette.grey[50], 0.5)
+                        : "transparent",
+                      transition: "all 0.2s ease",
+                      position: "relative",
+                      ...(isSelected && {
+                        backgroundColor: alpha(
+                          theme.palette.primary.main,
+                          0.08
+                        ),
+                        transform: "scale(1.002)",
+                        boxShadow: `inset 4px 0 0 ${theme.palette.primary.main}`,
+                      }),
+                      "&:hover": {
+                        backgroundColor: alpha(
+                          theme.palette.primary.main,
+                          0.04
+                        ),
+                        transform: "translateY(-1px)",
+                        boxShadow: `0 4px 12px ${alpha(
+                          theme.palette.grey[400],
+                          0.15
                         )}`,
-                      }}
-                    >
-                      <Checkbox
-                        checked={isSelected}
-                        onChange={() => onSelectRow?.(key)}
+                      },
+                      "&:last-child td": {
+                        borderBottom: 0,
+                      },
+                    }}
+                  >
+                    {showCheckbox && (
+                      <TableCell
+                        padding="checkbox"
                         sx={{
-                          color: alpha(theme.palette.primary.main, 0.6),
-                          "&.Mui-checked": {
-                            color: theme.palette.primary.main,
-                          },
-                          "&:hover": {
-                            backgroundColor: alpha(
-                              theme.palette.primary.main,
-                              0.08
-                            ),
-                          },
-                        }}
-                      />
-                    </TableCell>
-                  )}
-                  {columns.map((col) => (
-                    <TableCell
-                      key={String(col.id)}
-                      sx={{
-                        textAlign: "center",
-                        fontSize: "0.875rem",
-                        color: theme.palette.text.secondary,
-                        fontWeight: 500,
-                        py: 2,
-                        borderBottom: `1px solid ${alpha(
-                          theme.palette.grey[200],
-                          0.8
-                        )}`,
-                        position: "relative",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          minHeight: 24,
+                          pl: 3,
+                          borderBottom: `1px solid ${alpha(
+                            theme.palette.grey[200],
+                            0.8
+                          )}`,
                         }}
                       >
-                        {col.render
-                          ? col.render(row[col.id], row, rowIndex)
-                          : row[col.id]}
-                      </Box>
-                    </TableCell>
-                  ))}
-                </TableRow>
-              );
-            })}
+                        <Checkbox
+                          checked={isSelected}
+                          onChange={() => onSelectRow?.(key)}
+                          sx={{
+                            color: alpha(theme.palette.primary.main, 0.6),
+                            "&.Mui-checked": {
+                              color: theme.palette.primary.main,
+                            },
+                            "&:hover": {
+                              backgroundColor: alpha(
+                                theme.palette.primary.main,
+                                0.08
+                              ),
+                            },
+                          }}
+                        />
+                      </TableCell>
+                    )}
+                    {columns.map((col) => (
+                      <TableCell
+                        key={String(col.id)}
+                        sx={{
+                          textAlign: "center",
+                          fontSize: "0.875rem",
+                          color: theme.palette.text.secondary,
+                          fontWeight: 500,
+                          py: 2,
+                          borderBottom: `1px solid ${alpha(
+                            theme.palette.grey[200],
+                            0.8
+                          )}`,
+                          position: "relative",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            minHeight: 24,
+                          }}
+                        >
+                          {col.render
+                            ? col.render(row[col.id], row, rowIndex)
+                            : row[col.id]}
+                        </Box>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })
+            )}
           </TableBody>
         </Table>
 
         {/* Empty State */}
-        {data.length === 0 && (
+        {data.length === 0 && !loading && (
           <Box
             sx={{
               display: "flex",

@@ -25,7 +25,6 @@ const DateRangeFilter = ({
         onChange={onFromDateChange}
         variant="small"
         disableFutureDate={disableFuture}
-        fullWidth
         noLayout
       />
 
@@ -41,7 +40,6 @@ const DateRangeFilter = ({
         onChange={onToDateChange}
         variant="small"
         disableFutureDate={disableFuture}
-        fullWidth
         noLayout
       />
 
