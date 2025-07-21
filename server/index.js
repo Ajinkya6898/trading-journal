@@ -1,20 +1,23 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
 const bodyParser = require("body-parser");
-const path = require("path");
-require("dotenv").config();
-
+const userRoutes = require("./controllers/userController");
 const authRoutes = require("./routes/authRoutes");
+const cors = require("cors");
+const path = require("path");
 const tradeRoutes = require("./routes/StocksRoutes");
 const mutualFundRoutes = require("./routes/mutualFundRoutes");
 const positionRoutes = require("./routes/positionRoutes");
 const fundTransactionRoutes = require("./routes/fundTransactionRoutes");
 const dashboardStats = require("./routes/dashboardRoutes");
 const newsletterRoutes = require("./routes/newsletter");
+require("dotenv").config();
 
 const app = express();
 
+app.use(bodyParser.json());
+
+// Middlewares
 app.use(
   cors({
     origin: ["http://localhost:5173", "https://your-frontend.vercel.app"],
@@ -22,9 +25,6 @@ app.use(
     credentials: true,
   })
 );
-
-app.options("*", cors());
-
 app.use(express.json());
 app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -43,5 +43,5 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 app.listen(8080, () => {
-  console.log(`🚀 Server started at http://localhost:8080`);
+  console.log(` Server started on http://localhost:${8080}`);
 });

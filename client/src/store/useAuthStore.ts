@@ -66,23 +66,20 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (email, password) => {
     set({ loading: true, error: null });
     try {
-      const loginResponse = await axiosInstance.post(
-        "http://localhost:8080/api/auth/login",
-        { email, password }
-      );
+      const loginResponse = await axiosInstance.post("/auth/login", {
+        email,
+        password,
+      });
 
       const { token, ...rest } = loginResponse.data;
 
       localStorage.setItem("token", token);
 
-      const profileResponse = await axiosInstance.get(
-        "http://localhost:8080/api/auth/my-profile",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const profileResponse = await axiosInstance.get("/auth/my-profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const fullUser = profileResponse.data;
 
@@ -108,10 +105,10 @@ export const useAuthStore = create<AuthState>((set) => ({
   register: async (email, password) => {
     set({ loading: true, error: null });
     try {
-      const response = await axiosInstance.post(
-        "http://localhost:8080/api/auth/register",
-        { email, password }
-      );
+      const response = await axiosInstance.post("/auth/register", {
+        email,
+        password,
+      });
 
       const { token, isNewUser, ...rest } = response.data;
       set({ user: { ...rest, token }, token, loading: false });
