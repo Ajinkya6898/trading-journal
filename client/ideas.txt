@@ -1,0 +1,16 @@
+<ChartCard
+        title="Asset Class Performance"
+        description="Profit/Loss per asset class"
+        chart={
+          <Bar
+            data={assetClassData}
+            options={{
+              responsive: true,
+              plugins: { legend: { display: false } },
+            }}
+          />
+        }
+      />
+
+pay in and pay out page to know how much money I put in the stock market
+add timeframe element in the stock entry panel

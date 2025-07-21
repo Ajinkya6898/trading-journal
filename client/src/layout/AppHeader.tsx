@@ -1,67 +1,186 @@
-import { Button } from "@/components/ui/button";
-import { Bell, Settings, SunMoon } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useNavigate } from "react-router-dom";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+  Box,
+  Button,
+  InputAdornment,
+  TextField,
+  useTheme,
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Badge,
+  Paper,
+  Container,
+} from "@mui/material";
+import { SearchIcon } from "lucide-react";
+import { Lightbulb, Bell } from "lucide-react";
+import UserMenu from "./UserMenu";
+import { NavLink } from "react-router-dom";
+import NotificationsMenu from "./NotificationsMenu";
 
-export default function AppHeader() {
-  const navigate = useNavigate();
+const AppHeader = () => {
+  const theme = useTheme();
+  const loggedin = localStorage.getItem("loggedIn") === "true";
 
-  const handleLogout = () => {
-    navigate("/login");
+  const iconButtonStyle = {
+    backgroundColor: theme.palette.grey[100],
+    color: theme.palette.grey[700],
+    width: 44,
+    height: 44,
+    transition: "all 0.2s ease-in-out",
+    "&:hover": {
+      backgroundColor: theme.palette.grey[200],
+      transform: "translateY(-1px)",
+      boxShadow: theme.shadows[2],
+    },
+  };
+
+  const searchFieldStyle = {
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "24px",
+      backgroundColor: theme.palette.grey[50],
+      border: `1px solid ${theme.palette.grey[200]}`,
+      transition: "all 0.2s ease-in-out",
+      "&:hover": {
+        backgroundColor: theme.palette.background.paper,
+        borderColor: theme.palette.grey[300],
+        boxShadow: theme.shadows[1],
+      },
+      "&.Mui-focused": {
+        backgroundColor: theme.palette.background.paper,
+        borderColor: theme.palette.primary.main,
+        boxShadow: `0 0 0 2px ${theme.palette.primary.main}20`,
+      },
+      "& fieldset": {
+        border: "none",
+      },
+    },
+    "& .MuiInputBase-input": {
+      padding: "12px 16px",
+      fontSize: "0.95rem",
+    },
   };
 
   return (
-    <header className="flex items-center justify-between px-8 py-3 border-b">
-      {/* Left: Logo */}
-      <div className="flex items-center gap-2">
-        <img src="/logo.svg" alt="Logo" className="h-8 w-auto" />
-        <span className="text-xl font-semibold">Trading Journal</span>
-      </div>
+    <AppBar
+      position="sticky"
+      elevation={0}
+      sx={{
+        backgroundColor: theme.palette.background.paper,
+        borderBottom: `1px solid ${theme.palette.grey[200]}`,
+        backdropFilter: "blur(10px)",
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar
+          sx={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            py: 1,
+            minHeight: "70px !important",
+          }}
+        >
+          {/* Search Bar */}
+          <Box
+            sx={{
+              flex: 1,
+              maxWidth: 480,
+              mx: 4,
+              display: { xs: "none", md: "block" },
+            }}
+          >
+            <TextField
+              fullWidth
+              placeholder="Search trades, strategies, or notes..."
+              variant="outlined"
+              size="small"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon
+                      size={20}
+                      style={{ color: theme.palette.grey[500] }}
+                    />
+                  </InputAdornment>
+                ),
+              }}
+              sx={searchFieldStyle}
+            />
+          </Box>
 
-      {/* Right: Actions */}
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          {/* Theme toggle */}
-          <Button variant="ghost" size="icon" aria-label="Toggle Theme">
-            <SunMoon className="h-5 w-5" />
-          </Button>
+          {/* Action Buttons */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            {/* Notification Bell */}
+            <IconButton sx={iconButtonStyle}>
+              <NotificationsMenu />
+            </IconButton>
 
-          {/* Notifications */}
-          <Button variant="ghost" size="icon" aria-label="Notifications">
-            <Bell className="h-5 w-5" />
-          </Button>
+            {/* Tips/Lightbulb */}
+            <IconButton sx={iconButtonStyle}>
+              <Lightbulb size={20} />
+            </IconButton>
 
-          {/* Settings */}
-          <Button variant="ghost" size="icon" aria-label="Settings">
-            <Settings className="h-5 w-5" />
-          </Button>
+            {/* Login/User Menu */}
+            {loggedin ? (
+              <Box sx={{ ml: 1 }}>
+                <UserMenu />
+              </Box>
+            ) : (
+              <Button
+                variant="contained"
+                component={NavLink}
+                to="/login"
+                sx={{
+                  borderRadius: "20px",
+                  px: 3,
+                  py: 1,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  fontSize: "0.95rem",
+                  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
+                  boxShadow: theme.shadows[2],
+                  "&:hover": {
+                    transform: "translateY(-1px)",
+                    boxShadow: theme.shadows[4],
+                  },
+                  transition: "all 0.2s ease-in-out",
+                }}
+              >
+                Log In
+              </Button>
+            )}
+          </Box>
+        </Toolbar>
+      </Container>
 
-          {/* Avatar with dropdown menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar className="h-8 w-8 cursor-pointer">
-                <AvatarImage src="/user-avatar.jpg" alt="User" />
-                <AvatarFallback>AJ</AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Account</DropdownMenuLabel>
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-    </header>
+      {/* Mobile Search Bar */}
+      <Box
+        sx={{
+          display: { xs: "block", md: "none" },
+          px: 2,
+          pb: 2,
+        }}
+      >
+        <TextField
+          fullWidth
+          placeholder="Search..."
+          variant="outlined"
+          size="small"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon
+                  size={20}
+                  style={{ color: theme.palette.grey[500] }}
+                />
+              </InputAdornment>
+            ),
+          }}
+          sx={searchFieldStyle}
+        />
+      </Box>
+    </AppBar>
   );
-}
+};
+
+export default AppHeader;

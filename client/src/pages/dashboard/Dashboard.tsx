@@ -1,27 +1,61 @@
-import { ActiveTradesTable } from "@/pages/dashboard/components/ActiveTradesTable";
-import { DashboardHeader } from "@/pages/dashboard/components/DashboardHeader";
-import { DashboardSummary } from "@/pages/dashboard/components/DashboardSummary";
-import PortfolioDistribution from "@/pages/dashboard/components/PortfolioDistribution";
-import TopPerformers from "@/pages/dashboard/components/TopPerformers";
-import TraderQuotesSlider from "@/pages/dashboard/components/TraderQuotesSlider";
-import WinnerLoserPieChart from "@/pages/dashboard/components/WinnerLoserPieChart";
+import { useEffect } from "react";
+import { Box, Stack } from "@mui/material";
+import PageHeader from "../../ui-components/PageHeader";
+import DashboardStats from "./DashboardStats";
+import Icon from "../../ui-components/Icon";
+import ActiveTrades from "./ActiveTrades";
+import AssetReturnsFunnel from "./AssetReturnsFunnel";
+import TradesAndInvestments from "./TradesAndInvestments";
+import PerformanceOverview from "./PerformanceOverview";
+import TopGainersLosers from "./TopGainersLosers";
+import useDashboardStore from "../../store/useDashboardStore";
+import Loader from "../../ui-components/Loader";
 
 const Dashboard = () => {
+  const { trades, loading, error, fetchDashboardTrades } = useDashboardStore();
+
+  useEffect(() => {
+    fetchDashboardTrades();
+  }, []);
+  if (loading)
+    return (
+      <>
+        <Loader />
+      </>
+    );
+  if (error) return <div style={{ color: "red" }}>{error}</div>;
+
   return (
     <>
-      <DashboardHeader />
-      <DashboardSummary />
-      <PortfolioDistribution />
-      <TraderQuotesSlider />
-      <div className="flex gap-6">
-        <div className="w-full">
-          <ActiveTradesTable />
-        </div>
-        <div className="w-[30%] space-y-6">
-          {/* <WinnerLoserPieChart /> */}
-          <TopPerformers />
-        </div>
-      </div>
+      <PageHeader
+        title="Dashboard"
+        actions={
+          <Stack direction="row" spacing={3} alignItems="center">
+            <Icon
+              id="dashboard-refresh"
+              type="refresh"
+              variant="large"
+              showbg
+            />
+            <Icon id="dashboard-heaer" type="settings" variant="large" showbg />
+          </Stack>
+        }
+      />
+      <DashboardStats />
+
+      <Box display="flex" mt={2} flexDirection="column" gap={2}>
+        <ActiveTrades />
+        <Box display="flex" gap={2}>
+          <Box flex={1}>
+            <TradesAndInvestments monthlyTrades={trades} />
+          </Box>
+          <Box flex={1}>
+            <AssetReturnsFunnel />
+          </Box>
+        </Box>
+        <PerformanceOverview />
+        <TopGainersLosers />
+      </Box>
     </>
   );
 };

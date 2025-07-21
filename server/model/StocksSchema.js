@@ -1,0 +1,22 @@
+const mongoose = require("mongoose");
+
+const StockEntrySchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  entryDate: { type: Date, required: true },
+  exitDate: { type: Date, required: true },
+  symbol: { type: String, required: true },
+  quantity: { type: Number, required: true },
+  boughtPrice: { type: Number, required: true },
+  timeFrame: { type: String },
+  soldPrice: { type: Number, required: true },
+  pnl: { type: Number, required: true },
+  commission: { type: Number, required: true },
+  notes: { type: String },
+  tradeImage: { type: String },
+});
+
+module.exports = mongoose.model("StockEntry", StockEntrySchema);
