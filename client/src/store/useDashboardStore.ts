@@ -24,6 +24,7 @@ type DashboardState = {
 
 const useDashboardStore = create<DashboardState>((set) => ({
   trades: [],
+  doughnutData: [],
   loading: false,
   error: null,
 
@@ -33,7 +34,11 @@ const useDashboardStore = create<DashboardState>((set) => ({
       const response = await axiosInstance.get<DashboardTrade[]>(
         "http://localhost:8080/api/dashboard"
       );
-      set({ trades: response.data, loading: false });
+      set({
+        trades: response.data.monthlyTradeStats,
+        doughnutData: response.data.doughnutData,
+        loading: false,
+      });
     } catch (err) {
       console.error("Failed to fetch dashboard trades", err);
       set({ error: "Failed to load dashboard data", loading: false });

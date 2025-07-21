@@ -1,4 +1,10 @@
-import { TrendingUp, TrendingDown, BarChart2, DollarSign } from "lucide-react";
+import {
+  TrendingUp,
+  TrendingDown,
+  BarChart2,
+  DollarSign,
+  Receipt,
+} from "lucide-react";
 import { useTheme } from "@mui/material/styles";
 import StatCard from "../../ui-components/StatCard";
 
@@ -7,7 +13,6 @@ const TradingPerformanceDashboard = ({ data }) => {
 
   const theme = useTheme();
   const isProfit = summaryData?.totalReturn > 0;
-  const winRate = summaryData?.winRate || 0;
 
   return (
     <div
@@ -39,9 +44,20 @@ const TradingPerformanceDashboard = ({ data }) => {
         color={theme.palette.error.medium}
       />
       <StatCard
+        title="Total Commission"
+        value={`₹ ${summaryData?.totalCommission.toLocaleString()}`}
+        chipLabel="Fees Paid"
+        icon={<Receipt size={20} />}
+        color={theme.palette.warning.light}
+      />
+      <StatCard
         title="Total Return"
         value={`₹ ${summaryData?.totalReturn.toLocaleString()}`}
-        chipLabel={isProfit ? "Profit" : "Loss"}
+        chipLabel={
+          isProfit
+            ? `Profit - ${summaryData?.returnPercentage} %`
+            : `Loss ${summaryData?.returnPercentage} %`
+        }
         icon={<DollarSign size={20} />}
         color={
           isProfit ? theme.palette.success.medium : theme.palette.error.medium

@@ -16,7 +16,7 @@ const FundTransactionForm = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [transactionType, setTransactionType] = useState("Add");
   const [amount, setAmount] = useState("");
-  const [account, setAccount] = useState("Zerodha");
+  const [account, setAccount] = useState("Groww");
 
   const { loading, addTransaction } = useFundTransactionStore();
 
@@ -161,7 +161,7 @@ const FundTransactionForm = () => {
                 onClick={() => {
                   setTransactionType("Add");
                   setAmount("");
-                  setAccount("Zerodha");
+                  setAccount("Groww");
                   setSelectedDate(new Date());
                 }}
               >

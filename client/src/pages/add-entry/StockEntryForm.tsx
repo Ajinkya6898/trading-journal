@@ -83,9 +83,6 @@ const StockEntryForm = () => {
           tradeImage: formValues.tradeImage,
         });
 
-        console.log("Trade added successfully");
-
-        // Clear form after successful submission
         setFormValues({
           entryDate: new Date(),
           exitDate: new Date(),

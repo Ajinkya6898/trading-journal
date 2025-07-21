@@ -126,7 +126,7 @@ const TopGainersLosers: React.FC = () => {
                 Top 5 Gainers Today
               </Typography>
             </Stack>
-            {gainers.map((stock, idx) => renderStockCard(stock, true, idx))}
+            {gainers?.map((stock, idx) => renderStockCard(stock, true, idx))}
           </CardContent>
         </Card>
       </Grid>
@@ -139,7 +139,7 @@ const TopGainersLosers: React.FC = () => {
                 Top 5 Losers Today
               </Typography>
             </Stack>
-            {losers.map((stock, idx) => renderStockCard(stock, false, idx))}
+            {losers?.map((stock, idx) => renderStockCard(stock, false, idx))}
           </CardContent>
         </Card>
       </Grid>

@@ -6,6 +6,7 @@ exports.addTransaction = async (req, res) => {
     const { date, type, amount, account } = req.body;
 
     const newTransaction = new FundTransaction({
+      userId: req.user._id,
       date,
       type,
       amount,

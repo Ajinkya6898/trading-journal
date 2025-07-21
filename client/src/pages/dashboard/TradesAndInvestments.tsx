@@ -12,6 +12,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar, Doughnut } from "react-chartjs-2";
+import useDashboardStore from "../../store/useDashboardStore";
 
 ChartJS.register(
   CategoryScale,
@@ -49,7 +50,7 @@ const TradesAndInvestments = ({ monthlyTrades }: Props) => {
     return { monthLabels: labels, tradeCounts: counts };
   }, [monthlyTrades]);
 
-  const percentile75 = tradeCounts.map((val) => Math.round(val * 1.1));
+  const percentile75 = tradeCounts?.map((val) => Math.round(val * 1.1));
 
   const barChartData = {
     labels: monthLabels,
@@ -172,7 +173,7 @@ const TradesAndInvestments = ({ monthlyTrades }: Props) => {
               justifyContent="space-around"
               mt={2}
             >
-              {doughnutData.labels.map((label, idx) => (
+              {doughnutData?.labels?.map((label, idx) => (
                 <Box
                   key={label}
                   display="flex"
@@ -187,7 +188,7 @@ const TradesAndInvestments = ({ monthlyTrades }: Props) => {
                       height: 7,
                       borderRadius: 0,
                       backgroundColor:
-                        doughnutData.datasets[0].backgroundColor[idx],
+                        doughnutData?.datasets[0].backgroundColor[idx],
                     }}
                   />
                 </Box>

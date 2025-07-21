@@ -72,8 +72,8 @@ const StatCard = ({
 
       <Box
         sx={{
-          width: 48,
-          height: 48,
+          width: 38,
+          height: 38,
           borderRadius: 2,
           backgroundColor: `${color}1A`,
           display: "flex",
