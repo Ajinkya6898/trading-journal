@@ -29,6 +29,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/stock", tradeRoutes);
 app.use("/api/mutual-funds", mutualFundRoutes);
@@ -37,11 +38,23 @@ app.use("/api/funds", fundTransactionRoutes);
 app.use("/api/dashboard", dashboardStats);
 app.use("/api/newsletter", newsletterRoutes);
 
+// Test route
+app.get("/", (req, res) => {
+  res.json({ message: "Server is running successfully!" });
+});
+
+// MongoDB connection
 mongoose
   .connect(process.env.atlus_URL)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-app.listen(8080, () => {
-  console.log(` Server started on http://localhost:${8080}`);
-});
+// Only listen when not in Vercel environment
+if (process.env.NODE_ENV !== "production") {
+  app.listen(8080, () => {
+    console.log(`Server started on http://localhost:8080`);
+  });
+}
+
+// Export the app for Vercel
+module.exports = app;

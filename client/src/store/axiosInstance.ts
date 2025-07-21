@@ -4,6 +4,7 @@ const history = createBrowserHistory();
 import { createBrowserHistory } from "history";
 
 const axiosInstance = axios.create({
+  // https://trade-edge-backend.vercel.app/
   baseURL: "https://trade-edge-backend.vercel.app/api",
 });
 
