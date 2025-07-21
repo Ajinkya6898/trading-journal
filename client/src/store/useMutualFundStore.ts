@@ -16,13 +16,24 @@ interface MutualFundStore {
 
   setField: (field: keyof MutualFundEntry, value: any) => void;
   clearForm: () => void;
-
+  loading: boolean;
+  error: string | null;
   addEntry: () => Promise<void>;
-  loadEntries: () => Promise<void>;
+  fetchFunds: () => Promise<void>;
 }
+const mapBackendToFrontend = (fund: any): any => ({
+  id: fund._id,
+  fundName: fund.fundName,
+  date: fund.date,
+  units: fund.units,
+  nav: fund.nav,
+  amount: fund.amount,
+});
 
 export const useMutualFundStore = create<MutualFundStore>((set, get) => ({
   entries: [],
+  loading: false,
+  error: null,
   current: {
     fundName: "",
     date: new Date(),
@@ -80,16 +91,18 @@ export const useMutualFundStore = create<MutualFundStore>((set, get) => ({
     }
   },
 
-  loadEntries: async () => {
+  fetchFunds: async () => {
     try {
+      set({ loading: true, error: null });
       const response = await axiosInstance.get(
         "http://localhost:8080/api/mutual-funds"
       );
-      set(() => ({
-        entries: response.data,
-      }));
-    } catch (error) {
-      console.error("Failed to fetch mutual fund entries", error);
+
+      const mappedFunds = response.data.map(mapBackendToFrontend);
+      set({ entries: mappedFunds, loading: false });
+    } catch (err) {
+      console.error("Error fetching mutual fund data", err);
+      set({ error: "Failed to fetch mutual fund data", loading: false });
     }
   },
 }));

@@ -1,4 +1,5 @@
 const StockEntry = require("../model/StocksSchema");
+const FundTransaction = require("../model/FundTransaction");
 const MutualFundEntry = require("../model/MutualFundSchema");
 
 const getMonthlyTradeStats = async (req, res) => {
@@ -44,6 +45,7 @@ const getDashboardData = async (req, res) => {
     const userId = req.user.id;
 
     // STOCKS
+    const fundTransactions = await FundTransaction.find({ userId });
     const trades = await StockEntry.find({ userId }).sort({ entryDate: -1 });
 
     const currentDate = new Date();
@@ -77,7 +79,14 @@ const getDashboardData = async (req, res) => {
 
     // MUTUAL FUND
     const mutualFundEntries = await MutualFundEntry.find({ userId });
-    const stockTotal = trades.reduce((sum, e) => sum + (e.amount || 0), 0);
+    const stockTotal = fundTransactions.reduce((sum, transaction) => {
+      if (transaction.type === "Add") {
+        return sum + (transaction.amount || 0);
+      } else if (transaction.type === "Withdraw") {
+        return sum - (transaction.amount || 0);
+      }
+      return sum;
+    }, 0);
     const mutualFundTotal = mutualFundEntries.reduce(
       (sum, e) => sum + (e.amount || 0),
       0
@@ -88,18 +97,14 @@ const getDashboardData = async (req, res) => {
     const totalInvested = stockTotal + mutualFundTotal + cryptoTotal + etfTotal;
 
     const doughnutData = {
-      labels: ["Stock Market", "Mutual Fund", "Crypto", "ETF"],
       datasets: [
         {
-          label: "Investment Distribution",
           data: [
             ((stockTotal / totalInvested) * 100).toFixed(2),
             ((mutualFundTotal / totalInvested) * 100).toFixed(2),
             ((cryptoTotal / totalInvested) * 100).toFixed(2),
             ((etfTotal / totalInvested) * 100).toFixed(2),
           ],
-          backgroundColor: ["#42A5F5", "#FFB74D", "#4DB6AC", "#81C784"],
-          borderWidth: 2,
         },
       ],
     };

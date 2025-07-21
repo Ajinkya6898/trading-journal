@@ -23,13 +23,20 @@ import {
   Settings2,
   ChevronDown,
   IndianRupee,
+  CandlestickChart,
+  Banknote,
 } from "lucide-react";
 import { useState } from "react";
 import AppLogo from "./AppLogo";
 
 const menu = [
   { label: "Dashboard", icon: Home, href: "/dashboard" },
-  { label: "Journal", icon: FileText, href: "/journal" },
+  { label: "Stock Journal", icon: CandlestickChart, href: "/stocks-journal" },
+  {
+    label: "Mutual Fund Journal",
+    icon: Banknote,
+    href: "/mutual-funds-journal",
+  },
   { label: "Add New Entry", icon: FilePlus, href: "/add-entry" },
   { label: "Active Trades", icon: Activity, href: "/active-trades" },
   { label: "Reports", icon: BarChart3, href: "/reports" },
@@ -59,7 +66,6 @@ const menu = [
     icon: IndianRupee,
     href: "/target",
   },
-  { label: "Settings", icon: Settings2, href: "/settings" },
 ];
 
 const Sidebar = () => {

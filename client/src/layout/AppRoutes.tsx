@@ -9,11 +9,12 @@ import ForgotPasswordForm from "../pages/auth/ForgotPasswordForm";
 import VerifyEmailOtpForm from "../pages/auth/VerifyEmailOtpForm";
 import ResetPasswordForm from "../pages/auth/ResetPasswordForm";
 import EqualMoneyPositionSize from "../pages/ps-calculator/EqualMoneyPositionSize";
-import TradingJournalTable from "../pages/journal/TradingJournalTable";
+import TradingJournalTable from "../pages/stocks-journal/StocksTradingJournalTable";
 import FiiDiiDashboard from "../pages/fiidii-activity/FiiDiiDashboard";
 import ProfileProgress from "../pages/user-profile/ProfileProgress";
 import FundTransaction from "../pages/fund-transactions/FundTransaction";
 import TargetPriceCalculator from "../pages/target/TargetPriceCalculator";
+import { MutualFundJournal } from "../pages/mutual-fund-journal/MutualFundJournal";
 
 const router = createBrowserRouter([
   {
@@ -21,8 +22,12 @@ const router = createBrowserRouter([
     element: <AppLayout />,
     children: [
       {
-        path: "/journal",
+        path: "/stocks-journal",
         element: <TradingJournalTable />,
+      },
+      {
+        path: "/mutual-funds-journal",
+        element: <MutualFundJournal />,
       },
       {
         path: "/dashboard",

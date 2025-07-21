@@ -35,6 +35,8 @@ type Props = {
 };
 
 const TradesAndInvestments = ({ monthlyTrades }: Props) => {
+  const { doughnutData } = useDashboardStore();
+
   const { monthLabels, tradeCounts } = useMemo(() => {
     const labels: string[] = [];
     const counts: number[] = [];
@@ -74,12 +76,12 @@ const TradesAndInvestments = ({ monthlyTrades }: Props) => {
     ],
   };
 
-  const doughnutData = {
+  const chartData = {
     labels: ["Stock Market", "Mutual Fund", "Crypto", "ETF"],
     datasets: [
       {
         label: "Investment",
-        data: [40, 25, 20, 15],
+        data: doughnutData.length > 0 ? doughnutData : [0, 0, 0, 0],
         backgroundColor: ["#42A5F5", "#FFB74D", "#4DB6AC", "#81C784"],
         borderWidth: 2,
       },
@@ -148,7 +150,7 @@ const TradesAndInvestments = ({ monthlyTrades }: Props) => {
               alignItems="center"
             >
               <Doughnut
-                data={doughnutData}
+                data={chartData}
                 options={{
                   cutout: "70%",
                   plugins: {

@@ -17,6 +17,7 @@ export type DashboardTrade = {
 
 type DashboardState = {
   trades: DashboardTrade[];
+  doughnutData: number[];
   loading: boolean;
   error: string | null;
   fetchDashboardTrades: () => Promise<void>;
@@ -31,12 +32,13 @@ const useDashboardStore = create<DashboardState>((set) => ({
   fetchDashboardTrades: async () => {
     try {
       set({ loading: true, error: null });
-      const response = await axiosInstance.get<DashboardTrade[]>(
+      const response = await axiosInstance.get(
         "http://localhost:8080/api/dashboard"
       );
+
       set({
         trades: response.data.monthlyTradeStats,
-        doughnutData: response.data.doughnutData,
+        doughnutData: response.data.doughnutData.datasets[0].data || [],
         loading: false,
       });
     } catch (err) {
