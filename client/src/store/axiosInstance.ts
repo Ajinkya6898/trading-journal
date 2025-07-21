@@ -4,7 +4,7 @@ const history = createBrowserHistory();
 import { createBrowserHistory } from "history";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: "https://trading-journal-backend.vercel.app/api",
 });
 
 axiosInstance.interceptors.request.use((config) => {

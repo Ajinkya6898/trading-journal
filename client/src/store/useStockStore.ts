@@ -99,9 +99,7 @@ const useStockStore = create<StockStoreState>((set) => ({
   fetchTrades: async () => {
     try {
       set({ loading: true, error: null });
-      const response = await axiosInstance.get(
-        "http://localhost:8080/api/stock"
-      );
+      const response = await axiosInstance.get("/stock");
 
       const mappedTrades = response.data.trades.map(mapBackendToFrontend);
       const summary = response.data.stocksSummary;
@@ -136,7 +134,7 @@ const useStockStore = create<StockStoreState>((set) => ({
         formData.append("tradeImage", tradeData.tradeImage);
       }
 
-      await axiosInstance.post("http://localhost:8080/api/stock", formData, {
+      await axiosInstance.post("/stock", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -41,9 +41,7 @@ export const useFundTransactionStore = create<FundTransactionStore>((set) => ({
         }
       }
 
-      const res = await axiosInstance.get(
-        `http://localhost:8080/api/funds?${params.toString()}`
-      );
+      const res = await axiosInstance.get(`/funds?${params.toString()}`);
       set({ transactions: res.data.transactions, loading: false });
     } catch (err: any) {
       set({ loading: false, error: err.message || "Failed to fetch" });
@@ -53,7 +51,7 @@ export const useFundTransactionStore = create<FundTransactionStore>((set) => ({
   addTransaction: async (tx) => {
     try {
       set({ loading: true, error: null });
-      await axiosInstance.post("http://localhost:8080/api/funds", tx);
+      await axiosInstance.post("/funds", tx);
       await useFundTransactionStore.getState().fetchTransactions();
     } catch (err: any) {
       set({ loading: false, error: err.message || "Failed to add" });

@@ -32,9 +32,7 @@ const useDashboardStore = create<DashboardState>((set) => ({
   fetchDashboardTrades: async () => {
     try {
       set({ loading: true, error: null });
-      const response = await axiosInstance.get(
-        "http://localhost:8080/api/dashboard"
-      );
+      const response = await axiosInstance.get("/dashboard");
 
       set({
         trades: response.data.monthlyTradeStats,

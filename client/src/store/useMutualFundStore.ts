@@ -70,16 +70,13 @@ export const useMutualFundStore = create<MutualFundStore>((set, get) => ({
     }
 
     try {
-      const response = await axiosInstance.post(
-        "http://localhost:8080/api/mutual-funds",
-        {
-          fundName,
-          date,
-          units,
-          nav,
-          amount,
-        }
-      );
+      const response = await axiosInstance.post("/mutual-funds", {
+        fundName,
+        date,
+        units,
+        nav,
+        amount,
+      });
 
       set((state) => ({
         entries: [response.data, ...state.entries],
@@ -94,9 +91,7 @@ export const useMutualFundStore = create<MutualFundStore>((set, get) => ({
   fetchFunds: async () => {
     try {
       set({ loading: true, error: null });
-      const response = await axiosInstance.get(
-        "http://localhost:8080/api/mutual-funds"
-      );
+      const response = await axiosInstance.get("mutual-funds");
 
       const mappedFunds = response.data.map(mapBackendToFrontend);
       set({ entries: mappedFunds, loading: false });
