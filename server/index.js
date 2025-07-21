@@ -29,6 +29,15 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// Test routes without authentication
+app.get("/api/test-funds", (req, res) => {
+  res.json({ message: "Fund routes are working!" });
+});
+
+app.get("/api/test-auth", (req, res) => {
+  res.json({ message: "Auth routes path is working!" });
+});
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/stock", tradeRoutes);
@@ -38,9 +47,23 @@ app.use("/api/funds", fundTransactionRoutes);
 app.use("/api/dashboard", dashboardStats);
 app.use("/api/newsletter", newsletterRoutes);
 
-// Test route
+// Test routes
 app.get("/", (req, res) => {
   res.json({ message: "Server is running successfully!" });
+});
+
+app.get("/test", (req, res) => {
+  res.json({ message: "Test route works!" });
+});
+
+app.get("/api", (req, res) => {
+  res.json({ message: "API base route works!" });
+});
+
+// Debug middleware to log all requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  next();
 });
 
 // MongoDB connection

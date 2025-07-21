@@ -5,7 +5,8 @@ import { createBrowserHistory } from "history";
 
 const axiosInstance = axios.create({
   // https://trade-edge-backend.vercel.app/
-  baseURL: "https://trade-edge-backend.vercel.app/api",
+  baseURL:
+    "https://trade-edge-backend-8iw96qcrj-ajinkya6898s-projects.vercel.app/api",
 });
 
 axiosInstance.interceptors.request.use((config) => {
