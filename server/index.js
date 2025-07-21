@@ -16,15 +16,49 @@ require("dotenv").config();
 const app = express();
 
 app.use(bodyParser.json());
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
 
-// Middlewares
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "https://your-frontend.vercel.app"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-  })
-);
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "http://localhost:8080",
+      /https:\/\/.*\.vercel\.app$/, // Allow all vercel apps
+    ];
+
+    const isAllowed = allowedOrigins.some((allowedOrigin) => {
+      if (typeof allowedOrigin === "string") {
+        return origin === allowedOrigin;
+      }
+      return allowedOrigin.test(origin);
+    });
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      // For development, allow all origins
+      callback(null, true);
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: [
+    "Origin",
+    "X-Requested-With",
+    "Content-Type",
+    "Accept",
+    "Authorization",
+    "Cache-Control",
+  ],
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight requests for all routes
+app.options("*", cors(corsOptions));
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
