@@ -16,61 +16,18 @@ require("dotenv").config();
 const app = express();
 
 app.use(bodyParser.json());
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, Postman, etc.)
-    if (!origin) return callback(null, true);
 
-    const allowedOrigins = [
-      "http://localhost:3000",
-      "http://localhost:5173",
-      "http://localhost:8080",
-      /https:\/\/.*\.vercel\.app$/, // Allow all vercel apps
-    ];
-
-    const isAllowed = allowedOrigins.some((allowedOrigin) => {
-      if (typeof allowedOrigin === "string") {
-        return origin === allowedOrigin;
-      }
-      return allowedOrigin.test(origin);
-    });
-
-    if (isAllowed) {
-      callback(null, true);
-    } else {
-      // For development, allow all origins
-      callback(null, true);
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-  allowedHeaders: [
-    "Origin",
-    "X-Requested-With",
-    "Content-Type",
-    "Accept",
-    "Authorization",
-    "Cache-Control",
-  ],
-};
-
-app.use(cors(corsOptions));
-
-// Handle preflight requests for all routes
-app.options("*", cors(corsOptions));
-
+// Middlewares
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://your-frontend.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// Test routes without authentication
-app.get("/api/test-funds", (req, res) => {
-  res.json({ message: "Fund routes are working!" });
-});
-
-app.get("/api/test-auth", (req, res) => {
-  res.json({ message: "Auth routes path is working!" });
-});
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -81,23 +38,9 @@ app.use("/api/funds", fundTransactionRoutes);
 app.use("/api/dashboard", dashboardStats);
 app.use("/api/newsletter", newsletterRoutes);
 
-// Test routes
+// Test route
 app.get("/", (req, res) => {
   res.json({ message: "Server is running successfully!" });
-});
-
-app.get("/test", (req, res) => {
-  res.json({ message: "Test route works!" });
-});
-
-app.get("/api", (req, res) => {
-  res.json({ message: "API base route works!" });
-});
-
-// Debug middleware to log all requests
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path}`);
-  next();
 });
 
 // MongoDB connection
