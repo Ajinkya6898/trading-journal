@@ -38,12 +38,21 @@ const StocksTradingJournalTable = () => {
         onEndDateChange={setEndDate}
       />
 
-      <ReusableTable
+      {/* <ReusableTable
         columns={stockJournalColumns}
         data={trades}
         rowKey="id"
         tableHeader="My Trading Journal"
         showCheckbox={false}
+      /> */}
+      <ReusableTable
+        columns={stockJournalColumns}
+        data={trades}
+        showPagination={true}
+        itemsPerPageOptions={[25, 50, 100]}
+        paginationId="my-table"
+        navigationConstant="NAV_CONSTANT"
+        paginationConstant="PAGE_CONSTANT"
       />
     </>
   );

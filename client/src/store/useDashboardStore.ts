@@ -17,6 +17,7 @@ export type DashboardTrade = {
 
 type DashboardState = {
   trades: DashboardTrade[];
+  dashBoardData: any;
   doughnutData: number[];
   loading: boolean;
   error: string | null;
@@ -26,6 +27,7 @@ type DashboardState = {
 const useDashboardStore = create<DashboardState>((set) => ({
   trades: [],
   doughnutData: [],
+  dashBoardData: [],
   loading: false,
   error: null,
 
@@ -37,6 +39,7 @@ const useDashboardStore = create<DashboardState>((set) => ({
       set({
         trades: response.data.monthlyTradeStats,
         doughnutData: response.data.doughnutData.datasets[0].data || [],
+        dashBoardData: response.data,
         loading: false,
       });
     } catch (err) {

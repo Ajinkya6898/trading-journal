@@ -228,6 +228,11 @@ export const MutualFundJournal: React.FC = () => {
         rowKey="id"
         tableHeader="My Mutual Fund Portfolio"
         showCheckbox={false}
+        showPagination={true}
+        itemsPerPageOptions={[25, 50, 100]}
+        paginationId="my-table"
+        navigationConstant="NAV_CONSTANT"
+        paginationConstant="PAGE_CONSTANT"
       />
     </>
   );

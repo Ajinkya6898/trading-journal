@@ -5,33 +5,43 @@ import FieldLayout from "../../ui-components/FieldLayout";
 
 const RiskBasedPositionSizeForm = () => {
   const [stockName, setStockName] = useState("");
-  const [amount, setAmount] = useState("");
-  const [entry, setEntry] = useState("");
+  const [totalCapital, setTotalCapital] = useState("");
   const [riskPercent, setRiskPercent] = useState("");
-  const [stopLoss, setStopLoss] = useState("");
+  const [entryPrice, setEntryPrice] = useState("");
+  const [stopLossPrice, setStopLossPrice] = useState("");
+  const [riskAmount, setRiskAmount] = useState("");
+  const [positionSize, setPositionSize] = useState("");
 
   const handleCalculate = () => {
-    const amt = parseFloat(amount);
-    const ent = parseFloat(entry);
+    const capital = parseFloat(totalCapital);
     const risk = parseFloat(riskPercent);
+    const entry = parseFloat(entryPrice);
+    const stopLoss = parseFloat(stopLossPrice);
 
-    if (!amt || !ent || !risk) return;
+    if (!capital || !risk || !entry || !stopLoss || stopLoss >= entry) return;
 
-    const riskValue = amt * (risk / 100);
-    const sl = ent - riskValue / 1; // you can divide by qty if available
-    setStopLoss(sl.toFixed(2));
+    const riskAmt = capital * (risk / 100);
+    const size = Math.floor(riskAmt / (entry - stopLoss));
+
+    setRiskAmount(riskAmt.toFixed(2));
+    setPositionSize(size.toString());
   };
 
   const handleClear = () => {
     setStockName("");
-    setAmount("");
-    setEntry("");
+    setTotalCapital("");
     setRiskPercent("");
-    setStopLoss("");
+    setEntryPrice("");
+    setStopLossPrice("");
+    setRiskAmount("");
+    setPositionSize("");
   };
 
   return (
-    <Panel elementId="risk-based-position-size" label="Risk Based Sizing">
+    <Panel
+      elementId="risk-based-position-size"
+      label="Risk-Based Position Sizing"
+    >
       <Box
         component="form"
         noValidate
@@ -51,43 +61,63 @@ const RiskBasedPositionSizeForm = () => {
           />
         </FieldLayout>
 
-        <FieldLayout label="Total Capital at Risk">
+        <FieldLayout label="Total Trading Capital (₹)">
           <TextField
             fullWidth
-            placeholder="Enter amount you're risking"
+            placeholder="e.g., 500000"
             variant="outlined"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            value={totalCapital}
+            onChange={(e) => setTotalCapital(e.target.value)}
           />
         </FieldLayout>
 
-        <FieldLayout label="Entry Price">
+        <FieldLayout label="Risk % per Trade">
           <TextField
             fullWidth
-            placeholder="Enter entry price"
-            variant="outlined"
-            value={entry}
-            onChange={(e) => setEntry(e.target.value)}
-          />
-        </FieldLayout>
-
-        <FieldLayout label="Risk %">
-          <TextField
-            fullWidth
-            placeholder="Enter risk percentage"
+            placeholder="e.g., 1"
             variant="outlined"
             value={riskPercent}
             onChange={(e) => setRiskPercent(e.target.value)}
           />
         </FieldLayout>
 
-        <FieldLayout label="Calculated Stop Loss">
+        <FieldLayout label="Risk Amount per Trade (₹)">
           <TextField
             fullWidth
-            value={stopLoss}
             variant="outlined"
+            value={riskAmount}
             InputProps={{ readOnly: true }}
-            placeholder="Calculated SL will appear here"
+            placeholder="Auto-calculated"
+          />
+        </FieldLayout>
+
+        <FieldLayout label="Entry Price (₹)">
+          <TextField
+            fullWidth
+            placeholder="e.g., 250"
+            variant="outlined"
+            value={entryPrice}
+            onChange={(e) => setEntryPrice(e.target.value)}
+          />
+        </FieldLayout>
+
+        <FieldLayout label="Stop Loss Price (₹)">
+          <TextField
+            fullWidth
+            placeholder="e.g., 245"
+            variant="outlined"
+            value={stopLossPrice}
+            onChange={(e) => setStopLossPrice(e.target.value)}
+          />
+        </FieldLayout>
+
+        <FieldLayout label="Position Size (Qty)">
+          <TextField
+            fullWidth
+            variant="outlined"
+            value={positionSize}
+            InputProps={{ readOnly: true }}
+            placeholder="Calculated quantity"
           />
         </FieldLayout>
 
@@ -100,7 +130,7 @@ const RiskBasedPositionSizeForm = () => {
               type="button"
               onClick={handleCalculate}
             >
-              Calculate SL
+              Calculate
             </Button>
             <Button
               variant="outlined"

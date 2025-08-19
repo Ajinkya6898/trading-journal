@@ -2,26 +2,38 @@ const PositionEntry = require("../model/PositionEntry");
 
 exports.createPosition = async (req, res) => {
   try {
-    const { stockName, totalAmount, investAmount, stockPrice, positionSize } =
-      req.body;
+    const {
+      stockName,
+      investAmount,
+      stockPrice,
+      positionSize,
+      atr,
+      atrMultiplier,
+      partialTarget,
+    } = req.body;
 
     if (
       !stockName ||
-      !totalAmount ||
       !investAmount ||
       !stockPrice ||
-      !positionSize
+      !positionSize ||
+      !atr ||
+      !atrMultiplier ||
+      !partialTarget
     ) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
     const newEntry = await PositionEntry.create({
       stockName,
-      totalAmount,
+
       investAmount,
       stockPrice,
       positionSize,
-      // userId: remove for now
+      atr,
+      atrMultiplier,
+      partialTarget,
+      // userId: (add later if auth is implemented)
     });
 
     res.status(201).json(newEntry);
@@ -33,10 +45,7 @@ exports.createPosition = async (req, res) => {
 
 exports.getUserPositions = async (req, res) => {
   try {
-    const entries = await PositionEntry.find().sort({
-      createdAt: -1,
-    });
-
+    const entries = await PositionEntry.find().sort({ createdAt: -1 });
     res.status(200).json(entries);
   } catch (error) {
     console.error("Get Positions Error:", error);
@@ -47,17 +56,26 @@ exports.getUserPositions = async (req, res) => {
 exports.updatePosition = async (req, res) => {
   try {
     const { id } = req.params;
-    const { stockName, totalAmount, investAmount, stockPrice, positionSize } =
-      req.body;
+    const {
+      stockName,
+      investAmount,
+      stockPrice,
+      positionSize,
+      atr,
+      atrMultiplier,
+      partialTarget,
+    } = req.body;
 
     const updated = await PositionEntry.findByIdAndUpdate(
       id,
       {
         stockName,
-        totalAmount,
         investAmount,
         stockPrice,
         positionSize,
+        atr,
+        atrMultiplier,
+        partialTarget,
       },
       { new: true }
     );

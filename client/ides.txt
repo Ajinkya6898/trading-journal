@@ -1,1 +1,21 @@
 on dashboard add a pie chart for company capitalization like mid,small, large cap
+
+<ChartCard
+        title="Asset Class Performance"
+        description="Profit/Loss per asset class"
+        chart={
+          <Bar
+            data={assetClassData}
+            options={{
+              responsive: true,
+              plugins: { legend: { display: false } },
+            }}
+          />
+        }
+      />
+
+pay in and pay out page to know how much money I put in the stock market
+add timeframe element in the stock entry panel
+add a new page called trading plan in this page you can have all the stragies which you use along with all the data,
+
+

@@ -4,10 +4,11 @@ import axiosInstance from "./axiosInstance";
 type PositionEntry = {
   id: string;
   stockName: string;
-  totalAmount: number;
   investAmount: number;
   stockPrice: number;
   positionSize: number;
+  atr: number;
+  partialTarget: number;
   createdAt: string;
 };
 
@@ -15,13 +16,16 @@ type PositionStore = {
   entries: PositionEntry[];
   current: {
     stockName: string;
-    totalAmount: string;
     investAmount: string;
     stockPrice: string;
     positionSize: string;
+    atr: string;
+    atrMultiplier: string;
+    partialTarget: string;
   };
   setField: (field: string, value: string) => void;
   calculatePositionSize: () => void;
+  calculatePartialTarget: () => void;
   clearCurrent: () => void;
   saveEntry: () => void;
   loadEntries: () => void;
@@ -31,10 +35,12 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
   entries: [],
   current: {
     stockName: "",
-    totalAmount: "",
-    investAmount: "",
+    investAmount: "100000",
     stockPrice: "",
     positionSize: "",
+    atr: "",
+    atrMultiplier: "1",
+    partialTarget: "",
   },
 
   setField: (field, value) =>
@@ -70,37 +76,68 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
     }));
   },
 
+  calculatePartialTarget: () => {
+    const { stockPrice, atr, atrMultiplier } = get().current;
+
+    const price = parseFloat(stockPrice);
+    const atrValue = parseFloat(atr);
+    const multiplier = parseFloat(atrMultiplier);
+
+    if (isNaN(price) || isNaN(atrValue) || isNaN(multiplier)) return;
+
+    const target = price + atrValue * multiplier;
+
+    set((state) => ({
+      current: {
+        ...state.current,
+        partialTarget: target.toFixed(2),
+      },
+    }));
+  },
+
   clearCurrent: () =>
     set(() => ({
       current: {
         stockName: "",
-        totalAmount: "",
         investAmount: "",
         stockPrice: "",
         positionSize: "",
+        atr: "",
+        atrMultiplier: "1",
+        partialTarget: "",
       },
     })),
 
   saveEntry: async () => {
-    const BASE_URL = "/positions"; // since axiosInstance already has baseURL
-    const { stockName, totalAmount, investAmount, stockPrice, positionSize } =
-      get().current;
+    const BASE_URL = "/positions";
+    const {
+      stockName,
+      investAmount,
+      stockPrice,
+      positionSize,
+      atr,
+      atrMultiplier,
+      partialTarget,
+    } = get().current;
 
     if (
       !stockName ||
-      !totalAmount ||
       !investAmount ||
       !stockPrice ||
-      !positionSize
+      !positionSize ||
+      !atr ||
+      !partialTarget
     )
       return;
 
     const newEntry = {
       stockName,
-      totalAmount: parseFloat(totalAmount),
       investAmount: parseFloat(investAmount),
       stockPrice: parseFloat(stockPrice),
       positionSize: parseFloat(positionSize),
+      atr: parseFloat(atr),
+      partialTarget: parseFloat(partialTarget),
+      atrMultiplier: parseFloat(atrMultiplier),
     };
 
     try {

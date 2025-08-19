@@ -55,12 +55,15 @@ const EqualMoneyResultsTable = () => {
       label: "ID",
       render: (_: any, __: any, rowIndex: number) => rowIndex + 1,
     },
-
     { id: "stockName", label: "Stock Name" },
-    { id: "totalAmount", label: "Total Amount" },
     { id: "investAmount", label: "Invested Amount" },
     { id: "stockPrice", label: "Stock Price" },
     { id: "positionSize", label: "Position Size" },
+
+    { id: "atr", label: "ATR" },
+    { id: "atrMultiplier", label: "ATR Multiplier" },
+    { id: "partialTarget", label: "Partial Target" },
+
     {
       id: "createdAt",
       label: "Date",
@@ -87,7 +90,7 @@ const EqualMoneyResultsTable = () => {
               modalDispatch({
                 type: "warning",
                 message: "Are you sure you want to delete this entry?",
-                onConfirm: () => handleDelete(row._id),
+                onConfirm: () => handleDelete(row._id || row.id),
               })
             }
           >
@@ -99,15 +102,13 @@ const EqualMoneyResultsTable = () => {
   ];
 
   return (
-    <>
-      <ReusableTable
-        data={entries}
-        columns={columns}
-        rowKey="id"
-        showCheckbox={true}
-        tableHeader="Calculated Positions"
-      />
-    </>
+    <ReusableTable
+      data={entries}
+      columns={columns}
+      rowKey="id"
+      showCheckbox={true}
+      tableHeader="Calculated Positions"
+    />
   );
 };
 

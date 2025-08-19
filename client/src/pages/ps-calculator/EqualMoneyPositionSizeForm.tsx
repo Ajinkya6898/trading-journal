@@ -1,23 +1,38 @@
-import { TextField, Box, Button, Stack, Typography } from "@mui/material";
+import {
+  TextField,
+  Box,
+  Button,
+  Stack,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import Panel from "../../ui-components/Panel";
 import FieldLayout from "../../ui-components/FieldLayout";
 import { usePositionStore } from "../../store/usepositionStore";
 import { useModal } from "../../ui-components/ModalProvider";
 
 const EqualMoneyPositionSizeForm = () => {
-  const { current, setField, calculatePositionSize, clearCurrent, saveEntry } =
-    usePositionStore();
+  const {
+    current,
+    setField,
+    calculatePositionSize,
+    calculatePartialTarget,
+    clearCurrent,
+    saveEntry,
+  } = usePositionStore();
 
   const { modalDispatch } = useModal();
 
   const handleCalculate = async () => {
-    const { stockName, totalAmount, investAmount, stockPrice } =
+    const { stockName, investAmount, stockPrice } =
       usePositionStore.getState().current;
 
     const missingFields: string[] = [];
 
     if (!stockName) missingFields.push("Stock Name");
-    if (!totalAmount) missingFields.push("Total Amount");
     if (!investAmount) missingFields.push("Amount to Invest");
     if (!stockPrice) missingFields.push("Stock Price");
 
@@ -45,6 +60,7 @@ const EqualMoneyPositionSizeForm = () => {
     }
 
     calculatePositionSize();
+    calculatePartialTarget(); // also calculate partial target
 
     try {
       await saveEntry();
@@ -84,16 +100,6 @@ const EqualMoneyPositionSizeForm = () => {
           />
         </FieldLayout>
 
-        <FieldLayout label="Total Amount to Invest">
-          <TextField
-            fullWidth
-            placeholder="Enter total capital available"
-            variant="outlined"
-            value={current.totalAmount}
-            onChange={(e) => setField("totalAmount", e.target.value)}
-          />
-        </FieldLayout>
-
         <FieldLayout label="Amount to Invest in Stock">
           <TextField
             fullWidth
@@ -112,6 +118,33 @@ const EqualMoneyPositionSizeForm = () => {
             value={current.stockPrice}
             onChange={(e) => setField("stockPrice", e.target.value)}
           />
+        </FieldLayout>
+
+        <FieldLayout label="ATR">
+          <TextField
+            fullWidth
+            placeholder="Enter ATR value"
+            variant="outlined"
+            value={current.atr}
+            onChange={(e) => setField("atr", e.target.value)}
+          />
+        </FieldLayout>
+
+        <FieldLayout label="ATR Multiplier">
+          <FormControl fullWidth>
+            <InputLabel>Multiplier</InputLabel>
+            <Select
+              value={current.atrMultiplier || "1"}
+              label="Multiplier"
+              onChange={(e) => setField("atrMultiplier", e.target.value)}
+            >
+              <MenuItem value="1">1x</MenuItem>
+              <MenuItem value="2">2x</MenuItem>
+              <MenuItem value="3">3x</MenuItem>
+              <MenuItem value="4">4x</MenuItem>
+              <MenuItem value="5">5x</MenuItem>
+            </Select>
+          </FormControl>
         </FieldLayout>
 
         <FieldLayout>
