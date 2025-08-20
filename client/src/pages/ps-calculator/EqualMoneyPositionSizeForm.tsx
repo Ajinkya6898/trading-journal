@@ -19,7 +19,7 @@ const EqualMoneyPositionSizeForm = () => {
     current,
     setField,
     calculatePositionSize,
-    calculatePartialTarget,
+    calculateTargets,
     clearCurrent,
     saveEntry,
   } = usePositionStore();
@@ -31,7 +31,6 @@ const EqualMoneyPositionSizeForm = () => {
       usePositionStore.getState().current;
 
     const missingFields: string[] = [];
-
     if (!stockName) missingFields.push("Stock Name");
     if (!investAmount) missingFields.push("Amount to Invest");
     if (!stockPrice) missingFields.push("Stock Price");
@@ -60,7 +59,7 @@ const EqualMoneyPositionSizeForm = () => {
     }
 
     calculatePositionSize();
-    calculatePartialTarget(); // also calculate partial target
+    calculateTargets();
 
     try {
       await saveEntry();
@@ -143,6 +142,24 @@ const EqualMoneyPositionSizeForm = () => {
               <MenuItem value="3">3x</MenuItem>
               <MenuItem value="4">4x</MenuItem>
               <MenuItem value="5">5x</MenuItem>
+            </Select>
+          </FormControl>
+        </FieldLayout>
+
+        {/* Partial Profit Booking % */}
+        <FieldLayout label="Partial Profit Booking (%)">
+          <FormControl fullWidth>
+            <InputLabel>Percentage</InputLabel>
+            <Select
+              value={current.partialPercent || "50"}
+              label="Percentage"
+              onChange={(e) => setField("partialPercent", e.target.value)}
+            >
+              {[20, 30, 40, 50, 60, 70, 80].map((percent) => (
+                <MenuItem key={percent} value={percent}>
+                  {percent}%
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </FieldLayout>

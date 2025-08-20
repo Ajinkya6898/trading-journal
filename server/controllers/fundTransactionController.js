@@ -44,7 +44,7 @@ exports.getAllTransactions = async (req, res) => {
       }
       if (endDate) {
         const end = new Date(endDate);
-        end.setHours(23, 59, 59, 999); // include full end day
+        end.setHours(23, 59, 59, 999);
         filter.date.$lte = end;
       }
     }

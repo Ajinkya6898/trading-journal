@@ -15,6 +15,7 @@ import ProfileProgress from "../pages/user-profile/ProfileProgress";
 import FundTransaction from "../pages/fund-transactions/FundTransaction";
 import TargetPriceCalculator from "../pages/target/TargetPriceCalculator";
 import { MutualFundJournal } from "../pages/mutual-fund-journal/MutualFundJournal";
+import Report from "../pages/reports/Report";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "/target",
         element: <TargetPriceCalculator />,
+      },
+      {
+        path: "/stocks-report",
+        element: <Report />,
       },
     ],
   },

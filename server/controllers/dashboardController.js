@@ -204,7 +204,6 @@ const getDashboardData = async (req, res) => {
         ? Number(((totalReturn / stockInvestment) * 100).toFixed(2))
         : 0;
 
-    // === PORTFOLIO ALLOCATION ===
     const doughnutData = {
       datasets: [
         {

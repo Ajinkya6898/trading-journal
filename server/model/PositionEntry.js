@@ -11,6 +11,9 @@ const positionEntrySchema = new mongoose.Schema(
     atrMultiplier: { type: Number, required: true },
     partialTarget: { type: Number, required: true },
 
+    partialSellQty: { type: Number, required: true },
+    hardsl: { type: Number, required: true },
+
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

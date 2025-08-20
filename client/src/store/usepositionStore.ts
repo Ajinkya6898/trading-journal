@@ -2,13 +2,17 @@ import { create } from "zustand";
 import axiosInstance from "./axiosInstance";
 
 type PositionEntry = {
+  _id: string;
   id: string;
   stockName: string;
   investAmount: number;
   stockPrice: number;
   positionSize: number;
   atr: number;
+  atrMultiplier: number;
   partialTarget: number;
+  hardsl: number;
+  partialSellQty: number;
   createdAt: string;
 };
 
@@ -22,10 +26,13 @@ type PositionStore = {
     atr: string;
     atrMultiplier: string;
     partialTarget: string;
+    hardsl: string;
+    partialSellQty: string;
+    partialPercent: string;
   };
   setField: (field: string, value: string) => void;
   calculatePositionSize: () => void;
-  calculatePartialTarget: () => void;
+  calculateTargets: () => void;
   clearCurrent: () => void;
   saveEntry: () => void;
   loadEntries: () => void;
@@ -41,6 +48,9 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
     atr: "",
     atrMultiplier: "1",
     partialTarget: "",
+    hardsl: "",
+    partialSellQty: "",
+    partialPercent: "50",
   },
 
   setField: (field, value) =>
@@ -76,21 +86,37 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
     }));
   },
 
-  calculatePartialTarget: () => {
-    const { stockPrice, atr, atrMultiplier } = get().current;
+  calculateTargets: () => {
+    const { stockPrice, atr, atrMultiplier, positionSize, partialPercent } =
+      get().current;
 
     const price = parseFloat(stockPrice);
     const atrValue = parseFloat(atr);
     const multiplier = parseFloat(atrMultiplier);
+    const posSize = parseFloat(positionSize);
+    const percent = parseFloat(partialPercent);
 
-    if (isNaN(price) || isNaN(atrValue) || isNaN(multiplier)) return;
+    if (
+      isNaN(price) ||
+      isNaN(atrValue) ||
+      isNaN(multiplier) ||
+      isNaN(posSize) ||
+      isNaN(percent)
+    )
+      return;
 
     const target = price + atrValue * multiplier;
+
+    const hardsl = price - atrValue * multiplier;
+
+    const sellQty = posSize * (percent / 100);
 
     set((state) => ({
       current: {
         ...state.current,
         partialTarget: target.toFixed(2),
+        hardsl: hardsl.toFixed(2),
+        partialSellQty: sellQty.toFixed(2),
       },
     }));
   },
@@ -105,6 +131,9 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
         atr: "",
         atrMultiplier: "1",
         partialTarget: "",
+        hardsl: "",
+        partialSellQty: "",
+        partialPercent: "50",
       },
     })),
 
@@ -118,6 +147,9 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
       atr,
       atrMultiplier,
       partialTarget,
+      hardsl,
+      partialSellQty,
+      partialPercent,
     } = get().current;
 
     if (
@@ -136,8 +168,11 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
       stockPrice: parseFloat(stockPrice),
       positionSize: parseFloat(positionSize),
       atr: parseFloat(atr),
-      partialTarget: parseFloat(partialTarget),
       atrMultiplier: parseFloat(atrMultiplier),
+      partialTarget: parseFloat(partialTarget),
+      hardsl: parseFloat(hardsl),
+      partialSellQty: parseFloat(partialSellQty),
+      partialPercent: parseFloat(partialPercent),
     };
 
     try {

@@ -10,7 +10,7 @@ import PerformanceOverview from "./PerformanceOverview";
 import TopGainersLosers from "./TopGainersLosers";
 import useDashboardStore from "../../store/useDashboardStore";
 import Loader from "../../ui-components/Loader";
-import TradingStatsDashboard from "./TradingStatsDashboard";
+// import TradingStatsDashboard from "../reports/TradingStatsDashboard";
 import PeriodStatsDashboard from "./PeriodStatsDashboard";
 import TradingPerformanceDashboard from "./PerformanceTable";
 import MonthlyTradeStatsChart from "./MonthlyTradeStatsChart";
@@ -48,12 +48,11 @@ const Dashboard = () => {
           </Stack>
         }
       />
-      <TradingStatsDashboard tradingStats={dashBoardData?.tradingStats} />
-      <MonthlyTradeStatsChart
+      {/* <MonthlyTradeStatsChart
         monthlyTradeStats={dashBoardData?.monthlyTradeStats}
       />
       <PeriodStatsDashboard periodStats={dashBoardData?.periodStats} />
-      <TradingPerformanceDashboard />
+      <TradingPerformanceDashboard /> */}
       <DashboardStats />
 
       <Box display="flex" mt={2} flexDirection="column" gap={2}>

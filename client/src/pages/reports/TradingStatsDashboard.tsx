@@ -8,7 +8,6 @@ import {
   Percent,
   Trophy,
   AlertTriangle,
-  Clock,
   Award,
   Activity,
 } from "lucide-react";

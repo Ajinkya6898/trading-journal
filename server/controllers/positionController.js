@@ -10,31 +10,37 @@ exports.createPosition = async (req, res) => {
       atr,
       atrMultiplier,
       partialTarget,
+      partialSellQty,
+      hardsl,
     } = req.body;
 
-    if (
-      !stockName ||
-      !investAmount ||
-      !stockPrice ||
-      !positionSize ||
-      !atr ||
-      !atrMultiplier ||
-      !partialTarget
-    ) {
-      return res.status(400).json({ message: "All fields are required." });
-    }
-
-    const newEntry = await PositionEntry.create({
+    // ✅ List of required fields
+    const requiredFields = {
       stockName,
-
       investAmount,
       stockPrice,
       positionSize,
       atr,
       atrMultiplier,
       partialTarget,
-      // userId: (add later if auth is implemented)
-    });
+      partialSellQty,
+      hardsl,
+    };
+
+    // ✅ Find missing fields
+    const missingFields = Object.entries(requiredFields)
+      .filter(
+        ([_, value]) => value === undefined || value === null || value === ""
+      )
+      .map(([key]) => key);
+
+    if (missingFields.length > 0) {
+      return res.status(400).json({
+        message: `Missing required fields: ${missingFields.join(", ")}`,
+      });
+    }
+
+    const newEntry = await PositionEntry.create(requiredFields);
 
     res.status(201).json(newEntry);
   } catch (error) {
@@ -64,6 +70,8 @@ exports.updatePosition = async (req, res) => {
       atr,
       atrMultiplier,
       partialTarget,
+      partialSellQty,
+      hardsl,
     } = req.body;
 
     const updated = await PositionEntry.findByIdAndUpdate(
@@ -76,6 +84,8 @@ exports.updatePosition = async (req, res) => {
         atr,
         atrMultiplier,
         partialTarget,
+        partialSellQty,
+        hardsl,
       },
       { new: true }
     );

@@ -3,6 +3,7 @@ import ReusableTable from "../../ui-components/ReusableTable";
 import { usePositionStore } from "../../store/usepositionStore";
 import { Button, Stack } from "@mui/material";
 import { useModal } from "../../ui-components/ModalProvider";
+import axiosInstance from "../../store/axiosInstance";
 
 const EqualMoneyResultsTable = () => {
   const entries = usePositionStore((state) => state.entries);
@@ -16,35 +17,25 @@ const EqualMoneyResultsTable = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:8080/api/positions/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        console.error("Delete failed:", err);
-        modalDispatch({
-          type: "error",
-          message: err.message || "Failed to delete entry.",
-        });
-        return;
-      }
+      const res = await axiosInstance.delete(`/positions/${id}`);
 
       usePositionStore.setState((state) => ({
-        entries: state.entries.filter((entry) => entry.id !== id),
+        entries: state.entries.filter((entry) => entry._id !== id),
       }));
 
       await loadEntries();
 
       modalDispatch({
         type: "success",
-        message: "Entry deleted successfully!",
+        message: res.data.message || "Entry deleted successfully!",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Delete error:", error);
       modalDispatch({
         type: "error",
-        message: "Server error. Please try again later.",
+        message:
+          error.response?.data?.message ||
+          "Server error. Please try again later.",
       });
     }
   };
@@ -55,15 +46,15 @@ const EqualMoneyResultsTable = () => {
       label: "ID",
       render: (_: any, __: any, rowIndex: number) => rowIndex + 1,
     },
-    { id: "stockName", label: "Stock Name" },
-    { id: "investAmount", label: "Invested Amount" },
-    { id: "stockPrice", label: "Stock Price" },
+    { id: "stockName", label: "Symbol" },
+    { id: "investAmount", label: "Total Amount" },
+    { id: "stockPrice", label: "Entry" },
     { id: "positionSize", label: "Position Size" },
-
     { id: "atr", label: "ATR" },
     { id: "atrMultiplier", label: "ATR Multiplier" },
     { id: "partialTarget", label: "Partial Target" },
-
+    { id: "partialSellQty", label: "Partial QTY" },
+    { id: "hardsl", label: "Hard SL" },
     {
       id: "createdAt",
       label: "Date",

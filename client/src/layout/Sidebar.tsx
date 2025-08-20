@@ -39,7 +39,7 @@ const menu = [
   },
   { label: "Add New Entry", icon: FilePlus, href: "/add-entry" },
   { label: "Active Trades", icon: Activity, href: "/active-trades" },
-  { label: "Reports", icon: BarChart3, href: "/reports" },
+  { label: "Reports", icon: BarChart3, href: "/stocks-report" },
   {
     label: "Position Size Calculator",
     icon: SlidersHorizontal,

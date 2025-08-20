@@ -17,5 +17,6 @@ on dashboard add a pie chart for company capitalization like mid,small, large ca
 pay in and pay out page to know how much money I put in the stock market
 add timeframe element in the stock entry panel
 add a new page called trading plan in this page you can have all the stragies which you use along with all the data,
+create a page for observations whatever the observations you observe those will go in this page
 
 
