@@ -6,14 +6,11 @@ import {
   useTheme,
   AppBar,
   Toolbar,
-  Typography,
   IconButton,
-  Badge,
-  Paper,
   Container,
 } from "@mui/material";
 import { SearchIcon } from "lucide-react";
-import { Lightbulb, Bell } from "lucide-react";
+import { Lightbulb } from "lucide-react";
 import UserMenu from "./UserMenu";
 import { NavLink } from "react-router-dom";
 import NotificationsMenu from "./NotificationsMenu";

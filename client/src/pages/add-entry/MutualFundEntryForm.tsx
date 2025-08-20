@@ -38,7 +38,7 @@ const MutualFundEntryForm = () => {
         <DatePicker
           label="Date"
           value={current.date}
-          onChange={(newValue) => setSelectedDate(newValue)}
+          onChange={(newValue) => handleChange("entryDate", newValue)}
         />
 
         <FieldLayout label="Add Units">

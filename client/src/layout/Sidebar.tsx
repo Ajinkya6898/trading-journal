@@ -13,14 +13,12 @@ import {
 import { NavLink, useLocation } from "react-router-dom";
 import {
   Home,
-  FileText,
   FilePlus,
   Activity,
   BarChart3,
   SlidersHorizontal,
   GaugeCircle,
   Scale,
-  Settings2,
   ChevronDown,
   IndianRupee,
   CandlestickChart,
@@ -77,7 +75,7 @@ const Sidebar = () => {
   const isActive = (href: string) => location.pathname === href;
 
   const isAnyChildActive = (children: typeof menu) =>
-    children.some((child) => isActive(child.href));
+    children.some((child) => child.href && isActive(child.href));
 
   const toggleGroup = (label: string) => {
     setOpenGroup(openGroup === label ? null : label);

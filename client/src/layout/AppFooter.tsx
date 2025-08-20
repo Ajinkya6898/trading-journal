@@ -29,7 +29,7 @@ const AppFooter = () => {
   const [isLoading, setIsLoading] = useState(false);
   const theme = useTheme();
 
-  const handleNewsletterSubmit = async (e) => {
+  const handleNewsletterSubmit = async (e: any) => {
     e.preventDefault();
     setErrorMsg("");
 
@@ -93,7 +93,7 @@ const AppFooter = () => {
         <Box textAlign="center" sx={{ py: { xs: 2, md: 2 } }}>
           <Grid container spacing={4}>
             {/* Brand Section */}
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid>
               <Box sx={{ pr: { lg: 4 } }}>
                 <Typography
                   variant="h4"

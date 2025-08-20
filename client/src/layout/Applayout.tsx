@@ -1,11 +1,10 @@
-import { Box, Grid, useTheme } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import AppHeader from "./AppHeader";
 import Sidebar from "./Sidebar";
 import { Outlet } from "react-router-dom";
 import AppFooter from "./AppFooter";
 
 const AppLayout = () => {
-  const theme = useTheme();
   return (
     <>
       <Grid container>
