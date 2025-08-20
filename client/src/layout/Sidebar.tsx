@@ -25,6 +25,7 @@ import {
   IndianRupee,
   CandlestickChart,
   Banknote,
+  CreditCard,
 } from "lucide-react";
 import { useState } from "react";
 import AppLogo from "./AppLogo";
@@ -62,9 +63,9 @@ const menu = [
     href: "/fund-transactions",
   },
   {
-    label: "Target Calculator",
-    icon: IndianRupee,
-    href: "/target",
+    label: "Pricing",
+    icon: CreditCard,
+    href: "/pricing",
   },
 ];
 

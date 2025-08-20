@@ -13,9 +13,9 @@ import TradingJournalTable from "../pages/stocks-journal/StocksTradingJournalTab
 import FiiDiiDashboard from "../pages/fiidii-activity/FiiDiiDashboard";
 import ProfileProgress from "../pages/user-profile/ProfileProgress";
 import FundTransaction from "../pages/fund-transactions/FundTransaction";
-import TargetPriceCalculator from "../pages/target/TargetPriceCalculator";
 import { MutualFundJournal } from "../pages/mutual-fund-journal/MutualFundJournal";
 import Report from "../pages/reports/Report";
+import PricingPage from "../pages/pricing/PricingPage";
 
 const router = createBrowserRouter([
   {
@@ -59,12 +59,12 @@ const router = createBrowserRouter([
         element: <FundTransaction />,
       },
       {
-        path: "/target",
-        element: <TargetPriceCalculator />,
-      },
-      {
         path: "/stocks-report",
         element: <Report />,
+      },
+      {
+        path: "/pricing",
+        element: <PricingPage />,
       },
     ],
   },

@@ -6,7 +6,7 @@ exports.addTransaction = async (req, res) => {
     const { date, type, amount, account } = req.body;
 
     const newTransaction = new FundTransaction({
-      userId: req.user._id,
+      userId: req.user._id, // attach logged in user
       date,
       type,
       amount,
@@ -20,11 +20,13 @@ exports.addTransaction = async (req, res) => {
   }
 };
 
+// @desc Get all transactions for logged-in user
 exports.getAllTransactions = async (req, res) => {
   try {
     const { broker, type, startDate, endDate } = req.query;
 
-    const filter = {};
+    // Always filter by logged-in user
+    const filter = { userId: req.user._id };
 
     // Broker filter (account)
     if (broker && broker !== "All") {
