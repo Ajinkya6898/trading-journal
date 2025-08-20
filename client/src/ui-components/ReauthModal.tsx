@@ -21,15 +21,15 @@ const ReauthModal = ({
         email: user.email,
         password,
       });
-      setToken(res.data.token); // store new token
-      onClose(); // close modal and resume session
+      setToken(res.data.token);
+      onClose();
     } catch (err) {
       setError("Incorrect password. Please try again.");
     }
   };
 
   const handleTimeout = () => {
-    logout(); // clear store and redirect to login
+    logout();
   };
 
   return (

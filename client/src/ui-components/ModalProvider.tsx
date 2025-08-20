@@ -1,18 +1,15 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogActions,
   IconButton,
   Typography,
   Button,
-  Divider,
   Box,
   useTheme,
   alpha,
   Slide,
-  Fade,
 } from "@mui/material";
 import { X, CheckCircle, AlertCircle, AlertTriangle } from "lucide-react";
 

@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import { Bar, Doughnut } from "react-chartjs-2";
 
-// Dummy Data (Replace with real data)
 export const monthlyReturnsData = {
   labels: [
     "Jan",
