@@ -7,19 +7,11 @@ import ActiveTrades from "./ActiveTrades";
 import AssetReturnsFunnel from "./AssetReturnsFunnel";
 import TradesAndInvestments from "./TradesAndInvestments";
 import PerformanceOverview from "./PerformanceOverview";
-import TopGainersLosers from "./TopGainersLosers";
 import useDashboardStore from "../../store/useDashboardStore";
 import Loader from "../../ui-components/Loader";
-// import TradingStatsDashboard from "../reports/TradingStatsDashboard";
-import PeriodStatsDashboard from "./PeriodStatsDashboard";
-import TradingPerformanceDashboard from "./PerformanceTable";
-import MonthlyTradeStatsChart from "./MonthlyTradeStatsChart";
 
 const Dashboard = () => {
-  const { trades, dashBoardData, loading, error, fetchDashboardTrades } =
-    useDashboardStore();
-
-  console.log("trades", trades);
+  const { trades, loading, error, fetchDashboardTrades } = useDashboardStore();
 
   useEffect(() => {
     fetchDashboardTrades();
@@ -66,7 +58,6 @@ const Dashboard = () => {
           </Box>
         </Box>
         <PerformanceOverview />
-        <TopGainersLosers />
       </Box>
     </>
   );

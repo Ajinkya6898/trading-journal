@@ -25,13 +25,8 @@ ChartJS.register(
   Legend
 );
 
-type MonthlyTradeData = {
-  month: string; // e.g., "2025-03"
-  tradeCount: number;
-};
-
 type Props = {
-  monthlyTrades: MonthlyTradeData[];
+  monthlyTrades: any;
 };
 
 const TradesAndInvestments = ({ monthlyTrades }: Props) => {
@@ -41,7 +36,7 @@ const TradesAndInvestments = ({ monthlyTrades }: Props) => {
     const labels: string[] = [];
     const counts: number[] = [];
 
-    monthlyTrades.forEach((item) => {
+    monthlyTrades.forEach((item: any) => {
       const [year, month] = item.month.split("-");
       const date = new Date(Number(year), Number(month) - 1);
       const shortLabel = date.toLocaleString("default", { month: "short" });
@@ -175,7 +170,7 @@ const TradesAndInvestments = ({ monthlyTrades }: Props) => {
               justifyContent="space-around"
               mt={2}
             >
-              {doughnutData?.labels?.map((label, idx) => (
+              {doughnutData?.labels?.map((label: any, idx: any) => (
                 <Box
                   key={label}
                   display="flex"

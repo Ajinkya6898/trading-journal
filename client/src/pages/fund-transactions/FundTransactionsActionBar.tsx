@@ -1,6 +1,6 @@
 import DateRangeFilter from "../../ui-components/filters/DateRangeFilter";
 import ToggleFilter from "../../ui-components/filters/ToggleFilter";
-import { Box, Paper, Stack, useMediaQuery, useTheme } from "@mui/material";
+import { Paper, Stack, useMediaQuery, useTheme } from "@mui/material";
 
 type FundTransactionActionBarProps = {
   brokerFilter?: {

@@ -16,6 +16,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import useDashboardStore from "../../store/useDashboardStore";
 
 ChartJS.register(
   LineElement,
@@ -55,6 +56,9 @@ const DashboardStats = () => {
     ],
   };
 
+  const { dashBoardData } = useDashboardStore();
+  console.log("dashBoardData", dashBoardData.portfolioOverview);
+
   return (
     <>
       <Box display="flex" height={"auto"}>
@@ -69,7 +73,7 @@ const DashboardStats = () => {
           {[
             {
               label: "Total Investment",
-              value: "₹ 5,921,649",
+              value: `₹ ${dashBoardData?.portfolioOverview?.totalInvested}`,
               icon: <AccountBalanceOutlinedIcon color="primary" />,
               bg: "rgba(25, 118, 210, 0.1)",
               description: "Total amount allocated across all assets.",

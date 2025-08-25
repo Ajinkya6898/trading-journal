@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import { Typography, Box, Chip, Avatar } from "@mui/material";
-import { TrendingUp, AccountBalance, CalendarToday } from "@mui/icons-material";
+import { Typography, Box, Chip } from "@mui/material";
+import { CalendarToday } from "@mui/icons-material";
 import ReusableTable from "../../ui-components/ReusableTable";
 import { useMutualFundStore } from "../../store/useMutualFundStore";
 import Loader from "../../ui-components/Loader";
-import { format } from "date-fns";
 
 // Define the MutualFund interface (you can add this to your types file)
 interface MutualFund {
@@ -34,20 +33,6 @@ const getFundTypeColor = (fundType: string) => {
     Index: "primary",
   };
   return colors[fundType as keyof typeof colors] || "default";
-};
-
-// Function to generate avatar color based on fund name
-const getAvatarColor = (fundName: string) => {
-  const colors = [
-    "#1976d2",
-    "#388e3c",
-    "#f57c00",
-    "#7b1fa2",
-    "#c2185b",
-    "#0288d1",
-  ];
-  const index = fundName.charCodeAt(0) % colors.length;
-  return colors[index];
 };
 
 export const mutualFundColumns: Column[] = [

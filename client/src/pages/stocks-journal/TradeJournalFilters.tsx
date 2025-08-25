@@ -12,7 +12,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { TrendingUp, TrendingDown, ViewList } from "@mui/icons-material";
-import { DatePicker } from "../../ui-components/Datepicker";
 import { alpha } from "@mui/material/styles";
 import DateRangeFilter from "../../ui-components/filters/DateRangeFilter";
 
@@ -52,17 +51,6 @@ const TradeJournalFilters = ({
         return <TrendingDown fontSize="small" />;
       default:
         return <ViewList fontSize="small" />;
-    }
-  };
-
-  const getWinLossColor = (type: string) => {
-    switch (type) {
-      case "Only Winners":
-        return "success";
-      case "Only Losers":
-        return "error";
-      default:
-        return "primary";
     }
   };
 

@@ -75,9 +75,11 @@ const ChartCard = ({
   subtitle,
   children,
 }: {
-  title: string;
-  subtitle: string;
-  children: React.ReactNode;
+  title?: string;
+  subtitle?: string;
+  children?: React.ReactNode;
+  description?: any;
+  chart?: any;
 }) => (
   <Card variant="outlined" sx={{ width: "100%", height: "100%" }}>
     <CardContent>

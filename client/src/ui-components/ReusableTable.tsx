@@ -18,17 +18,10 @@ import {
   Divider,
 } from "@mui/material";
 
-// Types
-type Column<T> = {
-  id: keyof T;
-  label: string;
-  render?: (value: any, row: T, rowIndex: number) => React.ReactNode;
-};
-
 type ReusableTableProps<T> = {
-  columns: Column<T>[];
+  columns: any;
   data: T[];
-  rowKey?: keyof T;
+  rowKey?: any;
   showCheckbox?: boolean;
   onSelectRow?: (id: T[keyof T]) => void;
   selectedRows?: Array<T[keyof T]>;
@@ -505,7 +498,7 @@ function ReusableTable<T extends { [key: string]: any }>({
                   />
                 </TableCell>
               )}
-              {columns.map((col) => (
+              {columns.map((col: any) => (
                 <TableCell
                   key={String(col.id)}
                   sx={{
@@ -635,7 +628,7 @@ function ReusableTable<T extends { [key: string]: any }>({
                         />
                       </TableCell>
                     )}
-                    {columns.map((col) => (
+                    {columns.map((col: any) => (
                       <TableCell
                         key={String(col.id)}
                         sx={{

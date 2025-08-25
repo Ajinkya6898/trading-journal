@@ -4,7 +4,6 @@ import { format } from "date-fns";
 import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
 import { useFundTransactionStore } from "../../store/useFundTransactionStore";
 import { FundTransaction } from "../../store/useFundTransactionStore";
-import { TrendingDown, TrendingUp } from "lucide-react";
 import { MoreVert } from "@mui/icons-material";
 
 const FundTransactionTable = () => {
@@ -29,7 +28,7 @@ const FundTransactionTable = () => {
     {
       id: "srNo",
       label: "Sr. No.",
-      render: (value, row, index) => (
+      render: (index: any) => (
         <Typography
           variant="body2"
           sx={{
@@ -53,7 +52,7 @@ const FundTransactionTable = () => {
     {
       id: "date",
       label: "Date",
-      render: (value) => (
+      render: (value: any) => (
         <Box>
           <Typography
             variant="body2"
@@ -80,7 +79,7 @@ const FundTransactionTable = () => {
     {
       id: "amount",
       label: "Amount",
-      render: (value, row) => (
+      render: (value: any, row: any) => (
         <Box
           sx={{
             display: "flex",
@@ -107,7 +106,7 @@ const FundTransactionTable = () => {
     {
       id: "account",
       label: "Account",
-      render: (value) => (
+      render: (value: any) => (
         <Box
           sx={{
             display: "flex",
@@ -133,7 +132,7 @@ const FundTransactionTable = () => {
     {
       id: "type",
       label: "Transaction Type",
-      render: (value) => (
+      render: (value: any) => (
         <Chip
           label={value}
           size="small"
@@ -157,8 +156,8 @@ const FundTransactionTable = () => {
     {
       id: "status",
       label: "Status",
-      render: (value) => {
-        const getStatusProps = (status) => {
+      render: (value: any) => {
+        const getStatusProps = (status: any) => {
           switch (status?.toLowerCase()) {
             case "completed":
             case "success":
@@ -217,7 +216,7 @@ const FundTransactionTable = () => {
     {
       id: "actions",
       label: "Actions",
-      render: (value, row) => (
+      render: () => (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Tooltip title="More options" arrow>
             <IconButton

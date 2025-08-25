@@ -73,7 +73,6 @@ const ActiveTrades = () => {
       data={activeTrades}
       columns={columns}
       showCheckbox
-      striped
       rowKey="id"
       tableHeader="Active Trades"
     />

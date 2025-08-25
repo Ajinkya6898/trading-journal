@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Paper,
@@ -125,7 +124,7 @@ const tradingData = {
   ],
 };
 
-const formatCurrency = (amount) => {
+const formatCurrency = (amount: any) => {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
@@ -133,7 +132,7 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
-const formatVolume = (volume) => {
+const formatVolume = (volume: any) => {
   return new Intl.NumberFormat("en-IN", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -142,7 +141,6 @@ const formatVolume = (volume) => {
 
 const PerformanceTable = ({ data, title, isPositive }) => {
   const icon = isPositive ? <TrendingUpIcon /> : <TrendingDownIcon />;
-  const color = isPositive ? "success" : "error";
 
   return (
     <Card elevation={3} sx={{ mb: 4 }}>
@@ -204,7 +202,7 @@ const PerformanceTable = ({ data, title, isPositive }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((row, index) => (
+              {data.map((row: any) => (
                 <TableRow
                   key={row.symbol}
                   sx={{
@@ -306,7 +304,7 @@ export default function TradingPerformanceDashboard() {
           </Typography>
 
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid>
               <PerformanceTable
                 data={tradingData.topPerformingSymbols}
                 title="Top Performing Symbols"
@@ -314,7 +312,7 @@ export default function TradingPerformanceDashboard() {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid>
               <PerformanceTable
                 data={tradingData.worstPerformingSymbols}
                 title="Worst Performing Symbols"

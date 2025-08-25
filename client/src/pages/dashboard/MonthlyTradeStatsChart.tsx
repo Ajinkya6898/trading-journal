@@ -144,7 +144,7 @@ const MonthlyTradeStatsChart: React.FC<MonthlyTradeStatsChartProps> = ({
         labels: {
           font: {
             size: 12,
-            weight: "500",
+            weight: "bold",
           },
         },
       },
@@ -197,7 +197,7 @@ const MonthlyTradeStatsChart: React.FC<MonthlyTradeStatsChartProps> = ({
         labels: {
           font: {
             size: 12,
-            weight: "500",
+            weight: "bold",
           },
         },
       },
@@ -237,7 +237,7 @@ const MonthlyTradeStatsChart: React.FC<MonthlyTradeStatsChartProps> = ({
         labels: {
           font: {
             size: 12,
-            weight: "500",
+            weight: "bold",
           },
         },
       },
@@ -289,7 +289,6 @@ const MonthlyTradeStatsChart: React.FC<MonthlyTradeStatsChartProps> = ({
     0
   );
   const totalWins = activeMonths?.reduce((sum, stat) => sum + stat.wins, 0);
-  const totalLosses = activeMonths?.reduce((sum, stat) => sum + stat.losses, 0);
   const overallWinRate = totalTrades > 0 ? (totalWins / totalTrades) * 100 : 0;
 
   return (
@@ -309,7 +308,7 @@ const MonthlyTradeStatsChart: React.FC<MonthlyTradeStatsChartProps> = ({
 
       {/* Summary Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid>
           <Card elevation={3}>
             <CardContent sx={{ textAlign: "center" }}>
               <Typography
@@ -324,7 +323,7 @@ const MonthlyTradeStatsChart: React.FC<MonthlyTradeStatsChartProps> = ({
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid>
           <Card elevation={3}>
             <CardContent sx={{ textAlign: "center" }}>
               <Typography
@@ -348,7 +347,7 @@ const MonthlyTradeStatsChart: React.FC<MonthlyTradeStatsChartProps> = ({
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid>
           <Card elevation={3}>
             <CardContent sx={{ textAlign: "center" }}>
               <Typography
@@ -363,7 +362,7 @@ const MonthlyTradeStatsChart: React.FC<MonthlyTradeStatsChartProps> = ({
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid>
           <Card elevation={3}>
             <CardContent sx={{ textAlign: "center" }}>
               <Typography
@@ -382,17 +381,17 @@ const MonthlyTradeStatsChart: React.FC<MonthlyTradeStatsChartProps> = ({
 
       {/* Charts */}
       <Grid container spacing={3}>
-        <Grid item xs={12} lg={6}>
+        <Grid>
           <Paper elevation={3} sx={{ p: 3, height: 400 }}>
             <Line data={pnlData} options={pnlChartOptions} />
           </Paper>
         </Grid>
-        <Grid item xs={12} lg={6}>
+        <Grid>
           <Paper elevation={3} sx={{ p: 3, height: 400 }}>
             <Bar data={tradeCountData} options={tradeCountChartOptions} />
           </Paper>
         </Grid>
-        <Grid item xs={12}>
+        <Grid>
           <Paper elevation={3} sx={{ p: 3, height: 400 }}>
             <Line data={winRateData} options={winRateChartOptions} />
           </Paper>
