@@ -22,6 +22,7 @@ const EqualMoneyPositionSizeForm = () => {
     calculateTargets,
     clearCurrent,
     saveEntry,
+    calculateExitPrice,
   } = usePositionStore();
 
   const { modalDispatch } = useModal();
@@ -58,8 +59,10 @@ const EqualMoneyPositionSizeForm = () => {
       return;
     }
 
+    // 🔹 Perform all calculations
     calculatePositionSize();
     calculateTargets();
+    calculateExitPrice(); // NEW
 
     try {
       await saveEntry();
@@ -156,6 +159,24 @@ const EqualMoneyPositionSizeForm = () => {
               onChange={(e) => setField("partialPercent", e.target.value)}
             >
               {[20, 30, 40, 50, 60, 70, 80].map((percent) => (
+                <MenuItem key={percent} value={percent}>
+                  {percent}%
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </FieldLayout>
+
+        {/* Exit Method Based on % Returns */}
+        <FieldLayout label="Exit on Returns (%)">
+          <FormControl fullWidth>
+            <InputLabel>Return %</InputLabel>
+            <Select
+              value={current.exitReturnPercent || "7"}
+              label="Return %"
+              onChange={(e) => setField("exitReturnPercent", e.target.value)}
+            >
+              {Array.from({ length: 16 }, (_, i) => i + 5).map((percent) => (
                 <MenuItem key={percent} value={percent}>
                   {percent}%
                 </MenuItem>

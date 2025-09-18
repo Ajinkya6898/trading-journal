@@ -14,7 +14,7 @@ import {
 import { useTheme } from "@mui/material/styles";
 import StatCard from "../../ui-components/StatCard";
 
-const TradingStatsDashboard = ({ tradingStats }) => {
+const TradingStatsDashboard = ({ tradingStats }: { tradingStats: any }) => {
   const theme = useTheme();
   const isProfit = tradingStats?.totalReturn > 0;
   const isNetProfit = tradingStats?.netReturn > 0;

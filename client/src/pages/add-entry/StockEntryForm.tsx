@@ -11,7 +11,7 @@ const StockEntryForm = () => {
     exitDate: new Date(),
     symbol: "",
     quantity: "",
-    timeFrame: "",
+    timeFrame: "Daily",
     boughtPrice: "",
     soldPrice: "",
     pnl: "",
@@ -259,25 +259,26 @@ const StockEntryForm = () => {
             placeholder="Enter realised P&L"
             variant="outlined"
             type="number"
-            value={
-              Number(formValues.pnl || 0) -
-              Number(formValues.commission || 0).toFixed(2)
-            }
+            value={(
+              Number(formValues.pnl || 0) - Number(formValues.commission || 0)
+            ).toFixed(2)}
             disabled
           />
         </FieldLayout>
+
         <FieldLayout label="Rupees at Work">
           <TextField
             fullWidth
             placeholder="Enter rupees at work"
             variant="outlined"
             type="number"
-            value={
+            value={(
               Number(formValues.quantity || 0) *
               Number(formValues.boughtPrice || 0)
-            }
+            ).toFixed(2)}
           />
         </FieldLayout>
+
         <FieldLayout label="Notes">
           <TextField
             fullWidth

@@ -13,12 +13,16 @@ type PositionEntry = {
   partialTarget: number;
   hardsl: number;
   partialSellQty: number;
+  partialPercent: number;
+  exitReturnPercent: number;
+  exitPrice: number;
   createdAt: string;
 };
 
 type PositionStore = {
   entries: PositionEntry[];
   current: {
+    [x: string]: string;
     stockName: string;
     investAmount: string;
     stockPrice: string;
@@ -29,10 +33,13 @@ type PositionStore = {
     hardsl: string;
     partialSellQty: string;
     partialPercent: string;
+    exitReturnPercent: string; // NEW
+    exitPrice: string; // NEW
   };
   setField: (field: string, value: string) => void;
   calculatePositionSize: () => void;
   calculateTargets: () => void;
+  calculateExitPrice: () => void; // NEW
   clearCurrent: () => void;
   saveEntry: () => void;
   loadEntries: () => void;
@@ -50,7 +57,9 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
     partialTarget: "",
     hardsl: "",
     partialSellQty: "",
-    partialPercent: "50",
+    partialPercent: "30",
+    exitReturnPercent: "7",
+    exitPrice: "",
   },
 
   setField: (field, value) =>
@@ -76,12 +85,12 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
     )
       return;
 
-    const posSize = invest / price;
+    const posSize = Math.round(invest / price);
 
     set((state) => ({
       current: {
         ...state.current,
-        positionSize: posSize.toFixed(2),
+        positionSize: posSize.toString(),
       },
     }));
   },
@@ -106,17 +115,34 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
       return;
 
     const target = price + atrValue * multiplier;
-
     const hardsl = price - atrValue * multiplier;
-
-    const sellQty = posSize * (percent / 100);
+    const sellQty = Math.round(posSize * (percent / 100));
 
     set((state) => ({
       current: {
         ...state.current,
         partialTarget: target.toFixed(2),
         hardsl: hardsl.toFixed(2),
-        partialSellQty: sellQty.toFixed(2),
+        partialSellQty: sellQty.toString(),
+      },
+    }));
+  },
+
+  // NEW FUNCTION
+  calculateExitPrice: () => {
+    const { stockPrice, exitReturnPercent } = get().current;
+
+    const price = parseFloat(stockPrice);
+    const returnPct = parseFloat(exitReturnPercent);
+
+    if (isNaN(price) || isNaN(returnPct)) return;
+
+    const exitPrice = price * (1 + returnPct / 100);
+
+    set((state) => ({
+      current: {
+        ...state.current,
+        exitPrice: exitPrice.toFixed(2),
       },
     }));
   },
@@ -134,6 +160,8 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
         hardsl: "",
         partialSellQty: "",
         partialPercent: "50",
+        exitReturnPercent: "10",
+        exitPrice: "",
       },
     })),
 
@@ -150,6 +178,8 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
       hardsl,
       partialSellQty,
       partialPercent,
+      exitReturnPercent,
+      exitPrice,
     } = get().current;
 
     if (
@@ -173,6 +203,8 @@ export const usePositionStore = create<PositionStore>((set, get) => ({
       hardsl: parseFloat(hardsl),
       partialSellQty: parseFloat(partialSellQty),
       partialPercent: parseFloat(partialPercent),
+      exitReturnPercent: parseFloat(exitReturnPercent), // NEW
+      exitPrice: parseFloat(exitPrice), // NEW
     };
 
     try {

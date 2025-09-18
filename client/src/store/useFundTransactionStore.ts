@@ -29,7 +29,7 @@ export const useFundTransactionStore = create<FundTransactionStore>((set) => ({
   loading: false,
   error: null,
 
-  fetchTransactions: async (filters = {}) => {
+  fetchTransactions: async (filters: any) => {
     try {
       set({ loading: true, error: null });
 

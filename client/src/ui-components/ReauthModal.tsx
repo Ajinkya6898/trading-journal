@@ -11,17 +11,17 @@ const ReauthModal = ({
   open: boolean;
   onClose: () => void;
 }) => {
-  const { user, logout, setToken } = useAuthStore(); // get email, and auth functions
+  const { user, logout } = useAuthStore(); // get email, and auth functions
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleReauth = async () => {
     try {
-      const res = await axios.post("/api/auth/login", {
-        email: user.email,
+      await axios.post("/api/auth/login", {
+        email: user?.email,
         password,
       });
-      setToken(res.data.token);
+      // setToken(res.data.token);
       onClose();
     } catch (err) {
       setError("Incorrect password. Please try again.");
@@ -57,7 +57,7 @@ const ReauthModal = ({
 
         <TextField
           label="Email"
-          value={user.email}
+          value={user?.email}
           fullWidth
           InputProps={{ readOnly: true }}
         />

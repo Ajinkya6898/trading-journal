@@ -8,7 +8,7 @@ import {
 import { useTheme } from "@mui/material/styles";
 import StatCard from "../../ui-components/StatCard";
 
-const TradingPerformanceDashboard = ({ data }) => {
+const TradingPerformanceDashboard = ({ data }: { data: any }) => {
   const summaryData = data;
 
   const theme = useTheme();

@@ -55,6 +55,11 @@ const EqualMoneyResultsTable = () => {
     { id: "partialTarget", label: "Partial Target" },
     { id: "partialSellQty", label: "Partial QTY" },
     { id: "hardsl", label: "Hard SL" },
+
+    // 🔹 NEW FIELDS
+    { id: "exitReturnPercent", label: "Exit Return (%)" },
+    { id: "exitPrice", label: "Exit Price" },
+
     {
       id: "createdAt",
       label: "Date",

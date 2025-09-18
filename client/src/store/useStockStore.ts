@@ -39,6 +39,7 @@ interface StockStoreState {
   trades: Trade[];
   loading: boolean;
   error: string | null;
+  summary: any;
   fetchTrades: () => Promise<void>;
   addTrade: (tradeData: {
     entryDate: Date;
@@ -95,6 +96,7 @@ const useStockStore = create<StockStoreState>((set) => ({
   trades: [],
   loading: false,
   error: null,
+  summary: null,
 
   fetchTrades: async () => {
     try {
