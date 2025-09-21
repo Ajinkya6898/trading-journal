@@ -37,7 +37,8 @@ export default function LoginForm() {
       await login(formData.email, formData.password);
       navigate("/dashboard");
     } catch (err: any) {
-      const message = err?.response?.data?.message || "Something went wrong";
+      const message =
+        err?.response?.data?.message || "Something went wrong I am here";
       modalDispatch({
         type: "error",
         message,

@@ -66,13 +66,13 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (email, password) => {
     set({ loading: true, error: null });
     try {
+      // 1️⃣ Perform login
       const loginResponse = await axiosInstance.post("/auth/login", {
         email,
         password,
       });
 
-      const { token, ...rest } = loginResponse.data;
-
+      const { token } = loginResponse.data;
       localStorage.setItem("token", token);
 
       const profileResponse = await axiosInstance.get("/auth/my-profile", {
@@ -91,7 +91,17 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
 
       localStorage.setItem("userInformation", JSON.stringify(fullUser));
-      localStorage.setItem("loggedIn", "true"); // optional persistence
+      localStorage.setItem("loggedIn", "true");
+
+      // 3️⃣ Fetch common data
+      const commonResponse = await axiosInstance.get("/common", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const commonData = commonResponse.data;
+      localStorage.setItem("commonData", JSON.stringify(commonData));
     } catch (err: any) {
       set({
         error: err.response?.data?.message || "Login failed",
