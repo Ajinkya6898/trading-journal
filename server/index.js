@@ -16,7 +16,7 @@ const goalRoutes = require("./routes/goalRoutes");
 require("dotenv").config();
 
 const app = express();
-
+const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 
 // Middlewares
@@ -53,12 +53,9 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Only listen when not in Vercel environment
-if (process.env.NODE_ENV !== "production") {
-  app.listen(8080, () => {
-    console.log(`Server started on http://localhost:8080`);
-  });
-}
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // Export the app for Vercel
 module.exports = app;
