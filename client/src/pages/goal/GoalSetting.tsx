@@ -8,7 +8,6 @@ import {
   Stack,
   Divider,
   useTheme,
-  Chip,
 } from "@mui/material";
 import {
   Crosshair,

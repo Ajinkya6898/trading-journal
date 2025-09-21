@@ -16,7 +16,6 @@ import FundTransaction from "../pages/fund-transactions/FundTransaction";
 import { MutualFundJournal } from "../pages/mutual-fund-journal/MutualFundJournal";
 import Report from "../pages/reports/Report";
 import PricingPage from "../pages/pricing/PricingPage";
-import AIInsightsPanel from "../pages/ai/AIInsightsPanel";
 import AIEnhancePage from "../pages/ai/AIEnhancePage";
 import ProgressSummaryPage from "../pages/goal/GoalSetting";
 

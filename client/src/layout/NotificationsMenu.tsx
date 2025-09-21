@@ -9,7 +9,6 @@ import {
   ListItemIcon,
   Divider,
   Button,
-  Avatar,
   useTheme,
   Chip,
   Stack,
@@ -24,9 +23,18 @@ import {
   Calendar,
   DollarSign,
   Target,
-  MoreVertical,
   X,
 } from "lucide-react";
+
+type Notification = {
+  title: ReactNode;
+  time: ReactNode;
+  id: string;
+  message: string;
+  icon: ReactNode;
+  color: "success" | "error" | "warning" | "primary" | "info";
+  read: boolean;
+};
 
 const dummyNotifications = [
   {
@@ -106,7 +114,7 @@ export default function NotificationsMenu() {
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  const handleMenuOpen = (event) => {
+  const handleMenuOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -114,7 +122,7 @@ export default function NotificationsMenu() {
     setAnchorEl(null);
   };
 
-  const handleMarkAsRead = (id) => {
+  const handleMarkAsRead = (id: any) => {
     setNotifications((prev) =>
       prev.map((notification) =>
         notification.id === id ? { ...notification, read: true } : notification
@@ -128,7 +136,7 @@ export default function NotificationsMenu() {
     );
   };
 
-  const handleDeleteNotification = (id) => {
+  const handleDeleteNotification = (id: any) => {
     setNotifications((prev) =>
       prev.filter((notification) => notification.id !== id)
     );
@@ -143,18 +151,27 @@ export default function NotificationsMenu() {
     },
   };
 
-  const getNotificationColor = (color, read) => {
-    const colors = {
+  const getNotificationColor = (
+    color: Notification["color"],
+    read?: boolean,
+    theme?: any
+  ) => {
+    const colors: Record<Notification["color"], string> = {
       success: read ? theme.palette.success.light : theme.palette.success.main,
       error: read ? theme.palette.error.light : theme.palette.error.main,
       warning: read ? theme.palette.warning.light : theme.palette.warning.main,
       primary: read ? theme.palette.primary.light : theme.palette.primary.main,
       info: read ? theme.palette.info.light : theme.palette.info.main,
     };
-    return colors[color] || theme.palette.grey[500];
+
+    return colors[color] ?? theme.palette.grey[500];
   };
 
-  const NotificationItem = ({ notification }) => {
+  const NotificationItem = ({
+    notification,
+  }: {
+    notification: Notification;
+  }) => {
     const IconComponent = notification.icon;
 
     return (
