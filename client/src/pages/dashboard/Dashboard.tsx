@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import PageHeader from "../../ui-components/PageHeader";
 import DashboardStats from "./DashboardStats";
 import Icon from "../../ui-components/Icon";
@@ -9,6 +9,7 @@ import TradesAndInvestments from "./TradesAndInvestments";
 import PerformanceOverview from "./PerformanceOverview";
 import useDashboardStore from "../../store/useDashboardStore";
 import Loader from "../../ui-components/Loader";
+import AIInsightsPanel from "../ai/AIInsightsPanel";
 
 const Dashboard = () => {
   const { trades, loading, error, fetchDashboardTrades } = useDashboardStore();

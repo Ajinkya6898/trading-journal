@@ -4,7 +4,8 @@ import BackgroundContainer from "./BackgroundContainer";
 
 type StatCardProps = {
   title: string;
-  value: string | number;
+  value: ReactNode;
+  extraInfo?: ReactNode;
   chipLabel?: string;
   icon: ReactNode;
   color?: string;
@@ -13,6 +14,7 @@ type StatCardProps = {
 const StatCard = ({
   title,
   value,
+  extraInfo,
   chipLabel,
   icon,
   color = "#3b82f6",
@@ -52,6 +54,14 @@ const StatCard = ({
           mb={chipLabel ? 1 : 0}
         >
           {value}
+        </Typography>
+        <Typography
+          variant="body1"
+          color="text.primary"
+          mt={1}
+          mb={chipLabel ? 1 : 0}
+        >
+          {extraInfo}
         </Typography>
         {chipLabel && (
           <Chip

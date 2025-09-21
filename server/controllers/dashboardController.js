@@ -45,6 +45,34 @@ const getMonthlyTradeStats = async (req, res) => {
   }
 };
 
+function calculateMaxDrawdown(trades) {
+  if (!trades.length) return 0;
+
+  // Sort trades chronologically
+  const sortedTrades = [...trades].sort(
+    (a, b) => new Date(a.exitDate) - new Date(b.exitDate)
+  );
+
+  let equity = 0;
+  let peak = 0;
+  let maxDrawdown = 0;
+
+  for (const trade of sortedTrades) {
+    equity += trade.pnl || 0;
+
+    if (equity > peak) {
+      peak = equity; // new peak
+    }
+
+    const drawdown = peak > 0 ? ((peak - equity) / peak) * 100 : 0;
+    if (drawdown > maxDrawdown) {
+      maxDrawdown = drawdown;
+    }
+  }
+
+  return Number(maxDrawdown.toFixed(2));
+}
+
 const getDashboardData = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -123,6 +151,7 @@ const getDashboardData = async (req, res) => {
       allTrades.length > 0 ? Math.min(...allTrades.map((t) => t.pnl || 0)) : 0;
     const maxConsecutiveWins = calculateMaxConsecutive(allTrades, true);
     const maxConsecutiveLosses = calculateMaxConsecutive(allTrades, false);
+    const maxDrawdown = calculateMaxDrawdown(allTrades);
 
     // === PERIOD-WISE ANALYSIS ===
     const todayTrades = filterTradesByDate(allTrades, startOfToday);
@@ -260,6 +289,7 @@ const getDashboardData = async (req, res) => {
         maxConsecutiveWins,
         maxConsecutiveLosses,
         returnPercentage,
+        maxDrawdown,
       },
 
       // Period Analysis

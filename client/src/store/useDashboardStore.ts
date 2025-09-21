@@ -1,6 +1,28 @@
 import { create } from "zustand";
 import axiosInstance from "./axiosInstance";
 
+type reportStats = {
+  numberOfTrades: number;
+  winningTrades: number;
+  losingTrades: number;
+  breakEvenTrades: number;
+  winRate: number;
+  lossRate: number;
+  totalReturn: number;
+  netReturn: number;
+  totalCommission: number;
+  profitFactor: number;
+  avgWin: number;
+  avgLoss: number;
+  avgTrade: number;
+  avgHoldingPeriod: number;
+  largestWin: number;
+  largestLoss: number;
+  maxConsecutiveWins: number;
+  maxConsecutiveLosses: number;
+  returnPercentage: number;
+};
+
 export type DashboardTrade = {
   _id: string;
   entryDate: string;
@@ -19,6 +41,7 @@ type DashboardState = {
   trades: DashboardTrade[];
   dashBoardData: any;
   doughnutData: number[];
+  reportData: reportStats | null;
   loading: boolean;
   error: string | null;
   fetchDashboardTrades: () => Promise<void>;
@@ -26,6 +49,7 @@ type DashboardState = {
 
 const useDashboardStore = create<DashboardState>((set) => ({
   trades: [],
+  reportData: null,
   doughnutData: [],
   dashBoardData: [],
   loading: false,
@@ -40,6 +64,7 @@ const useDashboardStore = create<DashboardState>((set) => ({
         trades: response.data.monthlyTradeStats,
         doughnutData: response.data.doughnutData.datasets[0].data || [],
         dashBoardData: response.data,
+        reportData: response.data.tradingStats,
         loading: false,
       });
     } catch (err) {

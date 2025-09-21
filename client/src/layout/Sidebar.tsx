@@ -24,6 +24,7 @@ import {
   CandlestickChart,
   Banknote,
   CreditCard,
+  Crosshair,
 } from "lucide-react";
 import { useState } from "react";
 import AppLogo from "./AppLogo";
@@ -39,6 +40,7 @@ const menu = [
   { label: "Add New Entry", icon: FilePlus, href: "/add-entry" },
   { label: "Active Trades", icon: Activity, href: "/active-trades" },
   { label: "Reports", icon: BarChart3, href: "/stocks-report" },
+  { label: "Goal", icon: Crosshair, href: "/goal" },
   {
     label: "Position Size Calculator",
     icon: SlidersHorizontal,

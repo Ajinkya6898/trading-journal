@@ -11,6 +11,8 @@ const positionRoutes = require("./routes/positionRoutes");
 const fundTransactionRoutes = require("./routes/fundTransactionRoutes");
 const dashboardStats = require("./routes/dashboardRoutes");
 const newsletterRoutes = require("./routes/newsletter");
+const aiRoutes = require("./routes/aiRoutes");
+const goalRoutes = require("./routes/goalRoutes");
 require("dotenv").config();
 
 const app = express();
@@ -37,6 +39,8 @@ app.use("/api/positions", positionRoutes);
 app.use("/api/funds", fundTransactionRoutes);
 app.use("/api/dashboard", dashboardStats);
 app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/ai", aiRoutes);
+app.use("/api/goal", goalRoutes);
 
 // Test route
 app.get("/", (req, res) => {

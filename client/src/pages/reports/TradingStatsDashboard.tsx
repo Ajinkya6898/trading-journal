@@ -52,9 +52,9 @@ const TradingStatsDashboard = ({ tradingStats }: { tradingStats: any }) => {
       />
 
       <StatCard
-        title="Break Even Trades"
-        value={tradingStats?.breakEvenTrades}
-        chipLabel="No Profit/Loss"
+        title="Draw Down"
+        value={`${tradingStats?.maxDrawdown} %`}
+        chipLabel="Diff bet high and low"
         icon={<Activity size={20} />}
         color={theme.palette.grey[500]}
       />

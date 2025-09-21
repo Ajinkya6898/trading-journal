@@ -12,9 +12,10 @@ exports.createPosition = async (req, res) => {
       partialTarget,
       partialSellQty,
       hardsl,
+      exitReturnPercent, // 🔹 added
+      exitPrice, // 🔹 added
     } = req.body;
 
-    // ✅ List of required fields
     const requiredFields = {
       stockName,
       investAmount,
@@ -25,9 +26,10 @@ exports.createPosition = async (req, res) => {
       partialTarget,
       partialSellQty,
       hardsl,
+      exitReturnPercent, // 🔹 added
+      exitPrice, // 🔹 added
     };
 
-    // ✅ Find missing fields
     const missingFields = Object.entries(requiredFields)
       .filter(
         ([_, value]) => value === undefined || value === null || value === ""
@@ -72,6 +74,8 @@ exports.updatePosition = async (req, res) => {
       partialTarget,
       partialSellQty,
       hardsl,
+      exitReturnPercent, // 🔹 added
+      exitPrice, // 🔹 added
     } = req.body;
 
     const updated = await PositionEntry.findByIdAndUpdate(
@@ -86,6 +90,8 @@ exports.updatePosition = async (req, res) => {
         partialTarget,
         partialSellQty,
         hardsl,
+        exitReturnPercent, // 🔹 added
+        exitPrice, // 🔹 added
       },
       { new: true }
     );

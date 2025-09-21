@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box, Chip, Link as MuiLink } from "@mui/material";
+import { Typography, Box, Chip, Link as MuiLink, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Trade } from "../../store/useStockStore";
 
@@ -203,5 +203,24 @@ export const stockJournalColumns: Column[] = [
         </Typography>
       </Box>
     ),
+  },
+  {
+    id: "aiInsights",
+    label: "AI Insights",
+    render: (_, row) => {
+      const navigate = useNavigate();
+      return (
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/ai-enhance/${row.id}`);
+          }}
+        >
+          Enhance
+        </Button>
+      );
+    },
   },
 ];

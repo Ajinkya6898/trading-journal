@@ -14,6 +14,9 @@ const positionEntrySchema = new mongoose.Schema(
     partialSellQty: { type: Number, required: true },
     hardsl: { type: Number, required: true },
 
+    exitReturnPercent: { type: Number, required: true },
+    exitPrice: { type: Number, required: true },
+
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
